@@ -1,0 +1,25 @@
+http:
+  port: 10001
+
+server:
+  port: 443
+  ssl:
+    key-store: classpath:www.allenyll.com.jks
+    key-store-password: 58024myself?
+    keyStoreType: JKS
+
+sw:
+  nacos:
+    server-addr: ${sw.nacos.ip}:8848
+
+spring:
+  application:
+    name: sw-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${sw.nacos.server-addr}
+      config:
+        server-addr: ${sw.nacos.server-addr}
+
+

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.system.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sw.common.entity.system.User">
+        <id column="id" property="id" />
+        <result column="depot_id" property="depotId" />
+        <result column="user_name" property="userName" />
+        <result column="account" property="account" />
+        <result column="password" property="password" />
+        <result column="salt" property="salt" />
+        <result column="status" property="status" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="sex" property="sex" />
+        <result column="pic_id" property="picId" />
+        <result column="address" property="address" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="area" property="area" />
+        <result column="last_password_reset_date" property="lastPasswordResetDate" />
+        <result column="is_delete" property="isDelete" />
+        <result column="add_user" property="addUser" />
+        <result column="add_time" property="addTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, depot_id, user_name, account, password, salt, status, phone, email, sex, pic_id, address, province, city, area, last_password_reset_date, is_delete, add_user, add_time, update_user, update_time
+    </sql>
+
+    <select id="getUserRoleMenuList" parameterType="map" resultType="map">
+		SELECT
+			t.*
+		FROM
+			sys_menu t
+		LEFT JOIN sys_role_menu t1 ON t1.menu_id = t.id
+		LEFT JOIN sys_user_role t2 ON t2.role_id = t1.role_id
+		WHERE t2.user_id = #{user_id}
+		AND t.is_delete = 0
+	</select>
+
+</mapper>

@@ -1,0 +1,19 @@
+server:
+  port: 10010
+
+sw:
+  nacos:
+    server-addr: ${sw.nacos.ip}:8848
+
+spring:
+  application:
+    name: system-center
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${sw.nacos.server-addr}
+      config:
+        server-addr: ${sw.nacos.server-addr}
+
+
+

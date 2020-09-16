@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.system.mapper.DepotMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.sw.common.entity.system.Depot">
+		<id column="id" property="id" />
+		<result column="pid" property="pid" />
+		<result column="depot_name" property="depotName" />
+		<result column="depot_code" property="depotCode" />
+		<result column="sort" property="sort" />
+		<result column="is_delete" property="isDelete" />
+		<result column="add_user" property="addUser" />
+		<result column="add_time" property="addTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pid, depot_name, depot_code, sort, is_delete, add_user, add_time, update_user, update_time
+    </sql>
+
+</mapper>
