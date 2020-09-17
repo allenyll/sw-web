@@ -5,7 +5,7 @@ server:
   port: 443
   ssl:
     key-store: classpath:www.allenyll.com.jks
-    key-store-password: 58024myself?
+    key-store-password:
     keyStoreType: JKS
 
 sw:
