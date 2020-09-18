@@ -1,0 +1,18 @@
+server:
+  port: 10004
+
+sw:
+  nacos:
+    server-addr: ${sw.nacos.ip}:8848
+
+spring:
+  application:
+    name: sw-wechat
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${sw.nacos.server-addr}
+      config:
+        server-addr: ${sw.nacos.server-addr}
+
+

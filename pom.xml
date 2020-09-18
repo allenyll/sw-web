@@ -41,7 +41,6 @@
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-lang3.version>3.10</commons-lang3.version>
         <lombok.version>1.16.22</lombok.version>
-        <swagger2.version>2.9.2</swagger2.version>
         <swagger2.version>1.9.0.RELEASE</swagger2.version>
         <redis-clients.version>3.1.0</redis-clients.version>
         <fastjson.version>1.2.68</fastjson.version>
@@ -76,6 +75,7 @@
         <module>sw-module</module>
         <module>sw-config</module>
         <module>sw-gateway</module>
+        <module>sw-wechat</module>
     </modules>
 
     <dependencies>

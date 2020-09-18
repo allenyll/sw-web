@@ -1,0 +1,60 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${sw.datasource.ip}:3306/system_web?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: ${sw.datasource.username}
+    password: ${sw.datasource.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  profiles:
+    active: cache, dev
+
+###################  mybatis-plus配置  ###################
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  typeAliasesPackage: com.sw.common.entity.*
+  global-config:
+    id-type: auto  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
+    db-column-underline: false  #驼峰下划线转换
+    refresh-mapper: true #刷新mapper 调试神器
+  configuration:
+    lazyLoadingEnabled: true #延时加载的开关
+    multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
+
+#################### JWT配置  ###################
+jwt:
+  header: authorization
+  secret: mySecret
+  exp: 64800 #token七天不过期
+  tokenHead: "Bearer "
+  platForm: "JWT_PLATFORM"
+  weChat: "JWT_WX"
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
+      register: "auth/register"
+  ignored:
+    urls:
+      - /test/**
+      - /cache/**W
+      - /wx/**
+      - /sw/**
+      - /api-*/**
+      - /uac/**
+
+#################### 微信配置  ###################
+auth:
+  wechat:
+    sessionHost: https://api.weixin.qq.com/sns/jscode2session
+    appId:
+    appSecret:
+    grantType: authorization_code
+    systemWebUrl: http://localhost:8080/system-web/
+    username:
+    password:
+    mchId:
+    key:
+    orderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+    signType: MD5
+    tradeType: JSAPI
