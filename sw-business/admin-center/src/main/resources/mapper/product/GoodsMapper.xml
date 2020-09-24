@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.product.mapper.GoodsMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.product.Goods" id="goodsMap">
+        <result property="id" column="id"/>
+        <result property="brandId" column="brand_id"/>
+        <result property="specCategoryId" column="spec_category_id"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="unitId" column="unit_id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="goodsCode" column="goods_code"/>
+        <result property="goodsBarCode" column="goods_bar_code"/>
+        <result property="goodsLabel" column="goods_label"/>
+        <result property="price" column="price"/>
+        <result property="marketPrice" column="market_price"/>
+        <result property="costPrice" column="cost_price"/>
+        <result property="stock" column="stock"/>
+        <result property="warningStock" column="warning_stock"/>
+        <result property="goodsIntegral" column="goods_integral"/>
+        <result property="goodsUrl" column="goods_url"/>
+        <result property="goodsDesc" column="goods_desc"/>
+        <result property="season" column="season"/>
+        <result property="unit" column="unit"/>
+        <result property="goodsSeq" column="goods_seq"/>
+        <result property="isUsed" column="is_used"/>
+        <result property="status" column="status"/>
+        <result property="isSpec" column="is_spec"/>
+        <result property="isBest" column="is_best"/>
+        <result property="isHot" column="is_hot"/>
+        <result property="isNew" column="is_new"/>
+        <result property="isRecom" column="is_recom"/>
+        <result property="saleNum" column="sale_num"/>
+        <result property="saleTime" column="sale_time"/>
+        <result property="visitNum" column="visit_num"/>
+        <result property="appraiseNum" column="appraise_num"/>
+        <result property="giftGrowth" column="gift_growth"/>
+        <result property="pointLimit" column="point_limit"/>
+        <result property="weight" column="weight"/>
+        <result property="serviceIds" column="service_ids"/>
+        <result property="keywords" column="keywords"/>
+        <result property="promotionPrice" column="promotion_price"/>
+        <result property="promotionStartTime" column="promotion_start_time"/>
+        <result property="promotionEndTime" column="promotion_end_time"/>
+        <result property="promotionPerLimit" column="promotion_per_limit"/>
+        <result property="promotionType" column="promotion_type"/>
+        <result property="goodsTips" column="goods_tips"/>
+        <result property="remark" column="remark"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="addUser" column="add_user"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        brand_id
+        spec_category_id
+        category_id
+        unit_id
+        goods_name
+        goods_code
+        goods_bar_code
+        goods_label
+        price
+        market_price
+        cost_price
+        stock
+        warning_stock
+        goods_integral
+        goods_url
+        goods_desc
+        season
+        unit
+        goods_seq
+        is_used
+        status
+        is_spec
+        is_best
+        is_hot
+        is_new
+        is_recom
+        sale_num
+        sale_time
+        visit_num
+        appraise_num
+        gift_growth
+        point_limit
+        weight
+        service_ids
+        keywords
+        promotion_price
+        promotion_start_time
+        promotion_end_time
+        promotion_per_limit
+        promotion_type
+        goods_tips
+        remark
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+</mapper>

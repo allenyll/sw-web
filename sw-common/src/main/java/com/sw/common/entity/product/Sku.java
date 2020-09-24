@@ -26,11 +26,11 @@ public class Sku extends BaseEntity<Sku> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键id
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkSkuId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 商品主键
-    private String fkGoodsId;
+    private Long goodsId;
 
 	// 名称
     private String skuName;
@@ -64,8 +64,8 @@ public class Sku extends BaseEntity<Sku> {
 
 	public Map<String, Object> toMap () {
 		Map<String, Object> map = Maps.newHashMap();
-		map.put("pkSkuId", pkSkuId);
-		map.put("fkGoodsId", fkGoodsId);
+		map.put("id", id);
+		map.put("goodsId", goodsId);
 		map.put("skuName", skuName);
 		map.put("skuCode", skuCode);
 		map.put("skuBarCode", skuBarCode);
@@ -78,12 +78,5 @@ public class Sku extends BaseEntity<Sku> {
 		map.put("picUrl", picUrl);
 		return map;
 	}
-
-	@Override
-    protected Serializable pkVal() {
-		return pkSkuId;
-	}
-
-
 
 }

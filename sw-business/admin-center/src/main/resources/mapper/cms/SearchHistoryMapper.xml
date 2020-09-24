@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.cms.mapper.SearchHistoryMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.cms.SearchHistory" id="searchHistoryMap">
+        <result property="id" column="id"/>
+        <result property="keyword" column="keyword"/>
+        <result property="dataSource" column="data_source"/>
+        <result property="userId" column="user_id"/>
+        <result column="is_delete" property="isDelete" />
+        <result column="add_user" property="addUser" />
+        <result column="add_time" property="addTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        keyword
+        from
+        user_id
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+    <select id="selectHistoryKeywordList" parameterType="hashmap" resultType="hashmap">
+        select distinct keyword from snu_search_history t where t.user_id = #{userId} and is_delete = 0 limit 0, 10
+    </select>
+
+    <update id="updateByCustomerId" parameterType="hashmap">
+        update snu_search_history set is_delete = 1, update_time = #{time} where user_id = #{userId}
+    </update>
+
+</mapper>

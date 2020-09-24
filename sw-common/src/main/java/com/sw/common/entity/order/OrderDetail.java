@@ -24,20 +24,20 @@ public class OrderDetail extends BaseEntity<OrderDetail> {
 	private static final long serialVersionUID = 1L;
 
 	// 订单明细主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkOrderDetailId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 订单Id
-    private String fkOrderId;
+    private Long orderId;
 
 	// 订单编码
     private String orderNo;
 
 	// 商品id
-    private String fkGoodsId;
+    private Long goodsId;
 
 	// 分类ID
-	private String fkCategoryId;
+	private Long categoryId;
 
 	// 商品名称
     private String goodsName;
@@ -61,7 +61,7 @@ public class OrderDetail extends BaseEntity<OrderDetail> {
     private String deductStockType;
 
 	// SKU ID
-    private String fkSkuId;
+    private Long skuId;
 
 	// SKU 编码
     private String skuCode;
@@ -97,12 +97,5 @@ public class OrderDetail extends BaseEntity<OrderDetail> {
 
 	// 备注
     private String remark;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkOrderDetailId;
-	}
-
-
 
 }

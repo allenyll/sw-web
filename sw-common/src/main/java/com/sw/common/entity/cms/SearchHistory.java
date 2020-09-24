@@ -23,8 +23,8 @@ public class SearchHistory extends BaseEntity<SearchHistory> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkSearchHistoryId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 关键字
     private String keyword;
@@ -33,13 +33,6 @@ public class SearchHistory extends BaseEntity<SearchHistory> {
     private String dataSource;
 
 	// 会员Id
-    private String userId;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkSearchHistoryId;
-	}
-
-
+    private Long userId;
 
 }

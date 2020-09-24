@@ -23,11 +23,11 @@ public class CustomerAddress extends BaseEntity<CustomerAddress> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键ID
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkAddressId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 会员ID
-    private String fkCustomerId;
+    private Long customerId;
 
 	// 名称
     private String name;
@@ -56,12 +56,4 @@ public class CustomerAddress extends BaseEntity<CustomerAddress> {
     private String isDefault;
 
     private String isSelect;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkAddressId;
-	}
-
-
-
 }

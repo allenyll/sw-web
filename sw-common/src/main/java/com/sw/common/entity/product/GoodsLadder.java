@@ -25,11 +25,11 @@ public class GoodsLadder extends Model<GoodsLadder> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键ID
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkLadderId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 商品主键
-    private String fkGoodsId;
+    private Long goodsId;
 
 	// 数量
     private BigDecimal count;
@@ -42,12 +42,5 @@ public class GoodsLadder extends Model<GoodsLadder> {
 
 	@TableField(exist = false)
 	private boolean isDefault;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkLadderId;
-	}
-
-
 
 }

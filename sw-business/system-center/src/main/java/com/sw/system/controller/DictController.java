@@ -2,10 +2,13 @@ package com.sw.system.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sw.client.annotion.CurrentUser;
 import com.sw.client.controller.BaseController;
 import com.sw.common.constants.dict.StatusDict;
 import com.sw.common.entity.system.Dict;
+import com.sw.common.entity.system.User;
 import com.sw.common.util.DataResponse;
+import com.sw.common.util.SnowflakeIdWorker;
 import com.sw.system.service.impl.DictServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +42,14 @@ public class DictController extends BaseController<DictServiceImpl, Dict> {
     @Autowired
     DictServiceImpl dictService;
 
+    @Override
+    @ResponseBody
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public DataResponse add(@CurrentUser(isFull = true) User user, @RequestBody Dict dict) {
+        dict.setId(SnowflakeIdWorker.generateId());
+        return super.add(user, dict);
+    }
+
     @ApiOperation("字典列表")
     @RequestMapping(value = "list/{code}", method = RequestMethod.POST)
     public DataResponse list(@PathVariable String code) {
@@ -47,7 +58,7 @@ public class DictController extends BaseController<DictServiceImpl, Dict> {
         wrapper.eq("is_delete", 0);
         wrapper.eq("status", StatusDict.START.getCode());
         wrapper.like("code", code);
-        wrapper.ne("parent_id","0");
+        wrapper.ne("parent_id",0);
         List<Dict> list = service.selectList(wrapper);
 
         Map<String, String> map = new HashMap<>();
@@ -75,7 +86,7 @@ public class DictController extends BaseController<DictServiceImpl, Dict> {
         QueryWrapper<Dict> wrapper = new QueryWrapper<>();
         wrapper.eq("is_delete", 0);
         wrapper.orderBy( true, false, "CODE");
-        wrapper.eq("parent_id", "0");
+        wrapper.eq("parent_id", 0);
         List<Dict> list = service.selectList(wrapper);
         result.put("list", list);
         return DataResponse.success(result);

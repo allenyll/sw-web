@@ -23,8 +23,8 @@ public class Keywords extends BaseEntity<Keywords> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkKeywordsId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 关键字
     private String keyword;
@@ -46,12 +46,5 @@ public class Keywords extends BaseEntity<Keywords> {
 
 	// 类型
     private String type;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkKeywordsId;
-	}
-
-
 
 }

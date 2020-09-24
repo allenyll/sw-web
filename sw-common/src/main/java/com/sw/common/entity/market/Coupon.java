@@ -27,8 +27,8 @@ public class Coupon extends BaseEntity<Coupon> {
 	private static final long serialVersionUID = 1L;
 
 	// 优惠券主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkCouponId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 名称
     private String name;
@@ -77,12 +77,5 @@ public class Coupon extends BaseEntity<Coupon> {
 
     @TableField(exist = false)
     private List<Map<String, Object>> couponGoodsList;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkCouponId;
-	}
-
-
 
 }

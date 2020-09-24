@@ -87,6 +87,7 @@ public class AuthFilter extends ZuulFilter {
         try {
             claims = JwtUtil.verifyToken(header);
         } catch (Exception e) {
+            log.info("获取Claims失败！");
             e.printStackTrace();
         }
         String username = (String) claims.get("username");
@@ -96,7 +97,8 @@ public class AuthFilter extends ZuulFilter {
         String redisToken = cacheUtil.get(jti, String.class);
         if (StringUtil.isEmpty(redisToken)) {
             try {
-                response.sendRedirect(redirectUrl);
+                ctx.setSendZuulResponse(false);
+                ctx.getResponse().sendRedirect(redirectUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }

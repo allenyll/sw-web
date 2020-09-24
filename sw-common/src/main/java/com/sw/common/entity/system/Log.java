@@ -28,11 +28,11 @@ public class Log extends BaseEntity<Log> {
      * 日志主键
      */
     @TableId(type = IdType.ASSIGN_ID)
-	private String pkLogId;
+	private Long id;
     /**
      * 操作人ID
      */
-	private String fkUserId;
+	private Long userId;
     /**
      * 操作人账号
      */
@@ -62,10 +62,5 @@ public class Log extends BaseEntity<Log> {
      * ip
      */
 	private String ip;
-
-	@Override
-	protected Serializable pkVal() {
-		return this.pkLogId;
-	}
 
 }

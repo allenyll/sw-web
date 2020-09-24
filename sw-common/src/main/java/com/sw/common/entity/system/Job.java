@@ -24,7 +24,7 @@ public class Job extends BaseEntity<Job> {
 
 	// 任务主键
     @TableId(type = IdType.ASSIGN_ID)
-    private String pkJobId;
+    private Long id;
 
 	// 名称
     private String jobName;
@@ -49,12 +49,5 @@ public class Job extends BaseEntity<Job> {
 
 	// springBean
     private String springBean;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkJobId;
-	}
-
-
 
 }

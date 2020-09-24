@@ -22,8 +22,8 @@ public class Brand extends BaseEntity<Brand> {
 	private static final long serialVersionUID = 1L;
 
 	// 品牌主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkBrandId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	//
     private String brandName;
@@ -33,12 +33,5 @@ public class Brand extends BaseEntity<Brand> {
 
 	// 品牌类型
     private String brandType;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkBrandId;
-	}
-
-
 
 }

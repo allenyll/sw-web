@@ -24,8 +24,8 @@ public class CustomerLevel extends BaseEntity<CustomerLevel> {
 	private static final long serialVersionUID = 1L;
 
 	// 会员等级主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkLevelId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 等级名称
     private String levelName;
@@ -65,12 +65,5 @@ public class CustomerLevel extends BaseEntity<CustomerLevel> {
 
 	// 备注
     private String remark;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkLevelId;
-	}
-
-
 
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.market.mapper.market.MessageMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.market.Message" id="messageMap">
+        <result property="id" column="id"/>
+        <result property="messageName" column="message_name"/>
+        <result property="content" column="content"/>
+        <result property="type" column="type"/>
+        <result property="abstractMsg" column="abstract_msg"/>
+        <result property="messageTime" column="message_time"/>
+        <result property="messageSender" column="message_sender"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="addUser" column="add_user"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        message_name
+        content
+        type
+        abstract_msg
+        message_time
+        message_sender
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+</mapper>

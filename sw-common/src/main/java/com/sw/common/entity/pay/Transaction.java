@@ -24,16 +24,16 @@ public class Transaction extends BaseEntity<Transaction> {
 	private static final long serialVersionUID = 1L;
 
 	// 交易主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkTransactionId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 交易单号
     private String transactionNo;
 
 	// 交易人
-    private String fkCustomerId;
+    private Long customerId;
 
-    private String fkOrderId;
+    private Long orderId;
 
 	// 交易金额
     private BigDecimal amount;
@@ -55,12 +55,5 @@ public class Transaction extends BaseEntity<Transaction> {
 
 	// 备注
     private String remark;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkTransactionId;
-	}
-
-
 
 }

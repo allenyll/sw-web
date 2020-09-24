@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.file.mapper.FileMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.system.File" id="fileMap">
+        <result property="id" column="id"/>
+        <result property="fkId" column="fk_id"/>
+        <result property="fileType" column="file_type"/>
+        <result property="fileUrl" column="file_url"/>
+        <result property="downloadUrl" column="download_url"/>
+        <result property="remark" column="remark"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="addUser" column="add_user"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        fk_id
+        file_type
+        file_url
+        download_url
+        remark
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+    <update id="deleteFile" parameterType="map">
+        update sys_file set is_delete = 1, update_time = #{TIME} where FK_ID = #{FK_ID}
+    </update>
+
+</mapper>

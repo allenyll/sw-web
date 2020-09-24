@@ -23,8 +23,8 @@ public class AdPosition extends BaseEntity<AdPosition> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键ID
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkAdPositionId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 名称
     private String name;
@@ -37,12 +37,5 @@ public class AdPosition extends BaseEntity<AdPosition> {
 
 	// 描述
     private String description;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkAdPositionId;
-	}
-
-
 
 }

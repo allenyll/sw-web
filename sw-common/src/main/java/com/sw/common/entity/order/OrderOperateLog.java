@@ -23,23 +23,16 @@ public class OrderOperateLog extends BaseEntity<OrderOperateLog> {
 	private static final long serialVersionUID = 1L;
 
 	// 操作日志主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkOperateId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 订单ID
-    private String fkOrderId;
+    private Long orderId;
 
 	// 订单状态
     private String orderStatus;
 
 	//
     private String remark;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkOperateId;
-	}
-
-
 
 }

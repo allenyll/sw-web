@@ -23,14 +23,14 @@ public class CouponDetail extends BaseEntity<CouponDetail> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键ID
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkDetailId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 优惠券ID
-    private String fkCouponId;
+    private Long couponId;
 
 	// 会员ID
-    private String fkCustomerId;
+    private Long customerId;
 
 	// 优惠券编码
     private String couponCode;
@@ -48,16 +48,9 @@ public class CouponDetail extends BaseEntity<CouponDetail> {
     private String useTime;
 
 	// 订单主键
-    private String orderId;
+    private Long orderId;
 
 	// 订单编码
     private String orderNo;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkDetailId;
-	}
-
-
 
 }

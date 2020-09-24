@@ -27,18 +27,18 @@ public class Goods extends BaseEntity<Goods> {
 	private static final long serialVersionUID = 1L;
 
 	// 商品主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkGoodsId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 品牌主键
-    private String fkBrandId;
+    private Long brandId;
 
-    private String fkSpecCategoryId;
+    private Long specCategoryId;
 
-    private String fkCategoryId;
+    private Long categoryId;
 
 	// 单位主键
-    private String fkUnitId;
+    private Long unitId;
 
 	// 商品名称
     private String goodsName;
@@ -161,12 +161,5 @@ public class Goods extends BaseEntity<Goods> {
 
     @TableField(exist = false)
     private String fileUrl;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkGoodsId;
-	}
-
-
 
 }

@@ -23,8 +23,8 @@ public class Message extends BaseEntity<Message> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键ID
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkMessageId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 消息名称
     private String messageName;
@@ -43,12 +43,5 @@ public class Message extends BaseEntity<Message> {
 
 	// 消息创建人
     private String messageSender;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkMessageId;
-	}
-
-
 
 }

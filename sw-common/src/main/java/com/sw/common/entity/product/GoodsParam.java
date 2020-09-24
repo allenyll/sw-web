@@ -18,9 +18,9 @@ public class GoodsParam extends Goods {
 
     private Brand brand;
 
-    private String parentCategoryId;
+    private Long parentCategoryId;
 
-    private String parentSpecCategoryId;
+    private Long parentSpecCategoryId;
 
     private List<GoodsFullReduce> goodsFullReduceList;
 

@@ -20,8 +20,6 @@
             <groupId>com.sw</groupId>
             <artifactId>sw-common</artifactId>
         </dependency>
-
-
     </dependencies>
 
 </project>

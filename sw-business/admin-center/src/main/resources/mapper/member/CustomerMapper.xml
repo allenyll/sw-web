@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sw.member.mapper.CustomerMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.sw.common.entity.customer.Customer">
+		<id column="id" property="id" />
+		<result column="customer_name" property="customerName" />
+		<result column="customer_account" property="customerAccount" />
+		<result column="nick_name" property="nickName" />
+		<result column="password" property="password" />
+		<result column="salt" property="salt" />
+		<result column="status" property="status" />
+		<result column="phone" property="phone" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="avatar_url" property="avatarUrl" />
+		<result column="country" property="country" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="address" property="address" />
+		<result column="openid" property="openid" />
+		<result column="is_delete" property="isDelete" />
+		<result column="add_user" property="addUser" />
+		<result column="add_time" property="addTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+        id, customer_name, customer_account, nick_name, password, salt, status, phone, email, gender, avatar_url, country, province, city, address, openid, is_delete, add_user, add_time, update_user, update_time
+    </sql>
+
+	<sql id="whereSql">
+		where t.is_delete = 0
+		<if test="customerName != null and customerName != ''">
+			and t.customer_name like  concat ('%', #{customerName} ,'%')
+		</if>
+		<if test="customerAccount != null and customerAccount != ''">
+			and t.customer_account like "%#{customerAccount}%"
+		</if>
+		<if test="phone != null and phone != ''">
+			and t.phone = #{phone}
+		</if>
+	</sql>
+
+	<select id="count" parameterType="map" resultType="int">
+		select count(*) from snu_customer t <include refid="whereSql"/>
+	</select>
+
+	<select id="page" parameterType="map" resultType="com.sw.common.entity.customer.Customer">
+		select
+		t.id as "id",
+		t.customer_name as "customerName",
+		t.customer_account as "customerAccount",
+		t.nick_name as "nickName",
+		t.password as "password",
+		t.salt as "salt",
+		t.status as "status",
+		t.openid as "openid",
+		t.phone as "phone",
+		t.email as "email",
+		t.gender as "gender",
+		t.avatar_url as "avatarUrl",
+		t.address as "address",
+		t.country as "country",
+		t.province as "province",
+		t.city as "city",
+		t.is_delete as "isDelete",
+		t.add_time as "addtime",
+		t1.name as "statusName",
+		t2.name as "genderName"
+		from snu_customer t
+		left join sys_dict t1 on t1.code = t.status
+		left join sys_dict t2 on t2.code = t.gender
+		<include refid="whereSql"/>
+		order by t.add_time desc
+		limit #{start}, #{limit}
+	</select>
+
+</mapper>

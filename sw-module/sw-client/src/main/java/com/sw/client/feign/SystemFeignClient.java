@@ -69,7 +69,7 @@ public interface SystemFeignClient {
      * @return
      */
     @RequestMapping(value = "user/selectById", method = RequestMethod.POST)
-    User selectById(@RequestParam String userId);
+    User selectById(@RequestParam Long userId);
 
     /**
      * 根据字典码查询字典项

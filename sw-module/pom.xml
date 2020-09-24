@@ -17,6 +17,7 @@
         <module>sw-cache</module>
         <module>sw-client</module>
         <module>sw-database</module>
+        <module>sw-mq</module>
     </modules>
 
 </project>

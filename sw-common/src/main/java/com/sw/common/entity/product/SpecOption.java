@@ -23,23 +23,16 @@ public class SpecOption extends BaseEntity<SpecOption> {
 	private static final long serialVersionUID = 1L;
 
 	// 规格选项
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkSpecOptionId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	//
-    private String fkSpecsId;
+    private Long specsId;
 
 	// 名称
     private String name;
 
 	// 编码
     private String code;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkSpecOptionId;
-	}
-
-
 
 }

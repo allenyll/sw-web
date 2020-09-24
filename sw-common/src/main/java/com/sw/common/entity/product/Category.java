@@ -26,8 +26,8 @@ public class Category extends BaseEntity<Category> {
 	private static final long serialVersionUID = 1L;
 
 	// 分类主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkCategoryId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 分类编码
     private String categoryNo;
@@ -36,7 +36,7 @@ public class Category extends BaseEntity<Category> {
     private String categoryName;
 
 	// 父级id
-    private String parentId;
+    private Long parentId;
 
     // 父级节点名称
 	@TableField(exist = false)
@@ -65,12 +65,5 @@ public class Category extends BaseEntity<Category> {
 
 	@TableField(exist = false)
     private String fileUrl;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkCategoryId;
-	}
-
-
 
 }

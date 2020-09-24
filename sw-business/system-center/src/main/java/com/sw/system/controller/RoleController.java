@@ -99,7 +99,7 @@ public class RoleController  extends BaseController<RoleServiceImpl, Role> {
         LOGGER.info("params"+params);
         // 全删全插配置角色菜单
         // 1、先删除所有该角色拥有的菜单权限
-        Long roleId = (Long) params.get("id");
+        Long roleId = Long.parseLong((String) params.get("id"));
         QueryWrapper<SysRoleMenu> roleMenuEntityWrapper = new QueryWrapper<>();
         roleMenuEntityWrapper.eq("role_id", roleId);
         roleMenuService.remove(roleMenuEntityWrapper);

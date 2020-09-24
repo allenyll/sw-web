@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://${sw.datasource.ip}:3306/sweb?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://${sw.datasource.ip}:3306/sweb?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
     username: ${sw.datasource.username}
     password: ${sw.datasource.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -53,6 +53,12 @@ zuul:
     sys:
       path: /api-sys/**
       service-id: system-center
+      strip-prefix: true
+      custom-sensitive-headers: true
+    #admin-center
+    web:
+      path: /api-web/**
+      service-id: admin-center
       strip-prefix: true
       custom-sensitive-headers: true
 ribbon:

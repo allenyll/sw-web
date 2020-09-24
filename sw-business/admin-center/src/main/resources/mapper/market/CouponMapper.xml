@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.market.mapper.CouponMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.market.Coupon" id="couponMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="amount" column="amount"/>
+        <result property="type" column="type"/>
+        <result property="count" column="count"/>
+        <result property="perLimit" column="per_limit"/>
+        <result property="minPoint" column="min_point"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="useType" column="use_type"/>
+        <result property="note" column="note"/>
+        <result property="publishCount" column="publish_count"/>
+        <result property="useCount" column="use_count"/>
+        <result property="receiveCount" column="receive_count"/>
+        <result property="enableTime" column="enable_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="addUser" column="add_user"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        name
+        code
+        amount
+        type
+        count
+        per_limit
+        min_point
+        start_time
+        end_time
+        use_type
+        note
+        publish_count
+        use_count
+        receive_count
+        enable_time
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+    <insert id="addCouponGoods" parameterType="map">
+        insert into snu_coupon_goods (pk_relation_id,fk_coupon_id,fk_goods_id) values (#{pkRelationId}, #{fkCouponId}, #{goodsId})
+    </insert>
+
+    <select id="selectCouponGoods" parameterType="string" resultType="map">
+        select
+            t1.pk_goods_id as "pkGoodsId",
+            t1.goods_name as goodsName,
+            t1.goods_code as goodsCode
+        from snu_coupon_goods t
+        left join snu_goods t1 on t1.pk_goods_id = t.fk_goods_id
+        where t.fk_coupon_id = #{pkCouponId}
+    </select>
+
+    <select id="getCouponList" parameterType="map" resultType="map">
+        select
+            t1.per_limit as perLimit,
+            t1.min_point as minLimit,
+            t1.note as note,
+            t1.publish_count as publishCount,
+            t1.receive_count as receiveCount,
+            t1.type as type,
+            t1.use_count as useCount,
+            t1.use_type as useType,
+            t1.start_time as startTime,
+            t1.end_time as endTime,
+            t1.name as name,
+            t1.code as code,
+            t1.amount as amount,
+            t1.pk_coupon_id as couponId,
+            t.fk_customer_id as customerId,
+            t.use_status as useStatus,
+            t.get_type as getType,
+            t.nick_name as nickName,
+            t.order_id as orderId,
+            t.order_no as orderNo
+        from snu_coupon_detail t
+        left join snu_coupon t1 on t1.pk_coupon_id = t.fk_coupon_id
+        where t.fk_customer_id = #{customerId}
+        and t.use_status = 'SW2401'
+        and t.is_delete = 0
+        <![CDATA[
+            and t1.start_time <= #{time}
+            and t1.end_time >= #{time}
+        ]]>
+    </select>
+</mapper>

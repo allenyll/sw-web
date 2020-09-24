@@ -24,10 +24,10 @@ public class File extends BaseEntity<File> {
 
 	// 文件主键
     @TableId(type = IdType.ASSIGN_ID)
-    private String pkFileId;
+    private Long id;
 
 	// 外键Id
-    private String fkId;
+    private Long fkId;
 
 	// 文件类型
     private String fileType;
@@ -40,12 +40,5 @@ public class File extends BaseEntity<File> {
 
 	// 备注
     private String remark;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkFileId;
-	}
-
-
 
 }

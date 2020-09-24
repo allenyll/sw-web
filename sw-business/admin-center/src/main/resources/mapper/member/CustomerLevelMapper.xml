@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.member.mapper.CustomerLevelMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.customer.CustomerLevel" id="customerLevelMap">
+        <result property="id" column="id"/>
+        <result property="levelName" column="level_name"/>
+        <result property="growthPoint" column="growth_point"/>
+        <result property="status" column="status"/>
+        <result property="isDefault" column="is_default"/>
+        <result property="freeFreightPoint" column="free_freight_point"/>
+        <result property="commentGrowthPoint" column="comment_growth_point"/>
+        <result property="priviledgeFreeFreight" column="priviledge_free_freight"/>
+        <result property="priviledgeSignIn" column="priviledge_sign_in"/>
+        <result property="priviledgeComment" column="priviledge_comment"/>
+        <result property="priviledgePromotion" column="priviledge_promotion"/>
+        <result property="priviledgeMemberPrice" column="priviledge_member_price"/>
+        <result property="priviledgeBirthday" column="priviledge_birthday"/>
+        <result property="remark" column="remark"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="addUser" column="add_user"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        level_name
+        growth_point
+        status
+        is_default
+        free_freight_point
+        comment_growth_point
+        priviledge_free_freight
+        priviledge_sign_in
+        priviledge_comment
+        priviledge_promotion
+        priviledge_member_price
+        priviledge_birthday
+        remark
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+</mapper>

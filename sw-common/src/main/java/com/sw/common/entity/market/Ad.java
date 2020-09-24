@@ -23,11 +23,11 @@ public class Ad extends BaseEntity<Ad> {
 	private static final long serialVersionUID = 1L;
 
 	// 广告主键ID
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkAdId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 主键ID
-    private String fkAdPositionId;
+    private Long adPositionId;
 
 	// 广告名称
     private String adName;
@@ -52,12 +52,5 @@ public class Ad extends BaseEntity<Ad> {
 
 	// 结束时间
     private String endTime;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkAdId;
-	}
-
-
 
 }

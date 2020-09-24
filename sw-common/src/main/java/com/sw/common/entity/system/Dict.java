@@ -29,7 +29,7 @@ public class Dict extends BaseEntity<Dict> {
      * 字典主键
      */
     @TableId(type = IdType.ASSIGN_ID)
-	private String pkDictId;
+	private Long id;
     /**
      * 名称
      */
@@ -51,8 +51,4 @@ public class Dict extends BaseEntity<Dict> {
      */
 	private String status;
 
-	@Override
-	protected Serializable pkVal() {
-		return pkDictId;
-	}
 }

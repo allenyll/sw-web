@@ -24,23 +24,16 @@ public class CustomerBalance extends BaseEntity<CustomerBalance> {
 	private static final long serialVersionUID = 1L;
 
 	// 用户余额ID
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkBalanceId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	//
-    private String fkCustomerId;
+    private Long customerId;
 
 	// 余额
     private BigDecimal balance;
 
 	// 提现金额
     private BigDecimal withdrawCash;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkBalanceId;
-	}
-
-
 
 }

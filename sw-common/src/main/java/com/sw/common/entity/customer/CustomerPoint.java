@@ -28,12 +28,12 @@ public class CustomerPoint extends BaseEntity<CustomerPoint> {
     /**
      * 积分主键ID
      */
-    @TableId(type = IdType.ASSIGN_UUID)
-	private String pkPointId;
+    @TableId(type = IdType.ASSIGN_ID)
+	private Long id;
     /**
      * 用户id
      */
-	private String fkCustomerId;
+	private Long customerId;
 
 	/**
 	 * 用户名称
@@ -55,10 +55,5 @@ public class CustomerPoint extends BaseEntity<CustomerPoint> {
      * 使用积分
      */
 	private Integer used;
-
-	@Override
-	protected Serializable pkVal() {
-		return this.pkPointId;
-	}
 
 }

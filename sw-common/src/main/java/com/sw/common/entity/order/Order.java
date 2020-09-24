@@ -28,14 +28,14 @@ public class Order extends BaseEntity<Order> {
 	private static final long serialVersionUID = 1L;
 
 	// 订单主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkOrderId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 订单编码
     private String orderNo;
 
 	// 用户ID
-    private String fkCustomerId;
+    private Long customerId;
 
 	// 订单类型   SW0601 线上  SW0602 线下
     private String orderType;
@@ -62,7 +62,7 @@ public class Order extends BaseEntity<Order> {
     private BigDecimal logisticsFee;
 
 	// 收货地址
-    private String fkAddressId;
+    private Long addressId;
 
 	// 支付渠道 SW0901 余额 SW0902 微信 SW0903 支付宝 SW0904 银联
     private String payChannel;
@@ -104,7 +104,7 @@ public class Order extends BaseEntity<Order> {
     private String settlementTime;
 
 	// 优惠券
-    private String fkCouponId;
+    private Long couponId;
 
 	// 促销优化金额（促销价、满减、阶梯价）
     private BigDecimal promotionAmount;
@@ -195,12 +195,5 @@ public class Order extends BaseEntity<Order> {
      */
     @TableField(exist = false)
     private long unPayTime;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkOrderId;
-	}
-
-
 
 }

@@ -22,17 +22,17 @@ public class GoodsAppraises extends BaseEntity<GoodsAppraises> {
 	private static final long serialVersionUID = 1L;
 
 	// 主键Id
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkAppraiseId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 订单Id
-    private String fkOrderId;
+    private Long orderId;
 
 	// 商品Id
-    private String fkGoodsId;
+    private Long goodsId;
 
 	// 会员Id
-    private String fkCustomerId;
+    private Long customerId;
 
 	// 商品评分
     private Integer goodsScore;
@@ -60,12 +60,5 @@ public class GoodsAppraises extends BaseEntity<GoodsAppraises> {
 
 	// 是否有效
     private String status;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkAppraiseId;
-	}
-
-
 
 }

@@ -25,11 +25,11 @@ public class GoodsFullReduce extends Model<GoodsFullReduce> {
 	private static final long serialVersionUID = 1L;
 
 	// 满减主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkReduceId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long reduceId;
 
 	// 商品主键
-    private String fkGoodsId;
+    private Long goodsId;
 
 	// 满足价格
     private BigDecimal fullPrice;
@@ -39,12 +39,5 @@ public class GoodsFullReduce extends Model<GoodsFullReduce> {
 
     @TableField(exist = false)
     private boolean isDefault;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkReduceId;
-	}
-
-
 
 }

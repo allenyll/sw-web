@@ -57,7 +57,7 @@ public class SystemFallbackFactory implements FallbackFactory<SystemFeignClient>
             }
 
             @Override
-            public User selectById(String userId) {
+            public User selectById(Long userId) {
                 LOGGER.error("FEIGN调用：根据ID获取用户失败");
                 return null;
             }

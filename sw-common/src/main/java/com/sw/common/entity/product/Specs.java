@@ -24,14 +24,14 @@ public class Specs extends BaseEntity<Specs> {
 	private static final long serialVersionUID = 1L;
 
 	//
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkSpecsId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 规格主键
-    private String fkSpecsGroupId;
+    private Long specsGroupId;
 
 	// 分类主键
-    private String fkCategoryId;
+    private String categoryId;
 
 	// 名称
     private String specsName;
@@ -52,13 +52,6 @@ public class Specs extends BaseEntity<Specs> {
     private String status;
 
 	@TableField(exist = false)
-	private String[] categoryIds;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkSpecsId;
-	}
-
-
+	private Long[] categoryIds;
 
 }

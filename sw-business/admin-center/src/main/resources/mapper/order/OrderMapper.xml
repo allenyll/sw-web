@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.order.mapper.OrderMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.order.Order" id="orderMap">
+        <result property="id" column="id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="orderType" column="order_type"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="afterStatus" column="after_status"/>
+        <result property="goodsCount" column="goods_count"/>
+        <result property="orderAmount" column="order_amount"/>
+        <result property="payAmount" column="pay_amount"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="logisticsFee" column="logistics_fee"/>
+        <result property="addressId" column="address_id"/>
+        <result property="payChannel" column="pay_channel"/>
+        <result property="tradeNo" column="trade_no"/>
+        <result property="escrowTradeNo" column="escrow_trade_no"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="deliveryNo" column="delivery_no"/>
+        <result property="deliveryCompany" column="delivery_company"/>
+        <result property="deliveryTime" column="delivery_time"/>
+        <result property="confirmStatus" column="confirm_status"/>
+        <result property="receiveTime" column="receive_time"/>
+        <result property="commentTime" column="comment_time"/>
+        <result property="settlementStatus" column="settlement_status"/>
+        <result property="settlementTime" column="settlement_time"/>
+        <result property="couponId" column="coupon_id"/>
+        <result property="promotionAmount" column="promotion_amount"/>
+        <result property="integrationAmount" column="integration_amount"/>
+        <result property="couponAmount" column="coupon_amount"/>
+        <result property="discountAmount" column="discount_amount"/>
+        <result property="autoConfirmDay" column="auto_confirm_day"/>
+        <result property="integration" column="integration"/>
+        <result property="growth" column="growth"/>
+        <result property="promotionInfo" column="promotion_info"/>
+        <result property="billType" column="bill_type"/>
+        <result property="billHeader" column="bill_header"/>
+        <result property="billContent" column="bill_content"/>
+        <result property="billReceiverPhone" column="bill_receiver_phone"/>
+        <result property="billReceiverEmail" column="bill_receiver_email"/>
+        <result property="receiverName" column="receiver_name"/>
+        <result property="receiverPhone" column="receiver_phone"/>
+        <result property="receiverPostCode" column="receiver_post_code"/>
+        <result property="receiverProvince" column="receiver_province"/>
+        <result property="receiverCity" column="receiver_city"/>
+        <result property="receiverRegion" column="receiver_region"/>
+        <result property="receiverDetailAddress" column="receiver_detail_address"/>
+        <result property="isIntegral" column="is_integral"/>
+        <result property="orderRemark" column="order_remark"/>
+        <result property="note" column="note"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="addUser" column="add_user"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        order_no
+        customer_id
+        order_type
+        order_status
+        after_status
+        goods_count
+        order_amount
+        pay_amount
+        total_amount
+        logistics_fee
+        address_id
+        pay_channel
+        trade_no
+        escrow_trade_no
+        pay_time
+        order_time
+        delivery_company
+        delivery_no
+        delivery_time
+        confirm_status
+        receive_time
+        comment_time
+        settlement_status
+        settlement_time
+        coupon_id
+        promotion_amount
+        integration_amount
+        coupon_amount
+        discount_amount
+        auto_confirm_day
+        integration
+        growth
+        promotion_info
+        bill_type
+        bill_header
+        bill_content
+        bill_receiver_phone
+        bill_receiver_email
+        receiver_name
+        receiver_phone
+        receiver_post_code
+        receiver_province
+        receiver_city
+        receiver_region
+        receiver_detail_address
+        note
+        is_integral
+        order_remark
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+    <select id="getUnPayNum" parameterType="map" resultType="int">
+        select
+         count(*)
+        from snu_order
+        where customer_id = #{customerId}
+        and is_delete = 0
+        and order_type = 'SW0601'
+        and order_status = 'SW0701'
+    </select>
+
+    <select id="getUnReceiveNum" parameterType="map" resultType="int">
+        select
+         count(*)
+        from snu_order
+        where customer_id = #{customerId}
+        and is_delete = 0
+        and order_type = 'SW0601'
+        and order_status = 'SW0702'
+    </select>
+
+    <select id="getDeliveryNum" parameterType="map" resultType="int">
+        select
+         count(*)
+        from snu_order
+        where customer_id = #{customerId}
+        and is_delete = 0
+        and order_type = 'SW0601'
+        and order_status = 'SW0703'
+    </select>
+
+    <select id="getReceiveNum" parameterType="map" resultType="int">
+        select
+         count(*)
+        from snu_order
+        where customer_id = #{customerId}
+        and is_delete = 0
+        and order_type = 'SW0601'
+        and order_status = 'SW0704'
+    </select>
+
+    <select id="getAppraisesNum" parameterType="map" resultType="int">
+        select
+         count(*)
+        from snu_order
+        where customer_id = #{customerId}
+        and is_delete = 0
+        and order_type = 'SW0601'
+        and order_status = 'SW0704'
+    </select>
+
+    <select id="getFinishNum" parameterType="map" resultType="int">
+        select
+         count(*)
+        from snu_order
+        where customer_id = #{customerId}
+        and is_delete = 0
+        and order_type = 'SW0601'
+        and order_status = 'SW0706'
+    </select>
+
+    <sql id="whereSql">
+        where
+            t.is_delete = 0
+        <if test="orderNo != '' and orderNo != null">
+            and t.order_no = #{orderNo}
+        </if>
+        <if test="receiverKeyword != '' and receiverKeyword != null">
+            and (t2.name like concat("%",#{receiverKeyword},"%")
+            or t2.phone like concat("%",#{receiverKeyword},"%"))
+        </if>
+        <if test="orderTime != '' and orderTime != null">
+            <![CDATA[
+                and t.order_time >= concat(#{orderTime} ," 00:00:00")
+                and t.order_time <= concat(#{orderTime} ," 23:59:59")
+            ]]>
+        </if>
+        <if test="orderStatus != '' and orderStatus != null">
+            and t.order_status = #{orderStatus}
+        </if>
+    </sql>
+
+    <select id="selectCount" parameterType="map" resultType="int">
+        select count(*) from snu_order t
+        left join snu_customer t1 on t1.customer_id = t.customer_id
+        left join snu_customer_address t2 on t2.address_id = t.address_id
+        <include refid="whereSql"/>
+    </select>
+
+
+    <select id="getOrderPage" parameterType="map" resultType="map">
+        select
+            t.id as "id",
+            t.order_no as "orderNo",
+            t.customer_id as "customerId",
+            t.order_type as "orderType",
+            t.order_status as "orderStatus",
+            t.after_status as "afterStatus",
+            t.goods_count as "goodsCount",
+            t.order_amount as "orderAmount",
+            t.pay_amount as "payAmount",
+            t.total_amount as "totalAmount",
+            t.logistics_fee as "logisticsFee",
+            t.address_id as "addressId",
+            t.pay_channel as "payChannel",
+            t.trade_no as "tradeNo",
+            t.escrow_trade_no as "escrowTradeNo",
+            t.pay_time as "payTime",
+            t.order_time as "orderTime",
+            t.delivery_company as "deliveryCompany",
+            t.delivery_no as "deliveryNo",
+            t.delivery_time as "deliveryTime",
+            t.confirm_status as "confirmStatus",
+            t.receive_time as "receiveTime",
+            t.comment_time as "commentTime",
+            t.settlement_status as "settlementStatus",
+            t.settlement_time as "settlementTime",
+            t.coupon_id as "couponId",
+            t.promotion_amount as "promotionAmount",
+            t.integration_amount as "integrationAmount",
+            t.coupon_amount as "couponAmount",
+            t.discount_amount as "discountAmount",
+            t.auto_confirm_day as "autoConfirmDay",
+            t.integration as "integration",
+            t.growth as "growth",
+            t.promotion_info as "promotionInfo",
+            t.bill_type as "billType",
+            t.bill_header as "billHeader",
+            t.bill_content as "billContent",
+            t.bill_receiver_phone as "billReceiverPhone",
+            t.bill_receiver_email as "billReceiverEmail",
+            t.receiver_name as "receiverName",
+            t.receiver_phone as "receiverPhone",
+            t.receiver_post_code as "receiverPostCode",
+            t.receiver_province as "receiverProvince",
+            t.receiver_city as "receiverCity",
+            t.receiver_region as "receiverRegion",
+            t.receiver_detail_address as "receiverDetailAddress",
+            t.note as "note",
+            t.is_integral as "isIntegral",
+            t.order_remark as "orderRemark",
+            t.is_delete as "isDelete",
+            t.add_user as "addUser",
+            t.add_time as "addTime",
+            t.update_user as "updateUser",
+            t.update_time as "updateTime",
+            t1.customer_name as "customerName",
+            t2.name as "name",
+            t2.phone as "phone",
+            t2.city as "city",
+            t2.province as "province",
+            t2.region as "region",
+            t2.post_code as "postCode",
+            t2.detail_address as "detailAddress"
+        from snu_order t
+        left join snu_customer t1 on t1.customer_id = t.customer_id
+        left join snu_customer_address t2 on t2.address_id = t.address_id
+        <include refid="whereSql"/>
+        order by t.order_time desc
+        limit #{start}, #{limit}
+    </select>
+</mapper>

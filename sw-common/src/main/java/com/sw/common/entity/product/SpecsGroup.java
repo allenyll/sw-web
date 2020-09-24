@@ -23,20 +23,13 @@ public class SpecsGroup extends BaseEntity<SpecsGroup> {
 	private static final long serialVersionUID = 1L;
 
 	// 规格主键
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String pkSpecsGroupId;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
 	// 名称
     private String name;
 
 	// 编码
     private String code;
-
-	@Override
-    protected Serializable pkVal() {
-		return pkSpecsGroupId;
-	}
-
-
 
 }
