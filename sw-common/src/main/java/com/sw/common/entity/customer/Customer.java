@@ -1,6 +1,7 @@
 package com.sw.common.entity.customer;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sw.common.entity.BaseEntity;
@@ -27,6 +28,10 @@ public class Customer extends BaseEntity<Customer> {
      */
 	@TableId(type = IdType.AUTO)
 	private Long id;
+	/**
+	 * 会员等级
+	 */
+	private Long levelId;
 	/**
 	 * 会员名称
 	 */
@@ -87,5 +92,14 @@ public class Customer extends BaseEntity<Customer> {
 	 * 微信openid
 	 */
 	private String openid;
+
+	@TableField(exist = false)
+	private CustomerPoint customerPoint;
+
+	@TableField(exist = false)
+	private CustomerLevel customerLevel;
+
+	@TableField(exist = false)
+	private CustomerBalance customerBalance;
 
 }

@@ -45,6 +45,16 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
     @Autowired
     SearchHistoryServiceImpl searchHistoryService;
 
+    @ApiOperation("获取ID")
+    @ResponseBody
+    @RequestMapping(value = "getSnowFlakeId", method = RequestMethod.POST)
+    public DataResponse getSnowFlakeId() {
+        Long id = SnowflakeIdWorker.generateId();
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        return DataResponse.success(result);
+    }
+
     @ApiOperation("获取商品列表（前端展示使用）")
     @Override
     @ResponseBody

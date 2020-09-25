@@ -47,7 +47,7 @@ public class CustomerAddressController extends BaseController<CustomerAddressSer
         }else if("update".equals(addOrUpdate)){
             String id = MapUtil.getString(params, "id");
             QueryWrapper<CustomerAddress> wrapper = new QueryWrapper<>();
-            wrapper.eq("PK_ADDRESS_ID", id);
+            wrapper.eq("ID", id);
             wrapper.eq("IS_DELETE", 0);
             CustomerAddress customerAddress = service.getOne(wrapper);
             if(customerAddress == null) {
@@ -138,7 +138,7 @@ public class CustomerAddressController extends BaseController<CustomerAddressSer
             return DataResponse.fail("收货地址不能为空");
         }
         QueryWrapper<CustomerAddress> wrapper = new QueryWrapper<>();
-        wrapper.eq("PK_ADDRESS_ID", id);
+        wrapper.eq("ID", id);
         wrapper.eq("IS_DELETE", 0);
         wrapper.eq("STATUS", StatusDict.START.getCode());
         CustomerAddress customerAddress = service.getOne(wrapper);

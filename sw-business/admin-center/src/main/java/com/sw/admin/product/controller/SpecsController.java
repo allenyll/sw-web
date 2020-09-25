@@ -70,7 +70,7 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
 
         QueryWrapper<Specs> wrapper = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
-        wrapper.like("CATEGORY_ID", MapUtil.getMapValue(params, "categoryId"));
+        wrapper.like("CATEGORY_ID", MapUtil.getLong(params, "categoryId"));
 
         List<Specs> specsList = specsService.list(wrapper);
         if(CollectionUtil.isNotEmpty(specsList)) {
@@ -107,7 +107,7 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
         if(obj != null){
             String categoryId = obj.getCategoryId();
             if (StringUtil.isNotEmpty(categoryId)) {
-                categoryId = categoryId.substring(1, categoryId.length() - 1).replace("\"", "");
+                // categoryId = categoryId.substring(1, categoryId.length() - 1).replace("\"", "");
                 String[] categoryIdArr = categoryId.split(",");
                 Long[] categoryIds = (Long[]) ConvertUtils.convert(categoryIdArr,Long.class);
                 obj.setCategoryIds(categoryIds);

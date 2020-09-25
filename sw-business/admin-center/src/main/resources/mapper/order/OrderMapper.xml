@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.sw.order.mapper.OrderMapper">
+<mapper namespace="com.sw.admin.order.mapper.OrderMapper">
 
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.sw.common.entity.order.Order" id="orderMap">
@@ -202,8 +202,8 @@
 
     <select id="selectCount" parameterType="map" resultType="int">
         select count(*) from snu_order t
-        left join snu_customer t1 on t1.customer_id = t.customer_id
-        left join snu_customer_address t2 on t2.address_id = t.address_id
+        left join snu_customer t1 on t1.id = t.customer_id
+        left join snu_customer_address t2 on t2.id = t.address_id
         <include refid="whereSql"/>
     </select>
 
@@ -273,8 +273,8 @@
             t2.post_code as "postCode",
             t2.detail_address as "detailAddress"
         from snu_order t
-        left join snu_customer t1 on t1.customer_id = t.customer_id
-        left join snu_customer_address t2 on t2.address_id = t.address_id
+        left join snu_customer t1 on t1.id = t.customer_id
+        left join snu_customer_address t2 on t2.id = t.address_id
         <include refid="whereSql"/>
         order by t.order_time desc
         limit #{start}, #{limit}

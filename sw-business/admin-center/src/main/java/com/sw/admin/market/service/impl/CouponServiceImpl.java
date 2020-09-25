@@ -69,7 +69,7 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
 
         QueryWrapper<Coupon> couponEntityWrapper = new QueryWrapper<>();
         couponEntityWrapper.eq("IS_DELETE", 0);
-        couponEntityWrapper.eq("COUPON_ID", couponId);
+        couponEntityWrapper.eq("ID", couponId);
         List<Coupon> coupon = couponMapper.selectList(couponEntityWrapper);
         if (CollectionUtil.isEmpty(coupon)) {
             return DataResponse.fail("优惠券已失效，请选择！");

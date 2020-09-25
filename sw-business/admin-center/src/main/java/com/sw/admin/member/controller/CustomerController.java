@@ -5,13 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sw.client.controller.BaseController;
 import com.sw.common.constants.BaseConstants;
 import com.sw.common.entity.customer.Customer;
-import com.sw.common.util.MapUtil;
+import com.sw.common.util.*;
 import com.sw.admin.member.service.impl.CustomerServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -62,6 +64,36 @@ public class CustomerController extends BaseController<CustomerServiceImpl, Cust
     @RequestMapping(value = "selectUserByName", method = RequestMethod.POST)
     public Customer selectUserByName(@RequestParam String userName) {
         return service.selectUserByName(userName);
+    }
+
+    @ResponseBody
+    @ApiOperation(value = "更新用户")
+    @RequestMapping(value = "/updateCustomer", method = RequestMethod.POST)
+    public Result<Customer> updateCustomer(@RequestBody Customer customer){
+        Result<Customer> result = service.updateCustomer(customer);
+        return result;
+    }
+
+    @ApiOperation(value = "更新用户")
+    @RequestMapping(value = "/updateCustomer", method = RequestMethod.POST)
+    public Result<Customer> updateCustomerAccount(@RequestBody Map<String, Object> params){
+        return service.updateCustomerAccount(params);
+    }
+
+    @ApiOperation(value = "根据openid查询用户")
+    @ResponseBody
+    @RequestMapping(value = "queryUserByOpenId", method = RequestMethod.POST)
+    public Result<Customer>  queryUserByOpenId(@RequestParam String openid){
+        log.info("开始调用查询微信用户openid:" + openid);
+        Result<Customer> result = service.queryUserByOpenId(openid);
+        return result;
+    }
+
+    @ApiOperation(value = "获取微信用户手机号，并更新到数据库")
+    @ResponseBody
+    @RequestMapping(value = "/getPhoneNumber", method = RequestMethod.POST)
+    public Result<Customer> getPhoneNumber(@RequestBody Map<String, Object> params){
+        return service.getPhoneNumber(params);
     }
 
 }
