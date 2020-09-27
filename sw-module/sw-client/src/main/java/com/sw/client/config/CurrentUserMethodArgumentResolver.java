@@ -1,7 +1,7 @@
 package com.sw.client.config;
 
 import com.sw.client.annotion.CurrentUser;
-import com.sw.client.feign.CustomerFeignClient;
+import com.sw.client.feign.AdminFeignClient;
 import com.sw.client.feign.SystemFeignClient;
 import com.sw.common.constants.BaseConstants;
 import com.sw.common.constants.SecurityConstants;
@@ -28,11 +28,11 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
 
     private SystemFeignClient systemFeignClient;
 
-    private CustomerFeignClient customerFeignClient;
+    private AdminFeignClient adminFeignClient;
 
-    public CurrentUserMethodArgumentResolver(SystemFeignClient systemFeignClient, CustomerFeignClient customerFeignClient) {
+    public CurrentUserMethodArgumentResolver(SystemFeignClient systemFeignClient, AdminFeignClient adminFeignClient) {
         this.systemFeignClient = systemFeignClient;
-        this.customerFeignClient = customerFeignClient;
+        this.adminFeignClient = adminFeignClient;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
         User user;
         if (isFull) {
             if (loginType.equals(BaseConstants.SW_WECHAT)) {
-                Customer customer = customerFeignClient.selectUserByName(userName);
+                Customer customer = adminFeignClient.selectUserByName(userName);
                 user = new User();
                 user.setId(customer.getId());
                 user.setUserName(customer.getCustomerName());

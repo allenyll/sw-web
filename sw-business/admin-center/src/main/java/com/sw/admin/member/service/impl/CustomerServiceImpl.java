@@ -150,7 +150,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             customer.setCustomerName(customer.getNickName());
             try {
                 customerMapper.updateById(customer);
-                sendPoint(customer);
+                // sendPoint(hasCustomer);
             } catch (Exception e) {
                 e.printStackTrace();
                 result.fail("授权失败，请联系管理员！");

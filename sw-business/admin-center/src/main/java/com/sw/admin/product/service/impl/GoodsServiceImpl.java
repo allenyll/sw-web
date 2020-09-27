@@ -146,9 +146,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         BeanUtil.fatherToChild(goods, goodsParam);
 
         // 获取父级分类
-        Category category = categoryService.getById(goodsParam.getId());
+        Category category = categoryService.getById(goodsParam.getCategoryId());
         goodsParam.setParentCategoryId(category.getParentId());
-        Category specCategory = categoryService.getById(goodsParam.getId());
+        Category specCategory = categoryService.getById(goodsParam.getSpecCategoryId());
         goodsParam.setParentSpecCategoryId(specCategory.getParentId());
 
         String promotionType = goods.getPromotionType();

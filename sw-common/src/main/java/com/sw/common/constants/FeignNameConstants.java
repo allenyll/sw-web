@@ -14,6 +14,11 @@ public interface FeignNameConstants {
     String SYSTEM_SERVICE = "system-center";
 
     /**
+     * 会员系统
+     */
+    String ADMIN_SERVICE = "admin-center";
+
+    /**
      * 权限鉴定服务
      */
     String UAC_SERVICE = "sw-uac";

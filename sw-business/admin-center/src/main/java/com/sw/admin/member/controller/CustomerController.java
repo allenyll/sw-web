@@ -75,7 +75,7 @@ public class CustomerController extends BaseController<CustomerServiceImpl, Cust
     }
 
     @ApiOperation(value = "更新用户")
-    @RequestMapping(value = "/updateCustomer", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateCustomerAccount", method = RequestMethod.POST)
     public Result<Customer> updateCustomerAccount(@RequestBody Map<String, Object> params){
         return service.updateCustomerAccount(params);
     }

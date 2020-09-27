@@ -286,7 +286,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         String id = MapUtil.getMapValue(params, "categoryId");
         QueryWrapper<Goods> wrapper = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
-        wrapper.eq("FK_CATEGORY_ID", id);
+        wrapper.eq("CATEGORY_ID", id);
 
         int total = goodsService.count(wrapper);
         Page<Goods> pages = service.page(new Page<>(page, limit), wrapper);
@@ -380,7 +380,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         wrapper.like("KEYWORDS", keyword);
         String categoryId = MapUtil.getMapValue(params, "categoryId");
         if (StringUtil.isNotEmpty(categoryId)) {
-            wrapper.eq("FK_CATEGORY_ID", categoryId);
+            wrapper.eq("CATEGORY_ID", categoryId);
         }
 
         int total = goodsService.count(wrapper);

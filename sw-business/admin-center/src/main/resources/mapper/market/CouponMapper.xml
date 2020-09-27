@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.sw.market.mapper.CouponMapper">
+<mapper namespace="com.sw.admin.market.mapper.CouponMapper">
 
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.sw.common.entity.market.Coupon" id="couponMap">
@@ -82,16 +82,16 @@
             t1.name as name,
             t1.code as code,
             t1.amount as amount,
-            t1.pk_coupon_id as couponId,
-            t.fk_customer_id as customerId,
+            t1.id as couponId,
+            t.customer_id as customerId,
             t.use_status as useStatus,
             t.get_type as getType,
             t.nick_name as nickName,
             t.order_id as orderId,
             t.order_no as orderNo
         from snu_coupon_detail t
-        left join snu_coupon t1 on t1.pk_coupon_id = t.fk_coupon_id
-        where t.fk_customer_id = #{customerId}
+        left join snu_coupon t1 on t1.id = t.coupon_id
+        where t.customer_id = #{customerId}
         and t.use_status = 'SW2401'
         and t.is_delete = 0
         <![CDATA[
