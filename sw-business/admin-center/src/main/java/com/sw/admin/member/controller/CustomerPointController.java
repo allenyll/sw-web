@@ -101,7 +101,7 @@ public class CustomerPointController extends BaseController<CustomerPointService
         String customerId = MapUtil.getMapValue(param, "customerId");
 
         QueryWrapper<CustomerPoint> wrapper = new QueryWrapper<>();
-        wrapper.eq("FK_CUSTOMER_ID", customerId);
+        wrapper.eq("CUSTOMER_ID", customerId);
 
         CustomerPoint customerPoint = customerPointService.getOne(wrapper);
         if (customerPoint == null) {

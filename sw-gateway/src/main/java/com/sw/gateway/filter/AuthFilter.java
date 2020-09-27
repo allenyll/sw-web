@@ -57,7 +57,7 @@ public class AuthFilter extends ZuulFilter {
     public boolean shouldFilter() {
         return true;
     }
-
+    // TODO 微信小程序失效处理
     @Override
     public Object run() throws ZuulException {
         RequestContext ctx = RequestContext.getCurrentContext();

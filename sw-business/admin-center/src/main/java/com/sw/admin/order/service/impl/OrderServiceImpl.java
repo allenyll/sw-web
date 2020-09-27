@@ -214,7 +214,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         QueryWrapper<Order> wrapper = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
         wrapper.eq("ORDER_TYPE", "SW0601");
-        wrapper.eq("FK_CUSTOMER_ID", MapUtil.getString(params, "customerId"));
+        wrapper.eq("CUSTOMER_ID", MapUtil.getString(params, "customerId"));
         wrapper.orderBy(true, false, "ORDER_TIME");
 
         List<Order> list = orderMapper.selectList(wrapper);
