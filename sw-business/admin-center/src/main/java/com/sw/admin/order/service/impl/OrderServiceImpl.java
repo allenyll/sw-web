@@ -76,6 +76,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         order.setIntegration(MapUtil.getInteger(param, "goodsIntegral"));
         order.setGrowth(MapUtil.getInteger(param, "giftGrowth"));
+        order.setGoodsCount(MapUtil.getInteger(param, "goodsCount"));
 
         order.setCouponAmount(new BigDecimal(MapUtil.getString(param, "couponAmount")));
         order.setDiscountAmount(new BigDecimal(MapUtil.getString(param, "discountAmount")));
@@ -100,10 +101,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setReceiverRegion(MapUtil.getString(param, "region"));
         order.setReceiverDetailAddress(MapUtil.getString(param, "detailAddress"));
 
-        dealGoodsList(order, param);
-
         try {
             orderMapper.insert(order);
+            dealGoodsList(order, param);
         } catch (Exception e) {
             LOGGER.info("订单创建异常");
             e.printStackTrace();
@@ -114,20 +114,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 
     public void dealGoodsList(Order order, Map<String, Object> param) {
-        int count = 0;
         String goodsJsonStr = MapUtil.getString(param, "goodsList");
         JSONArray jsonArray = JSONArray.fromObject(goodsJsonStr);
         if (jsonArray.size() > 0) {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
-                int num = json.getInt("number");
-                count += num;
-
                 addOrderDetail(order, json);
             }
         }
-
-        order.setGoodsCount(count);
 
     }
 
@@ -233,12 +227,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         String time = DateUtil.getCurrentDateTime();
             try {
                 Order order = orderMapper.selectById(orderId);
-                order.setOrderStatus(OrderStatusDict.CANCEL.getCode());
                 order.setNote(note);
                 order.setUpdateUser(userId);
                 order.setUpdateTime(DateUtil.getCurrentDateTime());
                 // 未被主动取消的订单才执行
                 if (!OrderStatusDict.CANCEL.getCode().equals(order.getOrderStatus())) {
+                    order.setOrderStatus(OrderStatusDict.CANCEL.getCode());
                     orderMapper.updateById(order);
                     // 记录日志
                     dealOperateLog(userId, time, order, note, "cancel", optName);

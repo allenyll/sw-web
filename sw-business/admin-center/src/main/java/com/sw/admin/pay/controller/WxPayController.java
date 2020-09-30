@@ -44,7 +44,7 @@ public class WxPayController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WxPayController.class);
 
-    private static final String NOTIFY_URL = "https://www.allenyll.com/system-web/pay/payCallback";
+    private static final String     NOTIFY_URL = "https://www.allenyll.com/system-web/pay/payCallback";
 
     @Autowired
     WxProperties wxProperties;
@@ -183,7 +183,7 @@ public class WxPayController {
                     entityWrapper.eq("CUSTOMER_ID", customerId);
                     Transaction _transaction = transactionService.getOne(entityWrapper);
                     if(_transaction != null){
-                        result.put("TRANSACTION_ID", _transaction.getId());
+                        result.put("transaction_id", _transaction.getId());
                     }
                     result.put("prepayId", map.get("prepay_id"));
                     result.put("outTradeNo", paraMap.get("out_trade_no"));
@@ -318,12 +318,11 @@ public class WxPayController {
         String type = MapUtil.getString(params, "type");
         QueryWrapper<Transaction> entityWrapper = new QueryWrapper<>();
         entityWrapper.eq("IS_DELETE", 0);
-        entityWrapper.eq("PK_TRANSACTION_ID", transactionId);
+        entityWrapper.eq("ID", transactionId);
         Transaction transaction = transactionService.getOne(entityWrapper);
         if(transaction != null){
-            //transaction.setStatus("SW1202");
-            //transactionService.updateById(transaction);
-
+            transaction.setStatus("SW1202");
+            transactionService.updateById(transaction);
             // 更新订单状态
             if("order".equals(type)){
                 updateOrder(params, transaction);

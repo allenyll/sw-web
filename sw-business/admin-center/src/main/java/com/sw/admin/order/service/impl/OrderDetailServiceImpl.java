@@ -49,7 +49,7 @@ public class OrderDetailServiceImpl extends ServiceImpl<OrderDetailMapper, Order
     public List<OrderDetail> getOrderDetailList(Map<String, Object> params){
         QueryWrapper<OrderDetail> wrapper  = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
-        wrapper.eq("FK_ORDER_ID", MapUtil.getString(params, "orderId"));
+        wrapper.eq("ORDER_ID", MapUtil.getString(params, "orderId"));
         List<OrderDetail> list = orderDetailMapper.selectList(wrapper);
         return list;
     }
@@ -57,7 +57,7 @@ public class OrderDetailServiceImpl extends ServiceImpl<OrderDetailMapper, Order
     public Order getOrderDetail(Map<String, Object> map) {
         QueryWrapper<Order> wrapper  = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
-        wrapper.eq("PK_ORDER_ID", MapUtil.getString(map, "orderId"));
+        wrapper.eq("ID", MapUtil.getString(map, "orderId"));
         Order order = orderService.getOne(wrapper);
         if(order == null){
             return null;

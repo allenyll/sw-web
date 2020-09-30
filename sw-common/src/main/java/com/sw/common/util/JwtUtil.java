@@ -106,15 +106,10 @@ public class JwtUtil {
      * @throws Exception
      */
     public static Claims verifyToken(String token) throws Exception {
-        try {
-            PublicKey publicKey = getPublicKey(getPubKey());
-            Jwt<JwsHeader, Claims> parseClaimsJwt = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);
-            Claims claims = parseClaimsJwt.getBody();
-            return claims;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        PublicKey publicKey = getPublicKey(getPubKey());
+        Jwt<JwsHeader, Claims> parseClaimsJwt = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token);
+        Claims claims = parseClaimsJwt.getBody();
+        return claims;
     }
 
     public static PublicKey getPublicKey(String publicKeyBase64) throws NoSuchAlgorithmException, InvalidKeySpecException {
