@@ -63,8 +63,11 @@ public class AuthFilter extends ZuulFilter {
             response.setStatus(HttpServletResponse.SC_OK);
             return null;
         }
-      /*  String path = request.getRequestURI();
-        StringBuffer url = request.getRequestURL();*/
+        String path = request.getRequestURI();
+        if (path.indexOf("api-docs") != -1) {
+            return null;
+        }
+        // StringBuffer url = request.getRequestURL();
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String loginType = request.getHeader(BaseConstants.LOGIN_TYPE);
 
