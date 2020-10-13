@@ -9,8 +9,6 @@ import com.sw.admin.file.mapper.FileMapper;
 import com.sw.admin.file.service.IFileService;
 import com.sw.common.util.MapUtil;
 import com.sw.common.util.SnowflakeIdWorker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +72,10 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
         List<Map<String, String>> fileList = (List<Map<String, String>>) params.get("fileList");
         Long fkId = MapUtil.getLong(params, "FK_ID");
         // 先删除所有关联的图片，在增加
-        fileMapper.deleteById(fkId);
+        QueryWrapper<File> wrapper = new QueryWrapper<>();
+        wrapper.eq("FILE_TYPE", fileType);
+        wrapper.eq("FK_ID", fkId);
+        fileMapper.delete(wrapper);
         if (CollectionUtil.isNotEmpty(fileList)) {
             for (Map<String, String> file:fileList) {
                 // 存入数据库
@@ -89,5 +90,10 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
                 fileMapper.insert(sysFile);
             }
         }
+    }
+
+    @Override
+    public void removeFileById(Long userId, Long fileId) {
+        fileMapper.deleteById(fileId);
     }
 }

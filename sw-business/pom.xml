@@ -15,6 +15,7 @@
 
     <modules>
         <module>system-center</module>
+        <module>admin-center</module>
     </modules>
 
 </project>

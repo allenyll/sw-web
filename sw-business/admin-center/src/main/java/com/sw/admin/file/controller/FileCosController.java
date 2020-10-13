@@ -44,11 +44,10 @@ public class FileCosController extends BaseController<FileServiceImpl, File> {
     @ApiOperation("上传文件")
     @ResponseBody
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public DataResponse upload(@RequestParam("file") MultipartFile file, @RequestParam String type, @RequestParam Long id) throws IOException {
+    public DataResponse upload(@CurrentUser(isFull = true) User user, @RequestParam("file") MultipartFile file, @RequestParam String type, @RequestParam Long id) throws IOException {
         if(file == null) {
             return DataResponse.fail("上传文件不能为空");
         }
-
         String fileName = file.getOriginalFilename();
         String preFix = fileName.substring(fileName.lastIndexOf("."));
         Date date = new Date();
@@ -140,6 +139,13 @@ public class FileCosController extends BaseController<FileServiceImpl, File> {
     @RequestMapping(value = "/dealFile", method = RequestMethod.POST)
     public void dealFile(@RequestBody Map<String, Object> param) {
         fileService.dealFile(param);
+    }
+
+
+    @ApiOperation("根据ID删除文件")
+    @RequestMapping(value = "/removeFileById", method = RequestMethod.GET)
+    public void removeFileById(@CurrentUser(isFull = true) User user, @RequestParam Long fileId) {
+        fileService.removeFileById(user.getId(), fileId);
     }
 
     @ApiOperation("删除文件")

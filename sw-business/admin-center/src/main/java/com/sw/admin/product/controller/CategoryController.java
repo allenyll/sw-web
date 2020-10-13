@@ -287,19 +287,8 @@ public class CategoryController extends BaseController<CategoryServiceImpl, Cate
     @ResponseBody
     @RequestMapping(value = "{id}",method = RequestMethod.PUT)
     public DataResponse update(@CurrentUser(isFull = true) User user, @RequestBody Category category) {
-        Long userId = user.getId();
         List<Map<String, String>> fileList = category.getFileList();
-        if(CollectionUtil.isNotEmpty(fileList)){
-            Map<String, String> map = fileList.get(0);
-            String url = MapUtil.getMapValue(map, "url");
-            Map<String, Object> _map = new HashMap<>();
-            _map.put("FILE_TYPE", FileDict.CATEGORY.getCode());
-            _map.put("FK_ID", category.getId());
-            _map.put("URL", url);
-            _map.put("USER_ID", userId);
-            fileService.dealFile(_map);
-            log.info("处理文件成功");
-        } else {
+        if(CollectionUtil.isEmpty(fileList)){
             // 删除对应的图片
             fileService.deleteFile(category.getId());
         }

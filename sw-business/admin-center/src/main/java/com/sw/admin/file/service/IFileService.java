@@ -24,4 +24,11 @@ public interface IFileService extends IService<File> {
      * @param params
      */
     void updateFile(Map<String, Object> params);
+
+    /**
+     * 根据ID删除文件
+     * @param id
+     * @param fkId
+     */
+    void removeFileById(Long id, Long fkId);
 }
