@@ -22,24 +22,24 @@ mybatis-plus:
 ################### 腾讯云文件上传配置 ########################
 cos:
   bucketName: system-web-1257935390
-  region: ap-chengdu
-  appId: 1257935390
-  SecretId: AKIDWzTL3UwzAAl95d4t2ZGnMMIqV8gFjew8
-  SecretKey: G39JDHYk4tJdDrLpYVO7mQaAau92NWg1
-  cosUrl: https://system-web-1257935390.cos.ap-chengdu.myqcloud.com
+  region:
+  appId:
+  SecretId:
+  SecretKey:
+  cosUrl:
 
 ################### 微信相关配置 ########################
 auth:
   wechat:
     sessionHost: https://api.weixin.qq.com/sns/jscode2session
-    appId: wx95a6a02397595ace
-    appSecret: 52c970fbbf76dd8a5ea4b942fca5f6b3
+    appId:
+    appSecret:
     grantType: authorization_code
     systemWebUrl: http://localhost:8080/system-web/
-    username: yll
-    password: 123
-    mchId:  1529366201
-    key: e970d69349bd4b50a033386534860eb3
+    username:
+    password:
+    mchId:
+    key:
     orderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
     signType: MD5
     tradeType: JSAPI
