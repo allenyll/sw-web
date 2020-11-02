@@ -80,6 +80,7 @@ public class CategoryController extends BaseController<CategoryServiceImpl, Cate
         Map<String, Object> result = new HashMap<>();
         QueryWrapper<Category> wrapper = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
+        wrapper.orderBy(true, true, "CATEGORY_SEQ");
         if(StringUtil.isNotEmpty(name)){
             wrapper.like("CATEGORY_NAME", name);
         }
@@ -173,6 +174,7 @@ public class CategoryController extends BaseController<CategoryServiceImpl, Cate
         return dataResponse;
     }
 
+    @Override
     @ApiOperation("小程序根据ID获取分类")
     @ResponseBody
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
