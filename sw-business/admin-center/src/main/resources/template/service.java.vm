@@ -1,0 +1,19 @@
+package ${package}.service.impl.${moduleName};
+
+import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import ${packageEntity}.entity.${moduleName}.${className};
+import ${package}.${moduleName}.mapper.${className}Mapper;
+import ${package}.${moduleName}.service.I${className}Service;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Service("${classNameLow}Service")
+public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper,${className}> implements I${className}Service{
+
+}

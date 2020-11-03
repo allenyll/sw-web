@@ -1,0 +1,53 @@
+package ${packageEntity}.entity.${moduleName};
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.sw.common.entity.BaseEntity;
+import lombok.Data;
+import lombok.ToString;
+import java.io.Serializable;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@ToString
+@Data
+@TableName("${tableName}")
+public class ${className} extends BaseEntity<${className}>  {
+
+	private static final long serialVersionUID = 1L;
+
+#foreach ($column in $entitys)
+#if($column.columnName == $pk.columnName)
+	// $column.comments
+    @TableId(type = IdType.ASSIGN_ID)
+    private $column.attrType $column.attrNameLow;
+#else
+
+	// $column.comments
+    private $column.attrType $column.attrNameLow;
+#end
+#end
+#foreach ($column in $columns)
+#if($column.columnName == $pk.columnName)
+
+	@Override
+    protected Serializable pkVal() {
+		return $column.attrNameLow;
+	}
+#end
+#end
+
+
+
+}
