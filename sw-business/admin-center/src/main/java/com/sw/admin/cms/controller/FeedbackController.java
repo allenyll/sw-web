@@ -13,6 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+/**
+ * @Description:  意见反馈
+ * @Author:       allenyll
+ * @Date:         2020/11/4 9:50 上午
+ * @Version:      1.0
+ */
 @Slf4j
 @Api(value = "意见反馈", tags = "意见反馈")
 @RestController
@@ -22,7 +28,7 @@ public class FeedbackController extends BaseController<FeedbackServiceImpl,Feedb
     @ApiOperation("保存意见")
     @ResponseBody
     @RequestMapping(value = "/saveFeedback", method = RequestMethod.POST)
-    public Result setAddress(@CurrentUser(isFull = true) User user, @RequestBody Map<String, Object> params){
+    public Result saveFeedback(@CurrentUser(isFull = true) User user, @RequestBody Map<String, Object> params){
         String type = MapUtil.getString(params, "type");
         String content = MapUtil.getString(params, "content");
         String phone = MapUtil.getString(params, "phone");

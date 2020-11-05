@@ -6,6 +6,7 @@ import com.sw.admin.file.service.impl.FileServiceImpl;
 import com.sw.cache.util.CacheUtil;
 import com.sw.common.constants.dict.FileDict;
 import com.sw.common.entity.product.*;
+import com.sw.common.entity.system.File;
 import com.sw.common.entity.system.User;
 import com.sw.common.util.*;
 import com.sw.admin.product.mapper.GoodsMapper;
@@ -30,6 +31,8 @@ import java.util.*;
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements IGoodsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GoodsServiceImpl.class);
+
+    protected static final String DEFAULT_URL = "https://system-web-1257935390.cos.ap-chengdu.myqcloud.com/images/no.jpeg";
 
     @Autowired
     GoodsFullReduceServiceImpl goodsFullReduceService;
@@ -420,4 +423,18 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         System.out.println(set);
     }
 
+    @Override
+    public void setFile(Goods goods) {
+        QueryWrapper<File> fileEntityWrapper = new QueryWrapper<>();
+        fileEntityWrapper.eq("FILE_TYPE", FileDict.GOODS.getCode());
+        fileEntityWrapper.eq("IS_DELETE", 0);
+        fileEntityWrapper.eq("FK_ID", goods.getId());
+        List<File> sysFiles = fileService.list(fileEntityWrapper);
+        if(CollectionUtil.isNotEmpty(sysFiles)){
+            goods.setFileList(sysFiles);
+            goods.setFileUrl(sysFiles.get(0).getFileUrl());
+        }else{
+            goods.setFileUrl(DEFAULT_URL);
+        }
+    }
 }

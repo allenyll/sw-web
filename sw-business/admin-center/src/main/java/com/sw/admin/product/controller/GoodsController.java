@@ -121,7 +121,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         List<Goods> list = goodsService.list(wrapper);
         if(CollectionUtil.isNotEmpty(list)){
             for(Goods goods:list){
-                setFile(goods);
+                goodsService.setFile(goods);
             }
         }
         result.put("goodsList", list);
@@ -141,7 +141,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         List<Goods> goodsList = (List<Goods>) data.get("list");
         if(CollectionUtil.isNotEmpty(goodsList)){
             for(Goods goods:goodsList){
-                setFile(goods);
+                goodsService.setFile(goods);
             }
         }
         result.put("total", dataResponse.get("total"));
@@ -250,6 +250,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         return DataResponse.success(result);
     }
 
+    @Override
     @ApiOperation("根据ID获取商品")
     @ResponseBody
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -264,7 +265,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         if(goods == null) {
             return  DataResponse.fail("获取商品失败");
         }
-        setFile(goods);
+        goodsService.setFile(goods);
         try {
             result = goodsService.getGoodsInfo(goods);
         } catch (Exception e) {
@@ -293,7 +294,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         List<Goods> list = pages.getRecords();
         if(CollectionUtil.isNotEmpty(list)){
             for (Goods goods: list){
-               setFile(goods);
+                goodsService.setFile(goods);
             }
         }
 
@@ -322,7 +323,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
             return DataResponse.fail("商品不存在");
         }
 
-        setFile(goods);
+        goodsService.setFile(goods);
 
         try {
             result = goodsService.getGoodsInfo(goods);
@@ -388,7 +389,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         List<Goods> list = pages.getRecords();
         if(CollectionUtil.isNotEmpty(list)){
             for (Goods goods: list){
-                setFile(goods);
+                goodsService.setFile(goods);
             }
         }
 
@@ -404,20 +405,6 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         result.put("goods", list);
 
         return DataResponse.success(result);
-    }
-
-    private void setFile(Goods goods) {
-        QueryWrapper<File> fileEntityWrapper = new QueryWrapper<>();
-        fileEntityWrapper.eq("FILE_TYPE", FileDict.GOODS.getCode());
-        fileEntityWrapper.eq("IS_DELETE", 0);
-        fileEntityWrapper.eq("FK_ID", goods.getId());
-        List<File> sysFiles = fileService.list(fileEntityWrapper);
-        if(CollectionUtil.isNotEmpty(sysFiles)){
-            goods.setFileList(sysFiles);
-            goods.setFileUrl(sysFiles.get(0).getFileUrl());
-        }else{
-            goods.setFileUrl(DEFAULT_URL);
-        }
     }
 
     public static void main(String[] args) {
