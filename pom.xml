@@ -75,7 +75,7 @@
         <module>sw-module</module>
         <module>sw-config</module>
         <module>sw-gateway</module>
-<!--        <module>sw-wechat</module>-->
+        <module>sw-monitor</module>
     </modules>
 
     <dependencies>

@@ -61,6 +61,11 @@ zuul:
       service-id: admin-center
       strip-prefix: true
       custom-sensitive-headers: true
+    job:
+      path: /api-job/**
+      service-id: sw-job
+      strip-prefix: true
+      custom-sensitive-headers: true
 ribbon:
   ReadTimeout: 50000
   ConnectTimeout: 50000

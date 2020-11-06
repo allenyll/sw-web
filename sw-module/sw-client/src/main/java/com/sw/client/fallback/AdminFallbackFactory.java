@@ -5,11 +5,14 @@ import com.sw.common.entity.customer.Customer;
 import com.sw.common.entity.customer.CustomerAddress;
 import com.sw.common.entity.customer.CustomerBalance;
 import com.sw.common.entity.customer.CustomerPoint;
+import com.sw.common.entity.market.Coupon;
+import com.sw.common.entity.market.CouponDetail;
 import feign.hystrix.FallbackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -71,6 +74,23 @@ public class AdminFallbackFactory implements FallbackFactory<AdminFeignClient> {
             public Customer selectUserByName(String userName) {
                 LOGGER.error("FEIGN调用：根据用户名称获取用户失败");
                 return null;
+            }
+
+            @Override
+            public List<Coupon> getCouponList(Map<String, Object> param) {
+                LOGGER.error("FEIGN调用：获取优惠券列表失败");
+                return null;
+            }
+
+            @Override
+            public List<CouponDetail> getCouponDetailList(Map<String, Object> param) {
+                LOGGER.error("FEIGN调用：获取优惠券明细失败");
+                return null;
+            }
+
+            @Override
+            public void updateById(CouponDetail couponDetail) {
+                LOGGER.error("FEIGN调用：发放优惠券失败");
             }
         };
     }

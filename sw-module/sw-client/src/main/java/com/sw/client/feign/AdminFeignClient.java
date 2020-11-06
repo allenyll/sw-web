@@ -8,12 +8,15 @@ import com.sw.common.entity.customer.Customer;
 import com.sw.common.entity.customer.CustomerAddress;
 import com.sw.common.entity.customer.CustomerBalance;
 import com.sw.common.entity.customer.CustomerPoint;
+import com.sw.common.entity.market.Coupon;
+import com.sw.common.entity.market.CouponDetail;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,4 +51,17 @@ public interface AdminFeignClient {
 
     @RequestMapping(value = "customer/selectUserByName", method = RequestMethod.POST)
     Customer selectUserByName(@RequestParam String userName);
+
+    /**
+     * 促销相关开始
+     */
+    @RequestMapping(value = "coupon/getCoupons", method = RequestMethod.POST)
+    List<Coupon> getCouponList(@RequestBody Map<String, Object> param);
+
+    @RequestMapping(value = "couponDetail/getCouponDetailList", method = RequestMethod.POST)
+    List<CouponDetail> getCouponDetailList(@RequestBody Map<String, Object> param);
+
+    @RequestMapping(value = "couponDetail/updateById", method = RequestMethod.POST)
+    void updateById(@RequestBody CouponDetail couponDetail);
+
 }
