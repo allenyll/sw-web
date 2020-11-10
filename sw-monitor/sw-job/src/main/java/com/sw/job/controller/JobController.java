@@ -4,9 +4,7 @@ import com.sw.client.annotion.CurrentUser;
 import com.sw.common.constants.JobConstants;
 import com.sw.common.entity.system.Job;
 import com.sw.common.entity.system.User;
-import com.sw.common.util.DataResponse;
-import com.sw.common.util.MapUtil;
-import com.sw.common.util.StringUtil;
+import com.sw.common.util.*;
 import com.sw.client.controller.BaseController;
 import com.sw.job.service.impl.JobServiceImpl;
 import io.swagger.annotations.Api;
@@ -15,10 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -94,5 +89,28 @@ public class JobController extends BaseController<JobServiceImpl, Job> {
         super.update(user, job);
 
         return DataResponse.success();
+    }
+
+    @ApiOperation("删除调度任务")
+    @RequestMapping(value = "/deleteJob/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public DataResponse deleteJob(@CurrentUser(isFull = true) User user, @PathVariable Long id){
+        DataResponse dataResponse = super.get(id);
+        Map<String, Object> map = (Map<String, Object>) dataResponse.get("data");
+        Job job = (Job) map.get("obj");
+        try {
+            jobService.deleteJob(user, job);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return DataResponse.success();
+    }
+
+    @ResponseBody
+    @ApiOperation("立即执行调度任务状态")
+    @RequestMapping("executeJob")
+    public Result executeJob(@CurrentUser(isFull = true) User user, @RequestBody Map<String, Object> params) throws Exception {
+        Result result = jobService.executeJob(user, params);
+        return result;
     }
 }

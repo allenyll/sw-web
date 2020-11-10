@@ -19,6 +19,11 @@ import java.io.Serializable;
 public class SchedulerJob implements Serializable, Job {
 
     /**
+     * 任务id
+     */
+    private Long id;
+
+    /**
      * 任务名称
      */
     private String jobName;

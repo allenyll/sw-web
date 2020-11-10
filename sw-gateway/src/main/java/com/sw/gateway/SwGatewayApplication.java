@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Version:      1.0
  */
 @ComponentScan("com.sw")
-@EnableFeignClients("com.sw")
+@EnableFeignClients(basePackages = {"com.sw.client.feign"})
 @EnableSwagger2
 @EnableZuulProxy
 @SpringBootApplication

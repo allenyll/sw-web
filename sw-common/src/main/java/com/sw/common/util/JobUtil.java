@@ -22,6 +22,7 @@ public class JobUtil {
 
     public SchedulerJob jobToSchedulerJob(com.sw.common.entity.system.Job job){
         SchedulerJob schedulerJob = new SchedulerJob();
+        schedulerJob.setId(job.getId());
         schedulerJob.setClassName(job.getClassName());
         schedulerJob.setJobName(job.getJobName());
         schedulerJob.setCron(job.getCorn());
@@ -46,10 +47,13 @@ public class JobUtil {
 
             // 根据类名和分组构建任务KEY
             JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(job.getJobName(), job.getJobGroup()).build();
-
+            jobDetail.getJobDataMap().put("id", job.getId());
+            jobDetail.getJobDataMap().put("jobName", job.getJobName());
+            jobDetail.getJobDataMap().put("jobGroup", job.getJobGroup());
             // 定义调度触发规则
             // 使用cornTrigger规则
-            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(job.getJobName(), job.getJobGroup())// 触发器key
+            // 触发器key
+            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(job.getJobName(), job.getJobGroup())
                     .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.SECOND))
                     .withSchedule(CronScheduleBuilder.cronSchedule(job.getCron())).startNow().build();
 
@@ -94,5 +98,13 @@ public class JobUtil {
         scheduler.rescheduleJob(triggerKey, trigger);
     }
 
+    public void executeJob(SchedulerJob schedulerJob) {
+        JobKey jobKey = JobKey.jobKey( schedulerJob.getJobName(), schedulerJob.getJobGroup() );
+        try {
+            scheduler.triggerJob( jobKey );
+        } catch ( SchedulerException e ) {
+            log.error( "Task run failed.", e );
+        }
+    }
 }
 

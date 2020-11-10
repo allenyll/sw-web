@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableLoginArgResolver
-@EnableFeignClients("com.sw")
+@EnableFeignClients(basePackages = {"com.sw.client.feign"})
 @ComponentScan("com.sw")
 @EnableDiscoveryClient
 @EnableSwagger2
