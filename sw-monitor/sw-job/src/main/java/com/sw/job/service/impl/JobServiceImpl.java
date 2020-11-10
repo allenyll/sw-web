@@ -14,7 +14,6 @@ import com.sw.common.util.Result;
 import com.sw.job.mapper.JobMapper;
 import com.sw.job.service.IJobService;
 import org.quartz.*;
-import org.quartz.impl.JobExecutionContextImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -41,9 +39,6 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements IJobS
 
     @Autowired
     JobUtil jobUtil;
-
-    @Resource
-    Scheduler scheduler;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobServiceImpl.class);
 
