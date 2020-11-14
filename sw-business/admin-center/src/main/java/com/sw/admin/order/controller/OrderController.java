@@ -5,12 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sw.client.annotion.CurrentUser;
 import com.sw.client.controller.BaseController;
 import com.sw.common.constants.dict.OrderStatusDict;
+import com.sw.common.dto.OrderQueryDto;
+import com.sw.common.dto.OrderReturnDto;
 import com.sw.common.entity.order.Order;
 import com.sw.common.entity.system.User;
-import com.sw.common.util.DataResponse;
-import com.sw.common.util.DateUtil;
-import com.sw.common.util.MapUtil;
-import com.sw.common.util.StringUtil;
+import com.sw.common.util.*;
 import com.sw.admin.order.service.IOrderService;
 import com.sw.admin.order.service.impl.OrderServiceImpl;
 import io.swagger.annotations.Api;
@@ -164,10 +163,10 @@ public class OrderController extends BaseController<OrderServiceImpl, Order> {
 
     @ApiOperation("获取订单列表")
     @RequestMapping(value = "/getOrderList", method = RequestMethod.POST)
-    public DataResponse getOrderList(@RequestBody Map<String, Object> params){
+    public DataResponse getOrderList(@RequestBody OrderQueryDto queryDto){
         Map<String, Object> result =  new HashMap<>();
 
-        List<Order> list = orderService.getOrderList(params);
+        List<Order> list = orderService.getOrderList(queryDto);
 
         result.put("list", list);
 
@@ -251,6 +250,13 @@ public class OrderController extends BaseController<OrderServiceImpl, Order> {
         params.put("userId", user.getId());
         DataResponse dataResponse = service.sendMessage(params);
         return dataResponse;
+    }
+
+    @ApiOperation("获取订单信息")
+    @ResponseBody
+    @RequestMapping(value = "/getOrderInfo", method = RequestMethod.POST)
+    public Result<OrderReturnDto> getOrderInfo(@CurrentUser(isFull = true) User user, @RequestBody OrderQueryDto queryDto) {
+        return service.getOrderInfo(user, queryDto);
     }
 
 }

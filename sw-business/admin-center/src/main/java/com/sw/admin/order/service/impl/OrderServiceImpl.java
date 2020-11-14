@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sw.client.feign.SystemFeignClient;
 import com.sw.common.constants.dict.*;
+import com.sw.common.dto.OrderQueryDto;
+import com.sw.common.dto.OrderReturnDto;
 import com.sw.common.entity.order.Order;
 import com.sw.common.entity.order.OrderDetail;
 import com.sw.common.entity.order.OrderOperateLog;
@@ -20,8 +22,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +44,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     private static final long DELAY_TIMES = 30 * 60 * 1000;
 
-    @Autowired
+    @Resource
     OrderMapper orderMapper;
 
     @Autowired
@@ -204,12 +208,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public List<Order> getOrderList(Map<String, Object> params) {
+    public List<Order> getOrderList(OrderQueryDto queryDto) {
         QueryWrapper<Order> wrapper = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
         wrapper.eq("ORDER_TYPE", "SW0601");
-        wrapper.eq("CUSTOMER_ID", MapUtil.getString(params, "customerId"));
+        wrapper.eq("CUSTOMER_ID", queryDto.getCustomerId());
         wrapper.orderBy(true, false, "ORDER_TIME");
+
+        String  type = queryDto.getType();
+        if ("AFTERSALE".equals(type)) {
+            wrapper.in("ORDER_STATUS", Arrays.asList("SW0701", "SW0702", "SW0703", "SW0704", "SW0705", "SW0706"));
+        }
 
         List<Order> list = orderMapper.selectList(wrapper);
 
@@ -255,6 +264,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             DataResponse.fail("放置消息队列失败");
         }
         return null;
+    }
+
+    @Override
+    public Result<OrderReturnDto> getOrderInfo(User user, OrderQueryDto queryDto) {
+        Result<OrderReturnDto> result = new Result<>();
+        Order order = orderMapper.selectById(queryDto.getOrderId());
+        OrderDetail orderDetail = orderDetailService.getById(queryDto.getOrderDetailId());
+        OrderReturnDto orderReturnDto = new OrderReturnDto();
+        orderReturnDto.setOrder(order);
+        orderReturnDto.setOrderDetail(orderDetail);
+        result.setObject(orderReturnDto);
+        return result;
     }
 
     private void dealList(List<Order> list) {

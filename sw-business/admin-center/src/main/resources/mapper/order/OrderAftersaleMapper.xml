@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.admin.order.mapper.OrderAftersaleMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.order.OrderAftersale" id="orderAftersaleMap">
+        <result property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderDetailId" column="order_detail_id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="aftersaleType" column="aftersale_type"/>
+        <result property="aftersaleStatus" column="aftersale_status"/>
+        <result property="aftersaleReason" column="aftersale_reason"/>
+        <result property="applyFile" column="apply_file"/>
+        <result property="refundPoint" column="refund_point"/>
+        <result property="usePointAmount" column="use_point_amount"/>
+        <result property="getPointAmount" column="get_point_amount"/>
+        <result property="refundAmount" column="refund_amount"/>
+        <result property="refundType" column="refund_type"/>
+        <result property="refundQuality" column="refund_quality"/>
+        <result property="refundRemark" column="refund_remark"/>
+        <result property="returnType" column="return_type"/>
+        <result property="refuseReason" column="refuse_reason"/>
+        <result property="deliveryCompany" column="delivery_company"/>
+        <result property="deliveryNo" column="delivery_no"/>
+        <result property="receiverName" column="receiver_name"/>
+        <result property="receiverPhone" column="receiver_phone"/>
+        <result property="receiverPostCode" column="receiver_post_code"/>
+        <result property="receiverProvince" column="receiver_province"/>
+        <result property="receiverCity" column="receiver_city"/>
+        <result property="receiverRegion" column="receiver_region"/>
+        <result property="receiverDetailAddress" column="receiver_detail_address"/>
+        <result property="deliveryTime" column="delivery_time"/>
+        <result property="applyTime" column="apply_time"/>
+        <result property="dealTime" column="deal_time"/>
+        <result property="auditTime" column="audit_time"/>
+        <result property="cancelTime" column="cancel_time"/>
+        <result property="dealUser" column="deal_user"/>
+        <result property="dealUserName" column="deal_user_name"/>
+        <result property="dealNote" column="deal_note"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="addUser" column="add_user"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        order_id
+        order_detail_id
+        goods_id
+        customer_id
+        aftersale_type
+        aftersale_status
+        aftersale_reason
+        apply_file
+        refund_point
+        use_point_amount
+        get_point_amount
+        refund_amount
+        refund_type
+        refund_quality
+        refund_remark
+        return_type
+        refuse_reason
+        delivery_company
+        delivery_no
+        receiver_name
+        receiver_phone
+        receiver_post_code
+        receiver_province
+        receiver_city
+        receiver_region
+        receiver_detail_address
+        delivery_time
+        apply_time
+        deal_time
+        audit_time
+        cancel_time
+        deal_user
+        deal_user_name
+        deal_note
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+    <select id="selectAftersaleList" resultType="com.sw.common.dto.OrderAftersaleDto" parameterType="com.sw.common.dto.OrderQueryDto">
+        SELECT
+            t.id,
+            t.order_id,
+            t.order_detail_id,
+            t.goods_id,
+            t.customer_id,
+            t.aftersale_type,
+            t.aftersale_status,
+            t.aftersale_reason,
+            t.apply_file,
+            t.refund_point,
+            t.use_point_amount,
+            t.get_point_amount,
+            t.refund_amount,
+            t.refund_type,
+            t.refund_quality,
+            t.refund_remark,
+            t.return_type,
+            t.refuse_reason,
+            t.delivery_company,
+            t.delivery_no,
+            t.receiver_name,
+            t.receiver_phone,
+            t.receiver_post_code,
+            t.receiver_province,
+            t.receiver_city,
+            t.receiver_region,
+            t.receiver_detail_address,
+            t.delivery_time,
+            t.apply_time,
+            t.deal_time,
+            t.audit_time,
+            t.cancel_time,
+            t.deal_user,
+            t.deal_user_name,
+            t.deal_note,
+            t.is_delete,
+            t.add_user,
+            t.add_time,
+            t.update_user,
+            t.update_time,
+            t2.goods_name,
+            t2.goods_code,
+            t2.price,
+            t1.order_no,
+            t1.order_status,
+            t1.order_time,
+            t1.order_amount,
+            t1.pay_amount
+        FROM
+            snu_order_aftersale t
+        LEFT JOIN snu_order t1 ON t1.id = t.order_id
+        LEFT JOIN snu_goods t2 ON t2.id = t.goods_id
+        WHERE t.customer_id = #{customerId}
+    </select>
+
+</mapper>

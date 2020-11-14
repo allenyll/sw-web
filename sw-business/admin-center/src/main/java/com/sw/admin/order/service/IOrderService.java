@@ -1,8 +1,12 @@
 package com.sw.admin.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sw.common.dto.OrderQueryDto;
+import com.sw.common.dto.OrderReturnDto;
 import com.sw.common.entity.order.Order;
+import com.sw.common.entity.system.User;
 import com.sw.common.util.DataResponse;
+import com.sw.common.util.Result;
 
 import java.util.List;
 import java.util.Map;
@@ -119,7 +123,7 @@ public interface IOrderService extends IService<Order> {
      * @param params
      * @return
      */
-    List<Order> getOrderList(Map<String, Object> params);
+    List<Order> getOrderList(OrderQueryDto queryDto);
 
     /**
      * 取消订单
@@ -133,4 +137,12 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     DataResponse sendMessage(Map<String, Object> params);
+
+    /**
+     * 获取订单信息
+     * @param user
+     * @param queryDto
+     * @return
+     */
+    Result<OrderReturnDto> getOrderInfo(User user, OrderQueryDto queryDto);
 }
