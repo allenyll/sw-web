@@ -3,15 +3,22 @@ package com.sw.common.constants.dict;
 import com.sw.common.util.StringUtil;
 
 /**
- * 订单状态字典
+ * @Description:  订单售后申请状态
+ * @Author:       allenyll
+ * @Date:         2020/11/19 上午9:54
+ * @Version:      1.0
  */
 public enum OrderSaleDict {
 
+    /**
+     * 未发起售后
+     */
     START("SW0801", "未发起售后"),
     APPLY("SW0802", "申请售后"),
     CANCEL("SW0803", "取消售后"),
     DEAL("SW0804", "售后处理中"),
-    COMPLETE("SW0805", "处理完成");
+    REFUSE("SW0805", "拒绝售后"),
+    COMPLETE("SW0806", "处理完成");
 
 
     String code;

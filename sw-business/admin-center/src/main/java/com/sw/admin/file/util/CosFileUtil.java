@@ -136,8 +136,8 @@ public class CosFileUtil {
     public static String getTime() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
-        int month=cal.get(Calendar.MONTH);
-        int day=cal.get(Calendar.DATE);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int day = cal.get(Calendar.DATE);
         String time = year + "" + month + "" + day;
         return time;
     }

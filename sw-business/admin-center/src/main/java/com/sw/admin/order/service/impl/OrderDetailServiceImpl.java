@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sw.admin.member.service.impl.CustomerAddressServiceImpl;
 import com.sw.admin.member.service.impl.CustomerServiceImpl;
 import com.sw.client.feign.CustomerFeignClient;
+import com.sw.client.feign.SystemFeignClient;
 import com.sw.common.entity.customer.Customer;
 import com.sw.common.entity.customer.CustomerAddress;
 import com.sw.common.entity.order.Order;
 import com.sw.common.entity.order.OrderDetail;
 import com.sw.common.entity.order.OrderOperateLog;
+import com.sw.common.entity.system.User;
+import com.sw.common.util.CollectionUtil;
 import com.sw.common.util.DateUtil;
 import com.sw.common.util.MapUtil;
 import com.sw.admin.order.mapper.OrderDetailMapper;
@@ -46,6 +49,9 @@ public class OrderDetailServiceImpl extends ServiceImpl<OrderDetailMapper, Order
     @Autowired
     OrderOperateLogServiceImpl orderOperateLogService;
 
+    @Autowired
+    SystemFeignClient systemFeignClient;
+
     public List<OrderDetail> getOrderDetailList(Map<String, Object> params){
         QueryWrapper<OrderDetail> wrapper  = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
@@ -74,6 +80,19 @@ public class OrderDetailServiceImpl extends ServiceImpl<OrderDetailMapper, Order
         List<OrderDetail> orderDetailList = getOrderDetailList(map);
         order.setOrderDetails(orderDetailList);
         List<OrderOperateLog> orderOperateLogs = orderOperateLogService.getOperateList(map);
+        if (CollectionUtil.isNotEmpty(orderOperateLogs)) {
+            for (OrderOperateLog log:orderOperateLogs) {
+                User user = systemFeignClient.selectById(log.getUpdateUser());
+                if (user == null) {
+                    Customer cus = customerService.getById(log.getUpdateUser());
+                    if (cus != null) {
+                        log.setOptUserName(cus.getCustomerName());
+                    }
+                } else {
+                    log.setOptUserName(user.getUserName());
+                }
+            }
+        }
         order.setOrderOperateLogs(orderOperateLogs);
         return order;
     }

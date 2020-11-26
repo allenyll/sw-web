@@ -145,4 +145,15 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     Result<OrderReturnDto> getOrderInfo(User user, OrderQueryDto queryDto);
+
+    /**
+     * 记录订单操作日志
+     * @param id 操作人ID
+     * @param time 操作时间
+     * @param order 订单信息
+     * @param note 操作备注
+     * @param type 操作类型
+     * @param optName 操作名称
+     */
+    void dealOperateLog(Long id, String time, Order order, String note, String type, String optName);
 }

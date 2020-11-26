@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sw.admin.shop.mapper.ShopMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sw.common.entity.shop.Shop" id="shopMap">
+        <result property="id" column="id"/>
+        <result property="shopName" column="shop_name"/>
+        <result property="shopCode" column="shop_code"/>
+        <result property="status" column="status"/>
+        <result property="shopKeeper" column="shop_keeper"/>
+        <result property="shopPhone" column="shop_phone"/>
+        <result property="shopQq" column="shop_qq"/>
+        <result property="shopWechat" column="shop_wechat"/>
+        <result property="shopAddress" column="shop_address"/>
+        <result property="shopImg" column="shop_img"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="shopActive" column="shop_active"/>
+        <result property="isInvoice" column="is_invoice"/>
+        <result property="invoiceRemark" column="invoice_remark"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="addUser" column="add_user"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        shop_name
+        shop_code
+        status
+        shop_keeper
+        shop_phone
+        shop_qq
+        shop_wechat
+        shop_address
+        shop_img
+        start_time
+        end_time
+        shop_active
+        is_invoice
+        invoice_remark
+        is_delete
+        add_user
+        add_time
+        update_user
+        update_time
+    </sql>
+
+</mapper>

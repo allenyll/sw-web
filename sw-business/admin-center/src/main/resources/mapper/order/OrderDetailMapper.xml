@@ -17,6 +17,7 @@
         <result property="brandName" column="brandName"/>
         <result property="pic" column="pic"/>
         <result property="deductStockType" column="deduct_stock_type"/>
+        <result property="status" column="status"/>
         <result property="skuId" column="sku_id"/>
         <result property="skuCode" column="sku_code"/>
         <result property="specValue" column="spec_value"/>
@@ -51,6 +52,7 @@
         brand_name
         pic
         deduct_stock_type
+        status
         sku_id
         sku_code
         spec_value

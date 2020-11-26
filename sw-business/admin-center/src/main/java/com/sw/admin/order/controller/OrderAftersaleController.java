@@ -1,19 +1,18 @@
 package com.sw.admin.order.controller;
 
 import com.sw.admin.order.service.IOrderService;
+import com.sw.client.annotion.CurrentUser;
 import com.sw.client.controller.BaseController;
 import com.sw.admin.order.service.impl.OrderAftersaleServiceImpl;
 import com.sw.common.dto.OrderAftersaleDto;
 import com.sw.common.dto.OrderQueryDto;
 import com.sw.common.entity.order.Order;
 import com.sw.common.entity.order.OrderAftersale;
+import com.sw.common.entity.system.User;
 import com.sw.common.util.DataResponse;
 import com.sw.common.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +37,33 @@ public class OrderAftersaleController extends BaseController<OrderAftersaleServi
     @Autowired
     IOrderService orderService;
 
+    @ApiOperation("分页查询售后申请单")
+    @RequestMapping(value = "pageList", method = RequestMethod.POST)
+    public Result<Map<String, Object>> pageList(@RequestBody OrderQueryDto orderQueryDto){
+        Result<Map<String, Object>> result = new Result<>();
+        Map<String, Object> map = new HashMap<>();
+        int total = service.selectCount(orderQueryDto);
+        List<OrderAftersaleDto>  orderList = service.getOrderAftersalePage(orderQueryDto);
+        map.put("total", total);
+        map.put("list", orderList);
+        result.setObject(map);
+        return result;
+    }
+
+    @ApiOperation("获取申请单详情")
+    @ResponseBody
+    @RequestMapping(value = "/getDetail/{id}", method = RequestMethod.GET)
+    public Result<OrderAftersaleDto> getDetail(@CurrentUser User user, @PathVariable Long id){
+        return service.getDetail(user, id);
+    }
+
+    @ApiOperation("更新申请单详情")
+    @ResponseBody
+    @RequestMapping(value = "/updateAftersaleStatus", method = RequestMethod.POST)
+    public Result updateAftersaleStatus(@CurrentUser User user, @RequestBody OrderAftersaleDto aftersaleDto){
+        return service.updateAftersaleStatus(user, aftersaleDto);
+    }
+
     @ApiOperation("获取订单及售后申请单列表")
     @RequestMapping(value = "/getOrderRefundList", method = RequestMethod.POST)
     public Result<Map<String, Object>> getOrderRefundList(@RequestBody OrderQueryDto queryDto){
@@ -52,6 +78,12 @@ public class OrderAftersaleController extends BaseController<OrderAftersaleServi
         map.put("orderRefundList", orderRefundList);
         result.setObject(map);
         return result;
+    }
+
+    @ApiOperation("提交售后申请单")
+    @RequestMapping(value = "/submitOrderAftersale", method = RequestMethod.POST)
+    public Result<OrderAftersaleDto> submitOrderAftersale(@RequestBody OrderAftersaleDto orderAftersaleDto){
+        return service.submitOrderAftersale(orderAftersaleDto);
     }
 
 }

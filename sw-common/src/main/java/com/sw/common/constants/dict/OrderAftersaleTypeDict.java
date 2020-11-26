@@ -3,26 +3,30 @@ package com.sw.common.constants.dict;
 import com.sw.common.util.StringUtil;
 
 /**
- * @Description:  日志类型
+ * @Description:  订单售后类型
  * @Author:       allenyll
  * @Date:         2018/12/24 9:45 AM
  * @Version:      1.0
  */
-public enum StatusDict {
+public enum OrderAftersaleTypeDict {
 
     /**
-     * 停用状态
+     * 退款
      */
-    STOP("SW1301", "停用"),
+    REFUND("SW2901", "退款"),
     /**
-     * 启用状态
+     * 换货
      */
-    START("SW1302", "启用");
+    CHANGE("SW2902", "换货"),
+    /**
+     * 退款退货
+     */
+    REFUND_CHANGE("SW2903", "退款退货");
 
     String code;
     String message;
 
-    StatusDict(String code, String message){
+    OrderAftersaleTypeDict(String code, String message){
         this.code = code;
         this.message = message;
     }
@@ -52,7 +56,7 @@ public enum StatusDict {
         if(StringUtil.isEmpty(code)){
             return "";
         }else{
-            for(StatusDict LogType : StatusDict.values()){
+            for(OrderAftersaleTypeDict LogType : OrderAftersaleTypeDict.values()){
                 if(code.equals(LogType.getCode())){
                     return LogType.getMessage();
                 }

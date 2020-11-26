@@ -25,4 +25,9 @@ public class BaseQueryDto {
      * 页码
      */
     private Integer page;
+
+    /**
+     * 开始序号
+     */
+    private Integer start;
 }

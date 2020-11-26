@@ -22,5 +22,9 @@ public class WxConstants {
      */
     public static final String WX_JWT = "wx_jwt";
 
+    public static final String SUCCESS = "SUCCESS";
 
+    public static final String FAIL = "FAIL";
+
+    public static final String REFUND_NOTIFY_URL = "https://www.allenyll.com/api-web/pay/payRefundCallback";
 }

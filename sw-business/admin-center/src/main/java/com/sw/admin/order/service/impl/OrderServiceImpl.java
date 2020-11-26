@@ -25,10 +25,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 订单基础信息表
@@ -61,12 +58,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public void createOrder(Order order, Map<String, Object> param) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String time = DateUtil.getCurrentDateTime();
         Long orderId = SnowflakeIdWorker.generateId();
-        String no = StringUtil.getOrderNo(orderId.toString(), sdf);
         order.setId(orderId);
-        order.setOrderNo(no);
+        order.setOrderNo(StringUtil.getOrderNo());
         order.setAfterStatus(OrderSaleDict.START.getCode());
         order.setOrderType(OrderTypeDict.ONLINE.getCode());
         order.setAutoConfirmDay(7);
@@ -144,6 +139,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderDetail.setQuantity(json.getInt("number"));
         orderDetail.setSkuCode(json.getString("skuCode"));
         orderDetail.setDeductStockType("");
+        orderDetail.setStatus(OrderSaleDict.START.getCode());
         orderDetail.setBrandName(json.getString("brandName"));
         orderDetail.setContent("");
         orderDetail.setTotalAmount(new BigDecimal("0"));
@@ -471,7 +467,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
 
-    private void dealOperateLog(Long userId, String time, Order order, String note, String type, String optName) {
+    @Override
+    public void dealOperateLog(Long userId, String time, Order order, String note, String type, String optName) {
         User user = systemFeignClient.selectById(userId);
         if (user == null) {
             user = new User();
@@ -506,7 +503,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderOperateLog.setIsDelete(0);
         orderOperateLog.setAddUser(userId);
         orderOperateLog.setAddTime(time);
-        orderOperateLog.setUpdateUser(user.getId());
+        orderOperateLog.setUpdateUser(userId);
         orderOperateLog.setUpdateTime(time);
         orderOperateLogService.save(orderOperateLog);
     }

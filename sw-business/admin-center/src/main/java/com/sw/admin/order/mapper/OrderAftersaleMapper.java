@@ -16,10 +16,32 @@ import java.util.List;
  */
 public interface OrderAftersaleMapper extends BaseMapper<OrderAftersale> {
 
+
+    /**
+     * 查询售后申请单总量
+     * @param orderQueryDto 查询条件
+     * @return 数量
+     */
+    int selectCount(OrderQueryDto orderQueryDto);
+
+    /**
+     * 分页查询售后申请单
+     * @param orderQueryDto 查询条件
+     * @return 售后申请单集合
+     */
+    List<OrderAftersaleDto> getOrderAftersalePage(OrderQueryDto orderQueryDto);
+
     /**
      * 售后服务单集合查询
-     * @param queryDto
-     * @return
+     * @param queryDto 查询条件
+     * @return 售后服务单集合
      */
     List<OrderAftersaleDto> selectAftersaleList(OrderQueryDto queryDto);
+
+    /**
+     * 根据售后单ID获取申请单详情
+     * @param id 售后单ID
+     * @return 申请单详情
+     */
+    OrderAftersaleDto getApplyById(Long id);
 }

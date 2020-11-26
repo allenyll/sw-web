@@ -60,6 +60,11 @@ public class OrderDetail extends BaseEntity<OrderDetail> {
 	// 库存计算方式(10下单减库存 20付款减库存)
     private String deductStockType;
 
+	/**
+	 * 售后状态
+	 */
+	private String status;
+
 	// SKU ID
     private Long skuId;
 

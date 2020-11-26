@@ -32,6 +32,11 @@ public class OrderAftersale extends BaseEntity<OrderAftersale>  {
     private Long id;
 
     /**
+     * 售后申请单号
+     */
+    private String aftersaleNo;
+
+    /**
     * 订单ID
     */
     private Long orderId;
@@ -170,6 +175,16 @@ public class OrderAftersale extends BaseEntity<OrderAftersale>  {
     * 收货人详细地址
     */
     private String receiverDetailAddress;
+
+    /**
+     * 收货备注
+     */
+    private String receiverNote;
+
+    /**
+     * 收货时间
+     */
+    private String receiverTime;
 
     /**
     * 退货时间

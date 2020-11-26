@@ -67,10 +67,13 @@ public class FileCosController extends BaseController<FileServiceImpl, File> {
 
        String downloadUrl = MapUtil.getString(map, "url", "");
 
+        Map<String,Object> result = new HashMap<>();
        if(!FileDict.ATTR_PIC.getCode().equals(type)){
            // 存入数据库
            File sysFile = new File();
-           sysFile.setId(SnowflakeIdWorker.generateId());
+           Long fileId = SnowflakeIdWorker.generateId();
+           result.put("fileId", fileId);
+           sysFile.setId(fileId);
            sysFile.setFileType(type);
            sysFile.setFkId(id);
            sysFile.setFileUrl(URL + url);
@@ -80,7 +83,6 @@ public class FileCosController extends BaseController<FileServiceImpl, File> {
            fileService.save(sysFile);
        }
 
-       Map<String,Object> result = new HashMap<>();
        result.put("url", URL + url);
 
        return DataResponse.success(result);

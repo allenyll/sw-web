@@ -21,7 +21,7 @@ mybatis-plus:
 
 ################### 腾讯云文件上传配置 ########################
 cos:
-  bucketName: system-web-1257935390
+  bucketName:
   region:
   appId:
   SecretId:
@@ -38,8 +38,9 @@ auth:
     systemWebUrl: http://localhost:8080/system-web/
     username:
     password:
-    mchId:
+    mchId:  
     key:
     orderUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+    refundUrl: https://api.mch.weixin.qq.com/secapi/pay/refund
     signType: MD5
     tradeType: JSAPI

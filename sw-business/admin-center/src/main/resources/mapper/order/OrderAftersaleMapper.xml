@@ -6,6 +6,7 @@
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.sw.common.entity.order.OrderAftersale" id="orderAftersaleMap">
         <result property="id" column="id"/>
+        <result property="aftersaleNo" column="aftersale_no"/>
         <result property="orderId" column="order_id"/>
         <result property="orderDetailId" column="order_detail_id"/>
         <result property="goodsId" column="goods_id"/>
@@ -32,6 +33,8 @@
         <result property="receiverCity" column="receiver_city"/>
         <result property="receiverRegion" column="receiver_region"/>
         <result property="receiverDetailAddress" column="receiver_detail_address"/>
+        <result property="receiverNote" column="receiver_note"/>
+        <result property="receiverTime" column="receiver_time"/>
         <result property="deliveryTime" column="delivery_time"/>
         <result property="applyTime" column="apply_time"/>
         <result property="dealTime" column="deal_time"/>
@@ -50,6 +53,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
+        aftersale_no
         order_id
         order_detail_id
         goods_id
@@ -76,6 +80,8 @@
         receiver_city
         receiver_region
         receiver_detail_address
+        receiver_note
+        receiver_time
         delivery_time
         apply_time
         deal_time
@@ -94,6 +100,7 @@
     <select id="selectAftersaleList" resultType="com.sw.common.dto.OrderAftersaleDto" parameterType="com.sw.common.dto.OrderQueryDto">
         SELECT
             t.id,
+            t.aftersale_no,
             t.order_id,
             t.order_detail_id,
             t.goods_id,
@@ -120,6 +127,8 @@
             t.receiver_city,
             t.receiver_region,
             t.receiver_detail_address,
+            t.receiver_note,
+            t.receiver_time,
             t.delivery_time,
             t.apply_time,
             t.deal_time,
@@ -140,12 +149,181 @@
             t1.order_status,
             t1.order_time,
             t1.order_amount,
-            t1.pay_amount
+            t1.pay_amount,
+            t4.pic as goodsFile,
+            t4.attributes,
+            t4.goods_price
         FROM
             snu_order_aftersale t
         LEFT JOIN snu_order t1 ON t1.id = t.order_id
         LEFT JOIN snu_goods t2 ON t2.id = t.goods_id
+        LEFT JOIN snu_order_detail t4 on t4.id = t.order_detail_id
         WHERE t.customer_id = #{customerId}
+    </select>
+
+    <sql id="whereSql">
+        where
+        t.is_delete = 0
+        <if test="aftersaleNo != '' and aftersaleNo != null">
+            and t.aftersale_no = #{aftersaleNo}
+        </if>
+        <if test="aftersaleStatus != '' and aftersaleStatus != null">
+            and t.aftersale_status = #{aftersaleStatus}
+        </if>
+        <if test="customerName != '' and customerName != null">
+            and t3.customer_name = #{customerName}
+        </if>
+        <if test="applyTimeStart != '' and applyTimeStart != null">
+            <![CDATA[
+                and t.apply_time >= concat(#{applyTimeStart} ," 00:00:00")
+            ]]>
+        </if>
+        <if test="applyTimeEnd != '' and applyTimeEnd != null">
+            <![CDATA[
+                and t.apply_time <= concat(#{applyTimeEnd} ," 23:59:59")
+            ]]>
+        </if>
+    </sql>
+
+    <select id="selectCount" parameterType="com.sw.common.dto.OrderQueryDto" resultType="int">
+        SELECT count(*) FROM snu_order_aftersale t
+        LEFT JOIN snu_order t1 ON t1.id = t.order_id
+        LEFT JOIN snu_goods t2 ON t2.id = t.goods_id
+        LEFT JOIN snu_customer t3 ON t3.id = t.customer_id
+        <include refid="whereSql"/>
+    </select>
+
+
+    <select id="getOrderAftersalePage"  resultType="com.sw.common.dto.OrderAftersaleDto" parameterType="com.sw.common.dto.OrderQueryDto">
+        SELECT
+            t.id,
+            t.aftersale_no,
+            t.order_id,
+            t.order_detail_id,
+            t.goods_id,
+            t.customer_id,
+            t.aftersale_type,
+            t.aftersale_status,
+            t.aftersale_reason,
+            t.apply_file,
+            t.refund_point,
+            t.use_point_amount,
+            t.get_point_amount,
+            t.refund_amount,
+            t.refund_type,
+            t.refund_quality,
+            t.refund_remark,
+            t.return_type,
+            t.refuse_reason,
+            t.delivery_company,
+            t.delivery_no,
+            t.receiver_name,
+            t.receiver_phone,
+            t.receiver_post_code,
+            t.receiver_province,
+            t.receiver_city,
+            t.receiver_region,
+            t.receiver_detail_address,
+            t.receiver_note,
+            t.receiver_time,
+            t.delivery_time,
+            t.apply_time,
+            t.deal_time,
+            t.audit_time,
+            t.cancel_time,
+            t.deal_user,
+            t.deal_user_name,
+            t.deal_note,
+            t.is_delete,
+            t.add_user,
+            t.add_time,
+            t.update_user,
+            t.update_time,
+            t2.goods_name,
+            t2.goods_code,
+            t2.price,
+            t3.customer_name,
+            t1.order_no,
+            t1.order_status,
+            t1.order_time,
+            t1.order_amount,
+            t1.pay_amount
+        FROM
+        snu_order_aftersale t
+        LEFT JOIN snu_order t1 ON t1.id = t.order_id
+        LEFT JOIN snu_goods t2 ON t2.id = t.goods_id
+        LEFT JOIN snu_customer t3 ON t3.id = t.customer_id
+        <include refid="whereSql"/>
+        ORDER BY t.apply_time DESC
+        limit #{start}, #{limit}
+    </select>
+
+    <select id="getApplyById" resultType="com.sw.common.dto.OrderAftersaleDto" parameterType="Long">
+        SELECT
+            t.id,
+            t.aftersale_no,
+            t.order_id,
+            t.order_detail_id,
+            t.goods_id,
+            t.customer_id,
+            t.aftersale_type,
+            t.aftersale_status,
+            t.aftersale_reason,
+            t.apply_file,
+            t.refund_point,
+            t.use_point_amount,
+            t.get_point_amount,
+            t.refund_amount,
+            t.refund_type,
+            t.refund_quality,
+            t.refund_remark,
+            t.return_type,
+            t.refuse_reason,
+            t.delivery_company,
+            t.delivery_no,
+            t.receiver_name,
+            t.receiver_phone,
+            t.receiver_post_code,
+            t.receiver_province,
+            t.receiver_city,
+            t.receiver_region,
+            t.receiver_detail_address,
+            t.receiver_note,
+            t.receiver_time,
+            t.delivery_time,
+            t.apply_time,
+            t.deal_time,
+            t.audit_time,
+            t.cancel_time,
+            t.deal_user,
+            t.deal_user_name,
+            t.deal_note,
+            t.is_delete,
+            t.add_user,
+            t.add_time,
+            t.update_user,
+            t.update_time,
+            t1.order_no,
+            t1.order_status,
+            t1.order_time,
+            t1.order_amount,
+            t1.pay_amount,
+            t2.goods_name,
+            t2.goods_code,
+            t2.price,
+            t3.brand_name,
+            t4.pic as goodsFile,
+            t4.attributes,
+            t4.goods_price,
+            t5.customer_name
+        FROM
+            snu_order_aftersale t
+        LEFT JOIN snu_order t1 ON t1.id = t.order_id
+        LEFT JOIN snu_goods t2 ON t2.id = t.goods_id
+        LEFT JOIN snu_brand t3 ON t3.id = t2.brand_id
+        LEFT JOIN snu_order_detail t4 on t4.id = t.order_detail_id
+        LEFT JOIN snu_customer t5 ON t5.id = t.customer_id
+        WHERE t.id = #{id}
     </select>
 
 </mapper>

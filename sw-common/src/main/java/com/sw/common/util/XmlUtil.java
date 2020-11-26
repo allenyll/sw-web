@@ -52,6 +52,19 @@ public class XmlUtil {
         return m;
     }
 
+    public static String GetMapToXML(Map<String, String> param) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<xml>");
+        for (Map.Entry<String, String> entry : param.entrySet()) {
+            sb.append("<" + entry.getKey() + ">");
+            sb.append(entry.getValue());
+            sb.append("</" + entry.getKey() + ">");
+        }
+        sb.append("</xml>");
+        return sb.toString();
+    }
+
+
     private static InputStream String2Inputstream(String str) {
         return new ByteArrayInputStream(str.getBytes());
     }

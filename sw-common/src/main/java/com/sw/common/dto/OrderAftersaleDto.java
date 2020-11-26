@@ -1,10 +1,15 @@
 package com.sw.common.dto;
 
+import com.sw.common.entity.order.Order;
+import com.sw.common.entity.order.OrderDetail;
+import com.sw.common.entity.product.Goods;
+import com.sw.common.entity.system.File;
 import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @Description:  订单售后DTO
@@ -22,6 +27,11 @@ public class OrderAftersaleDto implements Serializable {
      * 主键
      */
     private Long id;
+
+    /**
+     * 售后申请单号
+     */
+    private String aftersaleNo;
 
     /**
      * 订单ID
@@ -164,6 +174,16 @@ public class OrderAftersaleDto implements Serializable {
     private String receiverDetailAddress;
 
     /**
+     * 收货备注
+     */
+    private String receiverNote;
+
+    /**
+     * 收货时间
+     */
+    private String receiverTime;
+
+    /**
      * 退货时间
      */
     private String deliveryTime;
@@ -232,4 +252,60 @@ public class OrderAftersaleDto implements Serializable {
      * 订单创建时间
      */
     private String orderTime;
+
+    /**
+     * 用户名称
+     */
+    private String customerName;
+
+    /**
+     * 商品品牌
+     */
+    private String brandName;
+
+    /**
+     * 商品图片
+     */
+    private String goodsFile;
+
+    /**
+     * 商品属性
+     */
+    private String attributes;
+
+    /**
+     * 商品价格
+     */
+    private String price;
+
+    /**
+     * 商品售价
+     */
+    private String goodsPrice;
+
+    /**
+     * 商品编码
+     */
+    private String goodsCode;
+
+    /**
+     * 商品集合
+     */
+    private List<Goods> goodsList;
+
+    /**
+     * 订单信息
+     */
+    private Order order;
+
+    /**
+     * 订单详情
+     */
+    private OrderDetail orderDetail;
+
+    /**
+     * 售后图
+     */
+    private List<File> applyFiles;
+
 }

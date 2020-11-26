@@ -2,6 +2,7 @@ package com.sw.admin.pay.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sw.admin.order.service.impl.OrderServiceImpl;
+import com.sw.admin.pay.utils.HttpUtils;
 import com.sw.cache.util.CacheUtil;
 import com.sw.client.annotion.CurrentUser;
 import com.sw.common.constants.CacheKeys;
@@ -44,7 +45,7 @@ public class WxPayController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WxPayController.class);
 
-    private static final String     NOTIFY_URL = "https://www.allenyll.com/system-web/pay/payCallback";
+    private static final String NOTIFY_URL = "https://www.allenyll.com/system-web/pay/payCallback";
 
     @Autowired
     WxProperties wxProperties;
@@ -116,25 +117,12 @@ public class WxPayController {
         String stringA = StringUtil.formatUrlMap(paraMap, false, false);
         //第二步，在stringA最后拼接上key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。(签名)
         String sign = MD5Util.md5Password(stringA+"&key="+wxProperties.getKey()).toUpperCase();
+        paraMap.put("sign", sign);
         //将参数 编写XML格式
-        StringBuffer paramBuffer = new StringBuffer();
-        paramBuffer.append("<xml>");
-        paramBuffer.append("<appid>"+wxProperties.getAppId()+"</appid>");
-        paramBuffer.append("<mch_id>"+wxProperties.getMchId()+"</mch_id>");
-        paramBuffer.append("<nonce_str>"+paraMap.get("nonce_str")+"</nonce_str>");
-        paramBuffer.append("<sign>"+sign+"</sign>");
-        paramBuffer.append("<body>"+body+"</body>");
-        paramBuffer.append("<out_trade_no>"+paraMap.get("out_trade_no")+"</out_trade_no>");
-        paramBuffer.append("<total_fee>"+paraMap.get("total_fee")+"</total_fee>");
-        paramBuffer.append("<spbill_create_ip>"+paraMap.get("spbill_create_ip")+"</spbill_create_ip>");
-        paramBuffer.append("<notify_url>"+paraMap.get("notify_url")+"</notify_url>");
-        paramBuffer.append("<trade_type>"+paraMap.get("trade_type")+"</trade_type>");
-        paramBuffer.append("<openid>"+paraMap.get("openid")+"</openid>");
-        paramBuffer.append("</xml>");
-
+        String xmlData = XmlUtil.GetMapToXML(paraMap);
         try {
             //发送请求(POST)(获得数据包ID)(这有个注意的地方 如果不转码成ISO8859-1则会告诉你body不是UTF8编码 就算你改成UTF8编码也一样不好使 所以修改成ISO8859-1)
-            Map<String,String> map = XmlUtil.doXMLParse(HttpContextUtils.getRemotePortData(wxProperties.getOrderUrl(), new String(paramBuffer.toString().getBytes(), "ISO8859-1")));
+            Map<String,String> map = XmlUtil.doXMLParse(HttpUtils.getRemotePortData(wxProperties.getOrderUrl(), new String(xmlData.getBytes(), "ISO8859-1")));
             //应该创建 支付表数据
             if(map!=null){
 //                EntityWrapper<Customer> customerEntityWrapper = new EntityWrapper<>();

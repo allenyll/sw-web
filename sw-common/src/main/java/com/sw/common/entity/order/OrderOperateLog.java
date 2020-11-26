@@ -1,6 +1,7 @@
 package com.sw.common.entity.order;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sw.common.entity.BaseEntity;
@@ -34,5 +35,11 @@ public class OrderOperateLog extends BaseEntity<OrderOperateLog> {
 
 	//
     private String remark;
+
+    /**
+     * 操作人姓名
+     */
+    @TableField(exist = false)
+    private String optUserName;
 
 }

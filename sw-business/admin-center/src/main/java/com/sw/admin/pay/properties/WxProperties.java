@@ -50,6 +50,10 @@ public class WxProperties {
     @Value("${orderUrl}")
     private String orderUrl;
 
+
+    @Value("${refundUrl}")
+    private String refundUrl;
+
     @Value("${signType}")
     private String signType;
 

@@ -3,10 +3,16 @@ package com.sw.common.constants.dict;
 import com.sw.common.util.StringUtil;
 
 /**
- * 订单售后字典
+ * @Description:  订单售后字典
+ * @Author:       allenyll
+ * @Date:         2020/11/19 上午9:55
+ * @Version:      1.0
  */
 public enum OrderTradeDict {
 
+    /**
+     * 未完成
+     */
     START("SW1201", "未完成"),
     COMPLETE("SW1202", "已完成"),
     CANCEL("SW1203", "取消"),

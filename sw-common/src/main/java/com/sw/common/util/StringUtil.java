@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 字符串 工具类
@@ -183,6 +184,31 @@ public class StringUtil {
         }
         sb.append(result);
         return sb.toString();
+    }
+
+    public static String getOrderNo() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String times = sdf.format(new Date());
+        String orderId = String.valueOf(SnowflakeIdWorker.generateId()).substring(9, 18);
+        return times + orderId;
+    }
+
+    public static String getOrderAfterSaleNo() {
+        return String.valueOf(SnowflakeIdWorker.generateId()).substring(9, 18);
+    }
+
+    public static void main(String[] args) {
+        List<String> ids = new ArrayList<>();
+        for (int i=0; i < 100000; i++) {
+            String str = getOrderNo();
+            if (i == 0) {
+                System.out.println(str);
+            }
+            ids.add(str);
+        }
+        List<String> s = ids.stream().distinct().collect(Collectors.toList());
+        System.out.println(ids.size());
+        System.out.println(s.size());
     }
 
     /**
