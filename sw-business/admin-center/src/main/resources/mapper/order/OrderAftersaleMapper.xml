@@ -159,6 +159,7 @@
         LEFT JOIN snu_goods t2 ON t2.id = t.goods_id
         LEFT JOIN snu_order_detail t4 on t4.id = t.order_detail_id
         WHERE t.customer_id = #{customerId}
+        AND t.is_delete = 0
     </select>
 
     <sql id="whereSql">
@@ -324,6 +325,7 @@
         LEFT JOIN snu_order_detail t4 on t4.id = t.order_detail_id
         LEFT JOIN snu_customer t5 ON t5.id = t.customer_id
         WHERE t.id = #{id}
+        and t.is_delete = 0
     </select>
 
 </mapper>

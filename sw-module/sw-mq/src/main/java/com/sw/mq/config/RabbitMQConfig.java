@@ -42,7 +42,7 @@ public class RabbitMQConfig {
     public Queue orderTTLQueue() {
         return QueueBuilder
                 .durable(QueueEnum.QUEUE_ORDER_CANCEL_TTL.getQueueName())
-                .withArgument("x-dead-letter-exchange", QueueEnum.QUEUE_ORDER_CANCEL.getExchange())     //
+                .withArgument("x-dead-letter-exchange", QueueEnum.QUEUE_ORDER_CANCEL.getExchange())
                 .withArgument("x-dead-letter-routing-key", QueueEnum.QUEUE_ORDER_CANCEL.getRouteKey())
                 .build();
     }

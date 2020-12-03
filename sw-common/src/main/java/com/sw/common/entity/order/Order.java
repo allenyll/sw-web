@@ -43,6 +43,8 @@ public class Order extends BaseEntity<Order> {
 	// 订单状态 SW0701 未付款 SW0702 已付款  SW0703 已收货 SW0704 已评价 SW0705 已完成 SW0706 已取消
     private String orderStatus;
 
+    private String orderStatusRecord;
+
 	// 售后状态 SW0801 未发起售后 SW0802 申请售后 SW0803 取消售后 SW0804 售后处理中 SW0805 处理完成
     private String afterStatus;
 

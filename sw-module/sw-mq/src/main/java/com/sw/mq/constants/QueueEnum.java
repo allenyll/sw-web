@@ -19,8 +19,17 @@ public enum QueueEnum {
     /**
      * 订单消息队列ttl
      */
-    QUEUE_ORDER_CANCEL_TTL("sw.order.direct.ttl", "sw.order.cancel.ttl", "sw.order.cancel.ttl");
+    QUEUE_ORDER_CANCEL_TTL("sw.order.direct.ttl", "sw.order.cancel.ttl", "sw.order.cancel.ttl"),
 
+    /**
+     * 售后申请订单消息队列关键词
+     */
+    QUEUE_APPLY_CANCEL("sw.apply.direct", "sw.apply.cancel", "sw.apply.cancel"),
+
+    /**
+     * 售后申请订单消息队列ttl
+     */
+    QUEUE_APPLY_CANCEL_TTL("sw.apply.direct.ttl", "sw.apply.cancel.ttl", "sw.apply.cancel.ttl");
 
     private String exchange;
 

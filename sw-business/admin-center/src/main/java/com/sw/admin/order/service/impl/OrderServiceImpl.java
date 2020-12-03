@@ -2,11 +2,13 @@ package com.sw.admin.order.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sw.admin.order.service.IOrderAftersaleService;
 import com.sw.client.feign.SystemFeignClient;
 import com.sw.common.constants.dict.*;
 import com.sw.common.dto.OrderQueryDto;
 import com.sw.common.dto.OrderReturnDto;
 import com.sw.common.entity.order.Order;
+import com.sw.common.entity.order.OrderAftersale;
 import com.sw.common.entity.order.OrderDetail;
 import com.sw.common.entity.order.OrderOperateLog;
 import com.sw.common.entity.system.Dict;
@@ -55,6 +57,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Autowired
     OrderProducer orderProducer;
+
+    @Autowired
+    private IOrderAftersaleService orderAftersaleService;
 
     @Override
     public void createOrder(Order order, Map<String, Object> param) {
@@ -235,8 +240,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 order.setNote(note);
                 order.setUpdateUser(userId);
                 order.setUpdateTime(DateUtil.getCurrentDateTime());
-                // 未被主动取消的订单才执行
-                if (!OrderStatusDict.CANCEL.getCode().equals(order.getOrderStatus())) {
+                // 未支付的订单才执行
+                if (OrderStatusDict.START.getCode().equals(order.getOrderStatus())) {
                     order.setOrderStatus(OrderStatusDict.CANCEL.getCode());
                     orderMapper.updateById(order);
                     // 记录日志
@@ -285,6 +290,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 }
                 // 获取订单明细
                 List<OrderDetail> orderDetails = orderDetailService.getOrderDetailList(_map);
+                if (CollectionUtil.isNotEmpty(orderDetails)) {
+                    for (OrderDetail orderDetail:orderDetails) {
+                        if (!OrderSaleDict.START.getCode().equals(orderDetail.getStatus()) && !OrderSaleDict.CANCEL.getCode().equals(orderDetail.getStatus())) {
+                            QueryWrapper<OrderAftersale> wrapper = new QueryWrapper<>();
+                            wrapper.eq("ORDER_DETAIL_ID", orderDetail.getId());
+                            wrapper.ne("AFTERSALE_STATUS", OrderSaleDict.START.getCode());
+                            wrapper.ne("AFTERSALE_STATUS", OrderSaleDict.CANCEL.getCode());
+                            OrderAftersale aftersale = orderAftersaleService.getOne(wrapper);
+                            if (aftersale != null) {
+                                orderDetail.setOrderAftersaleId(aftersale.getId());
+                            }
+                        }
+                    }
+                }
                 order.setOrderDetails(orderDetails);
             }
         }

@@ -81,7 +81,7 @@ public class WxPayController {
         String remark = request.getParameter("remark");
         Long orderId = Long.parseLong(request.getParameter("orderId"));
         //接口调用总金额单位为分换算一下(测试金额改成1,单位为分则是0.01,根据自己业务场景判断是转换成float类型还是int类型)
-        BigDecimal bigAmount = new BigDecimal("0.01").multiply(new BigDecimal("100"));
+        BigDecimal bigAmount = new BigDecimal("0.02").multiply(new BigDecimal("100"));
         int amountFen = bigAmount.intValue();
         //创建hashmap(用户获得签名)
         SortedMap<String, String> paraMap = new TreeMap<>();

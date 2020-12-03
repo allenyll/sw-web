@@ -62,4 +62,27 @@ public interface IOrderAftersaleService extends IService<OrderAftersale> {
      * @return 返回值
      */
     Result updateAftersaleStatus(User user, OrderAftersaleDto aftersaleDto);
+
+    /**
+     * 取消售后申请单
+     * @param user 操作人
+     * @param orderAftersaleDto 参数
+     * @return 操作结果
+     */
+    Result<OrderAftersaleDto> cancelOrderAftersale(User user, OrderAftersaleDto orderAftersaleDto);
+
+    /**
+     * 删除售后申请单
+     * @param user 操作人
+     * @param orderAftersaleDto 参数
+     * @return 操作结果
+     */
+    Result<OrderAftersaleDto> deleteOrderAftersale(User user, OrderAftersaleDto orderAftersaleDto);
+
+    /**
+     * 更新发货信息
+     * @param orderAftersaleDto 参数
+     * @return 操作结果
+     */
+    Result<OrderAftersaleDto> saveDeliveryInfo(OrderAftersaleDto orderAftersaleDto);
 }

@@ -308,4 +308,9 @@ public class OrderAftersaleDto implements Serializable {
      */
     private List<File> applyFiles;
 
+    /**
+     * 未发货自动取消剩余时间
+     */
+    private long unDeliveryTime;
+
 }

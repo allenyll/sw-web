@@ -53,14 +53,14 @@ public class OrderAftersaleController extends BaseController<OrderAftersaleServi
     @ApiOperation("获取申请单详情")
     @ResponseBody
     @RequestMapping(value = "/getDetail/{id}", method = RequestMethod.GET)
-    public Result<OrderAftersaleDto> getDetail(@CurrentUser User user, @PathVariable Long id){
+    public Result<OrderAftersaleDto> getDetail(@CurrentUser(isFull = true) User user, @PathVariable Long id){
         return service.getDetail(user, id);
     }
 
     @ApiOperation("更新申请单详情")
     @ResponseBody
     @RequestMapping(value = "/updateAftersaleStatus", method = RequestMethod.POST)
-    public Result updateAftersaleStatus(@CurrentUser User user, @RequestBody OrderAftersaleDto aftersaleDto){
+    public Result updateAftersaleStatus(@CurrentUser(isFull = true) User user, @RequestBody OrderAftersaleDto aftersaleDto){
         return service.updateAftersaleStatus(user, aftersaleDto);
     }
 
@@ -84,6 +84,24 @@ public class OrderAftersaleController extends BaseController<OrderAftersaleServi
     @RequestMapping(value = "/submitOrderAftersale", method = RequestMethod.POST)
     public Result<OrderAftersaleDto> submitOrderAftersale(@RequestBody OrderAftersaleDto orderAftersaleDto){
         return service.submitOrderAftersale(orderAftersaleDto);
+    }
+
+    @ApiOperation("保存发货单")
+    @RequestMapping(value = "/saveDeliveryInfo", method = RequestMethod.POST)
+    public Result<OrderAftersaleDto> saveDeliveryInfo(@RequestBody OrderAftersaleDto orderAftersaleDto){
+        return service.saveDeliveryInfo(orderAftersaleDto);
+    }
+
+    @ApiOperation("取消售后申请单")
+    @RequestMapping(value = "/cancelOrderAftersale", method = RequestMethod.POST)
+    public Result<OrderAftersaleDto> cancelOrderAftersale(@CurrentUser(isFull = true) User user, @RequestBody OrderAftersaleDto orderAftersaleDto){
+        return service.cancelOrderAftersale(user, orderAftersaleDto);
+    }
+
+    @ApiOperation("删除售后申请单")
+    @RequestMapping(value = "/deleteOrderAftersale", method = RequestMethod.POST)
+    public Result<OrderAftersaleDto> deleteOrderAftersale(@CurrentUser(isFull = true) User user, @RequestBody OrderAftersaleDto orderAftersaleDto){
+        return service.deleteOrderAftersale(user, orderAftersaleDto);
     }
 
 }

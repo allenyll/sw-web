@@ -10,6 +10,7 @@
         <result property="customerId" column="customer_id"/>
         <result property="orderType" column="order_type"/>
         <result property="orderStatus" column="order_status"/>
+        <result property="orderStatusRecord" column="order_status_record"/>
         <result property="afterStatus" column="after_status"/>
         <result property="goodsCount" column="goods_count"/>
         <result property="orderAmount" column="order_amount"/>
@@ -68,6 +69,7 @@
         customer_id
         order_type
         order_status
+        order_status_record
         after_status
         goods_count
         order_amount
@@ -215,6 +217,7 @@
             t.customer_id as "customerId",
             t.order_type as "orderType",
             t.order_status as "orderStatus",
+            t.order_status_record as "orderStatusRecord",
             t.after_status as "afterStatus",
             t.goods_count as "goodsCount",
             t.order_amount as "orderAmount",

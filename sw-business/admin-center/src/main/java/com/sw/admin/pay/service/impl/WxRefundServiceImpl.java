@@ -114,7 +114,7 @@ public class WxRefundServiceImpl implements IWxRefundService {
         //商户退款订单号
         String outRefundNo = StringUtil.getOrderNo();
         //订单总金额 微信支付提交的金额是不能带小数点的，且是以分为单位,这边需要转成字符串类型，否则后面的签名会失败
-        String totalFee = String.valueOf(amount.intValue());
+        String totalFee = String.valueOf(amount.multiply(new BigDecimal(100)).intValue());
         //退款总金额
         String refundFee = String.valueOf(refundAmount.multiply(new BigDecimal(100)).intValue());
 

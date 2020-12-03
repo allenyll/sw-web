@@ -137,19 +137,20 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             } else if("0".equals(customer.getGender())){
                 gender = "SW0202";
             }
-            customer.setGender(gender);
-            customer.setEmail(customer.getEmail());
-            customer.setPhone(customer.getPhone());
-            customer.setCountry(customer.getCountry());
-            customer.setProvince(customer.getProvince());
-            customer.setCity(customer.getCity());
-            customer.setAvatarUrl(customer.getAvatarUrl());
-            customer.setAddUser(customer.getId());
-            customer.setUpdateTime(DateUtil.getCurrentDateTime());
-            customer.setCustomerAccount(customer.getNickName());
-            customer.setCustomerName(customer.getNickName());
+            hasCustomer.setGender(gender);
+            hasCustomer.setEmail(customer.getEmail());
+            hasCustomer.setPhone(customer.getPhone());
+            hasCustomer.setCountry(customer.getCountry());
+            hasCustomer.setProvince(customer.getProvince());
+            hasCustomer.setCity(customer.getCity());
+            hasCustomer.setAvatarUrl(customer.getAvatarUrl());
+            hasCustomer.setAddUser(customer.getId());
+            hasCustomer.setUpdateTime(DateUtil.getCurrentDateTime());
+            hasCustomer.setCustomerAccount(customer.getNickName());
+            hasCustomer.setCustomerName(customer.getNickName());
+            hasCustomer.setNickName(customer.getNickName());
             try {
-                customerMapper.updateById(customer);
+                customerMapper.updateById(hasCustomer);
                 // sendPoint(hasCustomer);
             } catch (Exception e) {
                 e.printStackTrace();
