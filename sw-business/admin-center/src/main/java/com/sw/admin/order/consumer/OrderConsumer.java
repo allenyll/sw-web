@@ -1,7 +1,7 @@
 package com.sw.admin.order.consumer;
 
 import com.sw.common.util.MapUtil;
-import com.sw.admin.order.service.IOrderService;
+import com.sw.admin.order.service.impl.IOrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

@@ -2,11 +2,9 @@ package com.sw.admin.order.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sw.admin.file.mapper.FileMapper;
-import com.sw.admin.member.service.ICustomerService;
 import com.sw.admin.order.producer.OrderAftersaleProducer;
 import com.sw.admin.order.service.IOrderAftersaleService;
 import com.sw.admin.order.service.IOrderDetailService;
-import com.sw.admin.order.service.IOrderService;
 import com.sw.admin.pay.service.ITransactionRefundService;
 import com.sw.admin.pay.service.ITransactionService;
 import com.sw.admin.pay.service.IWxRefundService;

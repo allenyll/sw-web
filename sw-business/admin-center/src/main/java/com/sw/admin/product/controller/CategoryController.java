@@ -204,7 +204,7 @@ public class CategoryController extends BaseController<CategoryServiceImpl, Cate
         childWrapper.eq("PARENT_ID", id);
         childWrapper.eq("IS_DELETE", 0);
         childWrapper.eq("IS_USED", "SW1302");
-        childWrapper.orderBy(true, false, "CATEGORY_NO");
+        childWrapper.orderBy(true, true, "CATEGORY_SEQ");
         List<Category> childCategoryList = categoryService.list(childWrapper);
         childCategoryList.add(category);
         for(Category child:childCategoryList){

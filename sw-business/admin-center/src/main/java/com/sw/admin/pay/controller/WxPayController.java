@@ -81,7 +81,7 @@ public class WxPayController {
         String remark = request.getParameter("remark");
         Long orderId = Long.parseLong(request.getParameter("orderId"));
         //接口调用总金额单位为分换算一下(测试金额改成1,单位为分则是0.01,根据自己业务场景判断是转换成float类型还是int类型)
-        BigDecimal bigAmount = new BigDecimal("0.02").multiply(new BigDecimal("100"));
+        BigDecimal bigAmount = new BigDecimal(amount).multiply(new BigDecimal("100"));
         int amountFen = bigAmount.intValue();
         //创建hashmap(用户获得签名)
         SortedMap<String, String> paraMap = new TreeMap<>();
@@ -313,28 +313,10 @@ public class WxPayController {
             transactionService.updateById(transaction);
             // 更新订单状态
             if("order".equals(type)){
-                updateOrder(params, transaction);
+                orderService.updateOrder(params, transaction);
             }
         }
         return DataResponse.success();
-    }
-
-
-    private void updateOrder(Map<String, Object> params, Transaction transaction) {
-        Long orderId = MapUtil.getLong(params, "orderId");
-        Order order = orderService.getById(orderId);
-        // TODO 订单不存在， 支付渠道改造
-        if(order == null){
-            return;
-        }
-        LOGGER.info("交易支付订单Order: "+order);
-        order.setPayAmount(transaction.getAmount());
-        // TODO 支付渠道改造
-        order.setPayChannel(transaction.getPayChannel());
-        order.setPayTime(transaction.getTransactionTime());
-        order.setOrderStatus(OrderStatusDict.PAY.getCode());
-        order.setTradeNo(transaction.getTransactionNo());
-        orderService.updateById(order);
     }
 
 }

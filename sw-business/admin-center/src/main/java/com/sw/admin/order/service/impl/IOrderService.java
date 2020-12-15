@@ -1,9 +1,10 @@
-package com.sw.admin.order.service;
+package com.sw.admin.order.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sw.common.dto.OrderQueryDto;
 import com.sw.common.dto.OrderReturnDto;
 import com.sw.common.entity.order.Order;
+import com.sw.common.entity.pay.Transaction;
 import com.sw.common.entity.system.User;
 import com.sw.common.util.DataResponse;
 import com.sw.common.util.Result;
@@ -156,4 +157,11 @@ public interface IOrderService extends IService<Order> {
      * @param optName 操作名称
      */
     void dealOperateLog(Long id, String time, Order order, String note, String type, String optName);
+
+    /**
+     * 更新订单信息，扣减库存
+     * @param params 参数
+     * @param transaction 支付信息
+     */
+    void updateOrder(Map<String, Object> params, Transaction transaction);
 }

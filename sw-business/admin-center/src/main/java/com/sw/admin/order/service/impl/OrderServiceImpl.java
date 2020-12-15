@@ -3,6 +3,8 @@ package com.sw.admin.order.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sw.admin.order.service.IOrderAftersaleService;
+import com.sw.admin.product.service.IGoodsService;
+import com.sw.admin.product.service.ISkuService;
 import com.sw.client.feign.SystemFeignClient;
 import com.sw.common.constants.dict.*;
 import com.sw.common.dto.OrderQueryDto;
@@ -11,12 +13,14 @@ import com.sw.common.entity.order.Order;
 import com.sw.common.entity.order.OrderAftersale;
 import com.sw.common.entity.order.OrderDetail;
 import com.sw.common.entity.order.OrderOperateLog;
+import com.sw.common.entity.pay.Transaction;
+import com.sw.common.entity.product.Goods;
+import com.sw.common.entity.product.Sku;
 import com.sw.common.entity.system.Dict;
 import com.sw.common.entity.system.User;
 import com.sw.common.util.*;
 import com.sw.admin.order.mapper.OrderMapper;
 import com.sw.admin.order.producer.OrderProducer;
-import com.sw.admin.order.service.IOrderService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -26,7 +30,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -60,6 +63,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Autowired
     private IOrderAftersaleService orderAftersaleService;
+
+    @Autowired
+    private ISkuService skuService;
+
+    @Autowired
+    private IGoodsService goodsService;
 
     @Override
     public void createOrder(Order order, Map<String, Object> param) {
@@ -525,6 +534,45 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderOperateLog.setUpdateUser(userId);
         orderOperateLog.setUpdateTime(time);
         orderOperateLogService.save(orderOperateLog);
+    }
+
+    @Override
+    public void updateOrder(Map<String, Object> params, Transaction transaction) {
+        Long orderId = MapUtil.getLong(params, "orderId");
+        Order order = orderMapper.selectById(orderId);
+        // TODO 订单不存在， 支付渠道改造
+        if(order == null){
+            return;
+        }
+        LOGGER.info("交易支付订单Order: "+order);
+        order.setPayAmount(transaction.getAmount());
+        // TODO 支付渠道改造
+        order.setPayChannel(transaction.getPayChannel());
+        order.setPayTime(transaction.getTransactionTime());
+        order.setOrderStatus(OrderStatusDict.PAY.getCode());
+        order.setTradeNo(transaction.getTransactionNo());
+        orderMapper.updateById(order);
+        // 库存扣减
+        QueryWrapper<OrderDetail> orderDetailQueryWrapper = new QueryWrapper<>();
+        orderDetailQueryWrapper.eq("ORDER_ID", order.getId());
+        orderDetailQueryWrapper.eq("IS_DELETE", 0);
+        List<OrderDetail> list = orderDetailService.list(orderDetailQueryWrapper);
+        if (CollectionUtil.isNotEmpty(list)) {
+            for (OrderDetail orderDetail:list) {
+                Sku sku = skuService.getById(orderDetail.getSkuId());
+                if (sku != null) {
+                    int exStock = sku.getSkuStock() - orderDetail.getQuantity();
+                    sku.setSkuStock(exStock);
+                    skuService.updateById(sku);
+                }
+                Goods goods = goodsService.getById(orderDetail.getGoodsId());
+                if (goods != null) {
+                    int exStock = goods.getStock() - orderDetail.getQuantity();
+                    goods.setStock(exStock);
+                    goodsService.updateById(goods);
+                }
+            }
+        }
     }
 
 }
