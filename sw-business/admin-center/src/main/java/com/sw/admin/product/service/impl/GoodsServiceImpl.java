@@ -1,10 +1,13 @@
 package com.sw.admin.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sw.admin.file.service.impl.FileServiceImpl;
 import com.sw.cache.util.CacheUtil;
 import com.sw.common.constants.dict.FileDict;
+import com.sw.common.dto.GoodsQueryDto;
+import com.sw.common.dto.GoodsResult;
 import com.sw.common.entity.product.*;
 import com.sw.common.entity.system.File;
 import com.sw.common.entity.system.User;
@@ -60,6 +63,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Autowired
     FileServiceImpl fileService;
+
+    @Autowired
+    GoodsMapper goodsMapper;
 
     /**
      * 创建商品
@@ -436,5 +442,59 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         }else{
             goods.setFileUrl(DEFAULT_URL);
         }
+    }
+
+    @Override
+    public Result<GoodsResult> getGoodsListByCondition(GoodsQueryDto goodsQueryDto) {
+        GoodsResult goodsResult = new GoodsResult();
+        int page = goodsQueryDto.getPage();
+        int limit = goodsQueryDto.getLimit();
+        int totalPage = 0;
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.eq("IS_DELETE", 0);
+        String sort = goodsQueryDto.getSort();
+        if ("default".equals(sort)) {
+            // 综合排序处理
+            sort = "GOODS_SEQ";
+        }
+
+        String order = goodsQueryDto.getOrder();
+        boolean isAsc;
+        if ("asc".endsWith(order)) {
+            isAsc = true;
+        } else {
+            isAsc = false;
+        }
+        wrapper.orderBy(true, isAsc, sort);
+        if (StringUtil.isNotEmpty(goodsQueryDto.getKeyword())) {
+            wrapper.like("GOODS_NAME", goodsQueryDto.getKeyword());
+        }
+        if (StringUtil.isNotEmpty(goodsQueryDto.getCategoryId())) {
+            wrapper.eq("CATEGORY_ID", goodsQueryDto.getCategoryId());
+        }
+
+        int total = goodsMapper.selectCount(wrapper);
+        Page<Goods> pages = goodsMapper.selectPage(new Page<>(page, limit), wrapper);
+        List<Goods> list = pages.getRecords();
+        if(CollectionUtil.isNotEmpty(list)){
+            for (Goods goods: list){
+                setFile(goods);
+            }
+        }
+
+        int num = total%limit;
+        if(num == 0){
+            totalPage = total/limit;
+        }else{
+            totalPage = total/limit + 1;
+        }
+
+        goodsResult.setCurrentPage(page);
+        goodsResult.setTotalPage(totalPage);
+        goodsResult.setGoodsList(list);
+
+        Result<GoodsResult> resultResult = new Result<>();
+        resultResult.setObject(goodsResult);
+        return resultResult;
     }
 }

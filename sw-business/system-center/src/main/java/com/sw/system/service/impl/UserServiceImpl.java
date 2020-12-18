@@ -59,7 +59,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             String jti = (String) claims.get("jti");
             // 获取用户
             QueryWrapper<User> wrapper = new QueryWrapper<>();
-            wrapper.eq("ACCOUNT", username);
+            wrapper.eq("ID", username);
             wrapper.eq("STATUS", UserStatus.OK.getCode());
             wrapper.eq("IS_DELETE", 0);
             User user = userMapper.selectOne(wrapper);

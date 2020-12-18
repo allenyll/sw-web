@@ -203,13 +203,14 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
     public Result<Customer> getPhoneNumber(Map<String, Object> params) {
         Result<Customer> result = new Result<>();
         String code = MapUtil.getMapValue(params, "code");
+        String mode = MapUtil.getMapValue(params, "mode");
         String encryptedData = MapUtil.getMapValue(params, "encryptedData");
         String iv = MapUtil.getMapValue(params, "iv");
         WxCodeResponse response = getWxCodeSession(code);
         String str = AESUtil.wxDecrypt(encryptedData, response.getSessionKey(), iv);
         JSONObject json = JSONObject.fromObject(str);
         String phoneNumber = json.getString("phoneNumber");
-        String currentOpenId = cacheUtil.get(CacheKeys.WX_CURRENT_OPENID + "_" + response.getOpenid());
+        String currentOpenId = cacheUtil.get(CacheKeys.WX_CURRENT_OPENID + "_" + mode + "_" + response.getOpenid(), String.class);
         Customer customer = null;
         if(StringUtil.isNotEmpty(phoneNumber)){
             if(response.getOpenid().equals(currentOpenId)){

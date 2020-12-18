@@ -66,8 +66,9 @@ public class WxPayController {
         Map<String, Object> result = new HashMap<>();
         //接受参数(openid)
         String openid = request.getParameter("openid");
-        String currentOpenid = cacheUtil.get(CacheKeys.WX_CURRENT_OPENID + "_" + openid);
-        if (!openid.equals(currentOpenid)) {
+        String mode = request.getParameter("mode");
+        String currentOpenId = cacheUtil.get(CacheKeys.WX_CURRENT_OPENID + "_" + mode + "_" + openid, String.class);
+        if (!openid.equals(currentOpenId)) {
             return DataResponse.fail("当前用户与登录用户不匹配");
         }
 

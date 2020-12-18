@@ -9,6 +9,8 @@ import com.sw.client.controller.BaseController;
 import com.sw.common.constants.BaseConstants;
 import com.sw.common.constants.dict.FileDict;
 import com.sw.common.constants.dict.IsOrNoDict;
+import com.sw.common.dto.GoodsQueryDto;
+import com.sw.common.dto.GoodsResult;
 import com.sw.common.entity.cms.SearchHistory;
 import com.sw.common.entity.product.Goods;
 import com.sw.common.entity.product.GoodsParam;
@@ -406,6 +408,15 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
 
         return DataResponse.success(result);
     }
+
+    @ApiOperation("SWEB_SX获取商品列表")
+    @ResponseBody
+    @RequestMapping(value = "/getGoodsListByCondition", method = RequestMethod.POST)
+    public Result<GoodsResult> getGoodsListByCondition(@RequestBody GoodsQueryDto goodsQueryDto){
+        return service.getGoodsListByCondition(goodsQueryDto);
+    }
+
+
 
     public static void main(String[] args) {
         int count = 0;
