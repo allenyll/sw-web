@@ -82,7 +82,7 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
         wrapper.eq("STATUS", IsOrNoDict.YES.getCode());
         wrapper.orderBy(true, true, "SPECS_SEQ");
 
-        List<Specs> specsList = specsService.list(wrapper);File
+        List<Specs> specsList = specsService.list(wrapper);
         if(CollectionUtil.isNotEmpty(specsList)) {
             for(Specs specs:specsList){
                 QueryWrapper<SpecOption> entityWrapper = new QueryWrapper<>();
