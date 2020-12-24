@@ -3,12 +3,15 @@ package com.sw.admin.product.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sw.client.annotion.CurrentUser;
 import com.sw.client.controller.BaseController;
+import com.sw.common.constants.dict.IsOrNoDict;
 import com.sw.common.entity.product.SpecOption;
 import com.sw.common.entity.product.Specs;
 import com.sw.common.entity.system.User;
 import com.sw.common.util.*;
 import com.sw.admin.product.service.impl.SpecOptionServiceImpl;
 import com.sw.admin.product.service.impl.SpecsServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Api(value = "规格管理接口", tags = "规格管理接口")
 @RequestMapping("specs")
 public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
 
@@ -37,6 +41,7 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
         return super.add(user, entity);
     }
 
+    @ApiOperation("封装前端下拉列表")
     @Override
     @ResponseBody
     @RequestMapping(value = "list", method = RequestMethod.POST)
@@ -48,11 +53,13 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
         List<Map<String, Object>> newList = new ArrayList<>();
         if(CollectionUtil.isNotEmpty(list)){
             for(Specs specs:list){
-                Map<String, Object> _map = new HashMap<>();
-                map.put(specs.getId(), specs.getSpecsName());
-                _map.put("label", specs.getSpecsName());
-                _map.put("value", specs.getId());
-                newList.add(_map);
+                if (IsOrNoDict.YES.getCode().equals(specs.getStatus())) {
+                    Map<String, Object> _map = new HashMap<>();
+                    map.put(specs.getId(), specs.getSpecsName());
+                    _map.put("label", specs.getSpecsName());
+                    _map.put("value", specs.getId());
+                    newList.add(_map);
+                }
             }
         }
         Map<String, Object> result = new HashMap<>();
@@ -61,6 +68,7 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
         return DataResponse.success(result);
     }
 
+    @ApiOperation("根据所属菜单获取下挂的规格和规格属性")
     @ResponseBody
     @RequestMapping(value = "getSpecsListCondition", method = RequestMethod.POST)
     public DataResponse getSpecsListCondition(@RequestParam Map<String, Object> params) {
@@ -71,8 +79,10 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
         QueryWrapper<Specs> wrapper = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
         wrapper.like("CATEGORY_ID", MapUtil.getLong(params, "categoryId"));
+        wrapper.eq("STATUS", IsOrNoDict.YES.getCode());
+        wrapper.orderBy(true, true, "SPECS_SEQ");
 
-        List<Specs> specsList = specsService.list(wrapper);
+        List<Specs> specsList = specsService.list(wrapper);File
         if(CollectionUtil.isNotEmpty(specsList)) {
             for(Specs specs:specsList){
                 QueryWrapper<SpecOption> entityWrapper = new QueryWrapper<>();
@@ -94,7 +104,7 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
         return DataResponse.success(result);
     }
 
-
+    @ApiOperation("根据ID获取规格")
     @Override
     @ResponseBody
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -118,3 +128,4 @@ public class SpecsController extends BaseController<SpecsServiceImpl, Specs> {
     }
 
 }
+

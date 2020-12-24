@@ -15,9 +15,16 @@ public interface IGoodsService extends IService<Goods> {
     void setFile(Goods goods);
 
     /**
-     *
+     * 获取商品列表
      * @param goodsQueryDto
      * @return
      */
     Result<GoodsResult> getGoodsListByCondition(GoodsQueryDto goodsQueryDto);
+
+    /**
+     * 获取商品库存信息
+     * @param goodsQueryDto
+     * @return
+     */
+    Result<GoodsResult> getStock(GoodsQueryDto goodsQueryDto);
 }

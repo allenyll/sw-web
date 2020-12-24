@@ -409,11 +409,19 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         return DataResponse.success(result);
     }
 
-    @ApiOperation("SWEB_SX获取商品列表")
+    @ApiOperation("获取商品列表")
     @ResponseBody
     @RequestMapping(value = "/getGoodsListByCondition", method = RequestMethod.POST)
     public Result<GoodsResult> getGoodsListByCondition(@RequestBody GoodsQueryDto goodsQueryDto){
         return service.getGoodsListByCondition(goodsQueryDto);
+    }
+
+
+    @ApiOperation("获取商品库存信息")
+    @ResponseBody
+    @RequestMapping(value = "/getStock", method = RequestMethod.POST)
+    public Result<GoodsResult> getStock(@RequestBody GoodsQueryDto goodsQueryDto){
+        return service.getStock(goodsQueryDto);
     }
 
 

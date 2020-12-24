@@ -197,18 +197,47 @@ public class StringUtil {
         return String.valueOf(SnowflakeIdWorker.generateId()).substring(9, 18);
     }
 
+    /**
+     * 获取字符串中的数字
+     * @param from
+     * @return
+     */
+    public static String getNumFromStr(String from) {
+        String regEx = "[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(from);
+        return m.replaceAll("").trim();
+    }
+
+    /**
+     * 获取字符串中的字母
+     * @param from
+     * @return
+     */
+    public static String getCharFromStr(String from) {
+        String regEx = "[^a-zA-Z]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(from);
+        return m.replaceAll("").trim();
+    }
+
     public static void main(String[] args) {
-        List<String> ids = new ArrayList<>();
-        for (int i=0; i < 100000; i++) {
-            String str = getOrderNo();
-            if (i == 0) {
-                System.out.println(str);
-            }
-            ids.add(str);
-        }
-        List<String> s = ids.stream().distinct().collect(Collectors.toList());
-        System.out.println(ids.size());
-        System.out.println(s.size());
+//        List<String> ids = new ArrayList<>();
+//        for (int i=0; i < 100000; i++) {
+//            String str = getOrderNo();
+//            if (i == 0) {
+//                System.out.println(str);
+//            }
+//            ids.add(str);
+//        }
+//        List<String> s = ids.stream().distinct().collect(Collectors.toList());
+//        System.out.println(ids.size());
+//        System.out.println(s.size());
+        String a="YS107";
+        String regEx="[^a-zA-Z]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(a);
+        System.out.println( m.replaceAll("").trim());
     }
 
     /**

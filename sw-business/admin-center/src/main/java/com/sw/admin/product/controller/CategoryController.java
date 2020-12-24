@@ -112,9 +112,11 @@ public class CategoryController extends BaseController<CategoryServiceImpl, Cate
     @ResponseBody
     @RequestMapping(value = "categoryTree", method = RequestMethod.GET)
     public DataResponse categoryTree(){
-        DataResponse dataResponse = super.list();
-        Map<String, Object> data = (Map<String, Object>) dataResponse.get("data");
-        List<Category> list = (List<Category>) data.get("list");
+        QueryWrapper<Category> wrapper = new QueryWrapper<>();
+        wrapper.eq("IS_DELETE", 0);
+        wrapper.eq("IS_USED", StatusDict.START.getCode());
+        wrapper.orderBy(true, true, "CATEGORY_SEQ");
+        List<Category> list = service.list(wrapper);
         if(!CollectionUtils.isEmpty(list)){
             for(Category _category:list){
                 setParentCategory(_category);

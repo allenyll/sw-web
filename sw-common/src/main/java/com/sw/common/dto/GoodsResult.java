@@ -3,6 +3,7 @@ package com.sw.common.dto;
 import com.sw.common.entity.product.Goods;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -30,4 +31,29 @@ public class GoodsResult {
      * 商品集合
      */
     private List<Goods> goodsList;
+
+    /**
+     * 总商品数量
+     */
+    private Integer totalSkuNum;
+
+    /**
+     * 总库存数量
+     */
+    private Integer totalStock;
+
+    /**
+     * 总库存成本
+     */
+    private BigDecimal totalCost;
+
+    /**
+     * 总库存成本，以万展示，保留2为小数
+     */
+    private BigDecimal cost;
+
+    /**
+     * 总告警库存数量
+     */
+    private Integer totalWarnStock;
 }

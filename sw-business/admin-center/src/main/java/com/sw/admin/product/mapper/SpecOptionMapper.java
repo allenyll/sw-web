@@ -12,4 +12,10 @@ import com.sw.common.entity.product.SpecOption;
  */
 public interface SpecOptionMapper extends BaseMapper<SpecOption> {
 
+    /**
+     * 获取最大编码
+     * @param specsId
+     * @return
+     */
+    String getMaxCode(String specsId);
 }

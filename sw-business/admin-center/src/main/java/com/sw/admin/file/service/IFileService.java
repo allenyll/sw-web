@@ -31,4 +31,10 @@ public interface IFileService extends IService<File> {
      * @param fkId
      */
     void removeFileById(Long id, Long fkId);
+
+    /**
+     * 根据url删除文件
+     * @param url
+     */
+    void deleteFileByUrl(String url);
 }

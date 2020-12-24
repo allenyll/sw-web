@@ -96,4 +96,14 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements IF
     public void removeFileById(Long userId, Long fileId) {
         fileMapper.deleteById(fileId);
     }
+
+    @Override
+    public void deleteFileByUrl(String url) {
+        QueryWrapper<File> wrapper = new QueryWrapper<>();
+        wrapper.eq("IS_DELETE", 0);
+        wrapper.eq("URL", url);
+        File sysFile = fileMapper.selectOne(wrapper);
+        sysFile.setIsDelete(1);
+        fileMapper.updateById(sysFile);
+    }
 }

@@ -29,4 +29,12 @@
         update_time
     </sql>
 
+    <select id="getMaxCode" parameterType="String" resultType="String">
+        SELECT
+            MAX(t.code) AS code
+        FROM
+            snu_spec_option t
+        where t.specs_id = #{specsId}
+        and is_delete = 0
+    </select>
 </mapper>

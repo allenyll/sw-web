@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sw.admin.file.service.impl.FileServiceImpl;
 import com.sw.cache.util.CacheUtil;
 import com.sw.common.constants.dict.FileDict;
+import com.sw.common.constants.dict.SaleOrNotDict;
+import com.sw.common.constants.dict.StatusDict;
 import com.sw.common.dto.GoodsQueryDto;
 import com.sw.common.dto.GoodsResult;
 import com.sw.common.entity.product.*;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -453,9 +456,38 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         QueryWrapper<Goods> wrapper = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
         String sort = goodsQueryDto.getSort();
-        if ("default".equals(sort)) {
+        if ("default".equals(sort) || "category".equals(sort)) {
             // 综合排序处理
             sort = "GOODS_SEQ";
+        }
+
+        if (StringUtil.isNotEmpty(goodsQueryDto.getKeyword())) {
+            wrapper.like("GOODS_NAME", goodsQueryDto.getKeyword());
+        }
+        if (StringUtil.isNotEmpty(goodsQueryDto.getCategoryId())) {
+            wrapper.eq("CATEGORY_ID", goodsQueryDto.getCategoryId());
+        }
+        if (StringUtil.isNotEmpty(goodsQueryDto.getBrandId())) {
+            wrapper.eq("BRAND_ID", goodsQueryDto.getBrandId());
+        }
+        if (StringUtil.isNotEmpty(goodsQueryDto.getStatus())) {
+            wrapper.eq("STATUS", goodsQueryDto.getStatus());
+        } else {
+            wrapper.eq("STATUS", SaleOrNotDict.SALE.getCode());
+        }
+        if (StringUtil.isNotEmpty(goodsQueryDto.getIsUsed())) {
+            wrapper.eq("IS_USED", goodsQueryDto.getIsUsed());
+        } else {
+            wrapper.eq("IS_USED", StatusDict.START.getCode());
+        }
+        if (StringUtil.isNotEmpty(goodsQueryDto.getYear())) {
+            wrapper.gt("SALE_TIME", goodsQueryDto.getYear()+"-01-01 00:00:00");
+        }
+        if (StringUtil.isNotEmpty(goodsQueryDto.getUnit())) {
+            wrapper.eq("UNIT", goodsQueryDto.getUnit());
+        }
+        if (StringUtil.isNotEmpty(goodsQueryDto.getSeason())) {
+            wrapper.eq("SEASON", goodsQueryDto.getUnit());
         }
 
         String order = goodsQueryDto.getOrder();
@@ -466,12 +498,6 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             isAsc = false;
         }
         wrapper.orderBy(true, isAsc, sort);
-        if (StringUtil.isNotEmpty(goodsQueryDto.getKeyword())) {
-            wrapper.like("GOODS_NAME", goodsQueryDto.getKeyword());
-        }
-        if (StringUtil.isNotEmpty(goodsQueryDto.getCategoryId())) {
-            wrapper.eq("CATEGORY_ID", goodsQueryDto.getCategoryId());
-        }
 
         int total = goodsMapper.selectCount(wrapper);
         Page<Goods> pages = goodsMapper.selectPage(new Page<>(page, limit), wrapper);
@@ -496,5 +522,18 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         Result<GoodsResult> resultResult = new Result<>();
         resultResult.setObject(goodsResult);
         return resultResult;
+    }
+
+    @Override
+    public Result<GoodsResult> getStock(GoodsQueryDto goodsQueryDto) {
+        GoodsResult goodsResult;
+        Result<GoodsResult> result = new Result<>();
+        goodsResult = goodsMapper.getStock(goodsQueryDto);
+        BigDecimal cost = goodsResult.getTotalCost().divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        goodsResult.setCost(cost);
+        int warnNum = goodsMapper.getWarnStock(goodsQueryDto);
+        goodsResult.setTotalWarnStock(warnNum);
+        result.setObject(goodsResult);
+        return result;
     }
 }

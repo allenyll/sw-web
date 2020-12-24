@@ -107,4 +107,33 @@
         update_time
     </sql>
 
+    <select id="getStock" parameterType="com.sw.common.dto.GoodsQueryDto" resultType="com.sw.common.dto.GoodsResult">
+        SELECT
+            count(ss.id) as totalSkuNum,
+            sum(ss.sku_stock) as totalStock,
+            sum(ss.sku_stock*sg.cost_price) as totalCost
+        FROM
+            snu_sku ss
+        LEFT JOIN snu_goods sg on sg.id = SS.goods_id
+        WHERE
+        ss.is_delete = 0
+        and sg.is_used = 'SW1302'
+        and sg.status = 'SW1401'
+        and sg.is_delete = 0
+    </select>
+
+    <select id="getWarnStock" parameterType="com.sw.common.dto.GoodsQueryDto" resultType="int">
+        SELECT
+            count(ss.id) as totakSkuNum
+        FROM
+            snu_sku ss
+        LEFT JOIN snu_goods sg on sg.id = SS.goods_id
+        WHERE
+        ss.is_delete = 0
+        and sg.is_used = 'SW1302'
+        and sg.status = 'SW1401'
+        and sg.is_delete = 0
+        and ss.warn_stock = ss.sku_stock
+    </select>
+
 </mapper>

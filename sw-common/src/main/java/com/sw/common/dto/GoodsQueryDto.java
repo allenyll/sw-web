@@ -12,7 +12,7 @@ import lombok.Data;
  * @version V1.0
  */
 @Data
-public class GoodsQueryDto extends BaseQueryDto{
+public class GoodsQueryDto extends BaseQueryDto {
 
     /**
      * 排序类型
@@ -33,4 +33,35 @@ public class GoodsQueryDto extends BaseQueryDto{
      * 商品分类ID
      */
     private Long categoryId;
+
+    /**
+     * 品牌
+     */
+    private Long brandId;
+
+    /**
+     * 商品状态
+     */
+    private String status;
+
+    /**
+     * 启用状态
+     */
+    private String isUsed;
+
+    /**
+     * 年份
+     */
+    private String year;
+
+    /**
+     * 单位
+     */
+    private String unit;
+
+    /**
+     * 季节
+     */
+    private String season;
+
 }

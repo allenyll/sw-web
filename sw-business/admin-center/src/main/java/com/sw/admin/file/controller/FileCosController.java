@@ -156,6 +156,12 @@ public class FileCosController extends BaseController<FileServiceImpl, File> {
         fileService.deleteFile(fkId);
     }
 
+    @ApiOperation("删除文件")
+    @RequestMapping(value = "/deleteFileByUrl", method = RequestMethod.POST)
+    public void deleteFileByUrl(@RequestBody File file) {
+        fileService.deleteFileByUrl(file.getFileUrl());
+    }
+
     @RequestMapping(value = "updateFile", method = RequestMethod.POST)
     public void updateFile(@RequestBody Map<String, Object> params) {
        fileService.updateFile(params);
