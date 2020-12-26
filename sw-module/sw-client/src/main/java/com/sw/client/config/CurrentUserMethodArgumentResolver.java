@@ -63,7 +63,7 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
                 user.setUserName(customer.getCustomerName());
                 user.setAccount(customer.getCustomerAccount());
             } else {
-                user = systemFeignClient.selectUserByName(userName);
+                user = systemFeignClient.selectById(Long.parseLong(userName));
             }
         } else {
             user = new User();
