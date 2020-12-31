@@ -36,8 +36,8 @@ import java.util.*;
 @Service("goodsService")
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements IGoodsService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GoodsServiceImpl.class);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GoodsServiceImpl.class);
     protected static final String DEFAULT_URL = "https://system-web-1257935390.cos.ap-chengdu.myqcloud.com/images/no.jpeg";
 
     @Autowired
@@ -78,14 +78,31 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @throws Exception
      */
     public int createGoods(GoodsParam goodsParam, User user) throws Exception {
+        Goods goods = goodsParam;
+        if (StringUtil.isEmpty(goodsParam.getSaleTime())) {
+            goodsParam.setSaleTime(DateUtil.getCurrentDateTime());
+        }
+        Long userId = user.getId();
+        goods.setIsDelete(0);
+        goods.setAddTime(DateUtil.getCurrentDateTime());
+        goods.setAddUser(userId);
+        goods.setUpdateTime(DateUtil.getCurrentDateTime());
+        goods.setUpdateUser(userId);
+        goods.setWarningStock(2);
+        int num = goodsMapper.insert(goods);
         String promotionType = goodsParam.getPromotionType();
         // 无优惠不保存优惠信息
         if(!"SW2001".equals(promotionType)){
             insertRelateList(goodsFullReduceService, goodsParam.getGoodsFullReduceList(), goodsParam.getId());
             insertRelateList(goodsLadderService, goodsParam.getGoodsLadderList(), goodsParam.getId());
         }
-        insertSkuStock(goodsParam.getSkuStockList(), goodsParam.getId(), user);
-        return 1;
+        int stock = insertSkuStock(goodsParam.getSkuStockList(), goodsParam.getPrice(), goodsParam.getId(), user);
+        Goods newGoods = goodsMapper.selectById(goodsParam.getId());
+        if (newGoods != null) {
+            newGoods.setStock(stock);
+            goodsMapper.updateById(newGoods);
+        }
+        return num;
     }
 
     /**
@@ -112,7 +129,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             insertRelateList(goodsLadderService, goodsParam.getGoodsLadderList(), goodsParam.getId());
         }
         deleteSkuStock(goodsParam);
-        insertSkuStock(goodsParam.getSkuStockList(), goodsParam.getId(), user);
+        int stock = insertSkuStock(goodsParam.getSkuStockList(), goodsParam.getPrice(), goodsParam.getId(), user);
+        Goods goods = goodsParam;
+        goods.setStock(stock);
+        goods.setUpdateTime(DateUtil.getCurrentDateTime());
+        goods.setUpdateUser(user.getId());
+        goodsMapper.updateById(goods);
         return 1;
     }
 
@@ -162,6 +184,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         goodsParam.setParentCategoryId(category.getParentId());
         Category specCategory = categoryService.getById(goodsParam.getSpecCategoryId());
         goodsParam.setParentSpecCategoryId(specCategory.getParentId());
+        goodsParam.setCategoryName(specCategory.getCategoryName());
 
         String promotionType = goods.getPromotionType();
         if(!"SW2001".equals(promotionType)){
@@ -326,12 +349,24 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     /**
      * 保存SKU
      * @param skuStockList
+     * @param price
      * @param pkGoodsId
      */
-    private void insertSkuStock(List<Sku> skuStockList, Long pkGoodsId, User user) {
+    private int insertSkuStock(List<Sku> skuStockList, BigDecimal price, Long pkGoodsId, User user) {
         Long userId =  user.getId();
+        int stock = 0;
         if(CollectionUtil.isNotEmpty(skuStockList)){
             for(Sku sku:skuStockList) {
+                if(StringUtil.isEmpty(sku.getSkuStock())) {
+                    sku.setSkuStock(0);
+                }
+                if(StringUtil.isEmpty(sku.getWarnStock())) {
+                    sku.setWarnStock(1);
+                }
+                if(StringUtil.isEmpty(sku.getSkuPrice())) {
+                    sku.setSkuPrice(price);
+                }
+                stock += sku.getSkuStock();
                 dealSkuCode(sku, pkGoodsId);
                 sku.setId(SnowflakeIdWorker.generateId());
                 sku.setGoodsId(pkGoodsId);
@@ -344,6 +379,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                 skuService.save(sku);
             }
         }
+        return stock;
     }
 
     /**
@@ -529,11 +565,25 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         GoodsResult goodsResult;
         Result<GoodsResult> result = new Result<>();
         goodsResult = goodsMapper.getStock(goodsQueryDto);
-        BigDecimal cost = goodsResult.getTotalCost().divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        goodsResult.setCost(cost);
-        int warnNum = goodsMapper.getWarnStock(goodsQueryDto);
-        goodsResult.setTotalWarnStock(warnNum);
+        if (goodsResult != null) {
+            BigDecimal cost = goodsResult.getTotalCost().divide(new BigDecimal(10000)).setScale(2, BigDecimal.ROUND_HALF_UP);
+            goodsResult.setCost(cost);
+            int warnNum = goodsMapper.getWarnStock(goodsQueryDto);
+            goodsResult.setTotalWarnStock(warnNum);
+        }
         result.setObject(goodsResult);
         return result;
+    }
+
+    @Override
+    public int deleteGoods(User user, Long id) {
+        Goods goods = goodsMapper.selectById(id);
+        if (goods != null) {
+            goods.setIsDelete(1);
+            goods.setUpdateTime(DateUtil.getCurrentDateTime());
+            goods.setUpdateUser(user.getId());
+            goodsMapper.updateById(goods);
+        }
+        return 0;
     }
 }

@@ -157,15 +157,6 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
     public DataResponse createGoods(@CurrentUser(isFull = true) User user, @RequestBody GoodsParam goodsParam) {
         LOGGER.debug("保存参数：{}", goodsParam);
         Map<String, Object> result = new HashMap<>();
-
-        Goods goods = goodsParam;
-
-        DataResponse dataResponse = super.add(user, goods);
-        // 商品添加失败
-        if(dataResponse.get("code").equals(BaseConstants.FAIL)){
-            return dataResponse;
-        }
-
         try {
             int count = goodsService.createGoods(goodsParam, user);
             result.put("count", count);
@@ -184,16 +175,25 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         LOGGER.debug("更新参数：{}", goodsParam);
         Map<String, Object> result = new HashMap<>();
 
-        Goods goods = goodsParam;
-
-        DataResponse dataResponse = super.update(user, goods);
-        // 商品更新失败
-        if(dataResponse.get("code").equals(BaseConstants.FAIL)){
-            return dataResponse;
-        }
-
         try {
             int count = goodsService.updateGoods(goodsParam, user);
+            result.put("count", count);
+        } catch (Exception e) {
+            LOGGER.error("创建商品失败");
+            e.printStackTrace();
+        }
+
+        return DataResponse.success(result);
+    }
+
+    @ApiOperation("删除商品")
+    @ResponseBody
+    @RequestMapping(value = "/deleteGoods/{id}", method = RequestMethod.POST)
+    public DataResponse deleteGoods(@CurrentUser(isFull = true) User user, @PathVariable Long id) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            int count = goodsService.deleteGoods(user, id);
             result.put("count", count);
         } catch (Exception e) {
             LOGGER.error("创建商品失败");

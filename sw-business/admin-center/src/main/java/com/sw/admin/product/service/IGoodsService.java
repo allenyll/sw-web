@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.sw.common.dto.GoodsQueryDto;
 import com.sw.common.dto.GoodsResult;
 import com.sw.common.entity.product.Goods;
+import com.sw.common.entity.system.User;
 import com.sw.common.util.Result;
 
 public interface IGoodsService extends IService<Goods> {
@@ -27,4 +28,11 @@ public interface IGoodsService extends IService<Goods> {
      * @return
      */
     Result<GoodsResult> getStock(GoodsQueryDto goodsQueryDto);
+
+    /**
+     * 删除商品
+     * @param user
+     * @return
+     */
+    int deleteGoods(User user, Long id);
 }

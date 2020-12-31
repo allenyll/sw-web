@@ -1,7 +1,9 @@
 package com.sw.admin.product.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sw.admin.product.service.IGoodsService;
 import com.sw.client.controller.BaseController;
+import com.sw.common.entity.product.Goods;
 import com.sw.common.entity.product.Sku;
 import com.sw.common.util.CollectionUtil;
 import com.sw.common.util.DataResponse;
@@ -35,6 +37,9 @@ public class SkuController extends BaseController<SkuServiceImpl, Sku> {
     @Autowired
     SpecsServiceImpl specsService;
 
+    @Autowired
+    IGoodsService goodsService;
+
     @ApiOperation("获取SKU库存列表信息")
     @ResponseBody
     @RequestMapping(value = "/getSkuStockList/{id}", method = RequestMethod.POST)
@@ -63,13 +68,18 @@ public class SkuController extends BaseController<SkuServiceImpl, Sku> {
     @RequestMapping(value = "/updateSkuStock/{id}", method = RequestMethod.POST)
     private DataResponse updateSkuStock(@PathVariable String id, @RequestBody List<Sku> stockList) {
         Map<String, Object> result = new HashMap<>();
-
+        int stock = 0;
         if(CollectionUtil.isNotEmpty(stockList)) {
             for(Sku sku:stockList){
+                stock += sku.getSkuStock();
                 skuService.updateById(sku);
             }
         }
-
+        Goods goods = goodsService.getById(id);
+        if (goods != null) {
+            goods.setStock(stock);
+            goodsService.updateById(goods);
+        }
         return DataResponse.success(result);
     }
 
