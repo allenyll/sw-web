@@ -90,7 +90,7 @@ public class GoodsController extends BaseController<GoodsServiceImpl, Goods> {
         QueryWrapper<Goods> wrapper = new QueryWrapper<>();
         wrapper.eq("IS_DELETE", 0);
         if(StringUtil.isNotEmpty(keyword)){
-            wrapper.and(_wrapper -> wrapper.like("GOODS_NAME", keyword).or().like("GOODS_CODE", keyword));
+            wrapper.and(_wrapper -> _wrapper.like("GOODS_NAME", keyword).or().like("GOODS_CODE", keyword));
         }
         List<Goods> list = goodsService.list(wrapper);
         Map<String, Object> result = new HashMap<>();

@@ -4,16 +4,17 @@ package com.sw.admin.member.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sw.client.controller.BaseController;
 import com.sw.common.constants.BaseConstants;
+import com.sw.common.dto.CustomerQueryDto;
+import com.sw.common.dto.CustomerResult;
 import com.sw.common.entity.customer.Customer;
 import com.sw.common.util.*;
 import com.sw.admin.member.service.impl.CustomerServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -94,6 +95,20 @@ public class CustomerController extends BaseController<CustomerServiceImpl, Cust
     @RequestMapping(value = "/getPhoneNumber", method = RequestMethod.POST)
     public Result<Customer> getPhoneNumber(@RequestBody Map<String, Object> params){
         return service.getPhoneNumber(params);
+    }
+
+    @ApiOperation(value = "获取客户列表")
+    @ResponseBody
+    @RequestMapping(value = "getCustomerList", method = RequestMethod.POST)
+    public Result<List<Customer>> getCustomerList(@RequestBody CustomerQueryDto customerQueryDto ) {
+        return service.getCustomerList(customerQueryDto);
+    }
+
+    @ApiOperation(value = "分页获取客户列表")
+    @ResponseBody
+    @RequestMapping(value = "getCustomerPage", method = RequestMethod.POST)
+    public Result<CustomerResult> getCustomerPage(@RequestBody CustomerQueryDto customerQueryDto ) {
+        return service.getCustomerPage(customerQueryDto);
     }
 
 }

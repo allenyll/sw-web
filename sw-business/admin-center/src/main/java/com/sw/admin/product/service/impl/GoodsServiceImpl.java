@@ -264,6 +264,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                             return null;
                         }
                         String name = MapUtil.getString(spec, "specName");
+                        String specId = MapUtil.getString(spec, "specId");
                         String id = name + "_" + value + "_" +specOptionId;
                         if(!specOptionIds.contains(id)){
                             specOptionList = new ArrayList<>();
@@ -281,6 +282,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                             specOptionMap.put("id", specOptionId);
                             specOptionMap.put("name", value);
                             specOptionMap.put("active", false);
+                            specOptionMap.put("specId", specId);
+                            specOptionMap.put("specName", name);
                             specOptionList.add(specOptionMap);
                             sortOption(specOptionList);
                             specOptionList.get(0).put("active", true);
@@ -498,7 +501,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         }
 
         if (StringUtil.isNotEmpty(goodsQueryDto.getKeyword())) {
-            wrapper.like("GOODS_NAME", goodsQueryDto.getKeyword());
+            wrapper.and(_wrapper -> _wrapper.like("GOODS_NAME", goodsQueryDto.getKeyword()).or().like("GOODS_CODE", goodsQueryDto.getKeyword()));
         }
         if (StringUtil.isNotEmpty(goodsQueryDto.getCategoryId())) {
             wrapper.eq("CATEGORY_ID", goodsQueryDto.getCategoryId());

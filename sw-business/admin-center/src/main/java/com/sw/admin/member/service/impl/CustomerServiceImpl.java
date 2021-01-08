@@ -1,6 +1,7 @@
 package com.sw.admin.member.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sw.admin.member.util.AESUtil;
@@ -8,11 +9,16 @@ import com.sw.admin.pay.properties.WxProperties;
 import com.sw.cache.util.CacheUtil;
 import com.sw.common.constants.BaseConstants;
 import com.sw.common.constants.CacheKeys;
+import com.sw.common.constants.dict.StatusDict;
 import com.sw.common.constants.dict.UserStatus;
+import com.sw.common.dto.CustomerQueryDto;
+import com.sw.common.dto.CustomerResult;
+import com.sw.common.dto.GoodsResult;
 import com.sw.common.entity.customer.Customer;
 import com.sw.common.entity.customer.CustomerBalance;
 import com.sw.common.entity.customer.CustomerPoint;
 import com.sw.common.entity.customer.CustomerPointDetail;
+import com.sw.common.entity.product.Goods;
 import com.sw.common.entity.wechat.WxCodeResponse;
 import com.sw.common.util.*;
 import com.sw.admin.member.mapper.CustomerMapper;
@@ -261,6 +267,50 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             return result;
         }
         return result;
+    }
+
+    @Override
+    public Result<List<Customer>> getCustomerList(CustomerQueryDto customerQueryDto) {
+        Result<List<Customer>> result = new Result<>();
+        QueryWrapper<Customer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("STATUS", UserStatus.OK.getCode());
+        queryWrapper.eq("IS_DELETE", 0);
+        queryWrapper.and(_wrapper -> _wrapper.like("CUSTOMER_NAME", customerQueryDto.getCustomerName())
+                    .or().like("CUSTOMER_ACCOUNT", customerQueryDto.getCustomerName()));
+        List<Customer> customerList  = customerMapper.selectList(queryWrapper);
+        result.setObject(customerList);
+        return result;
+    }
+
+    @Override
+    public Result<CustomerResult> getCustomerPage(CustomerQueryDto customerQueryDto) {
+        CustomerResult customerResult = new CustomerResult();
+        int page = customerQueryDto.getPage();
+        int limit = customerQueryDto.getLimit();
+        int totalPage = 0;
+        QueryWrapper<Customer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("STATUS", UserStatus.OK.getCode());
+        queryWrapper.eq("IS_DELETE", 0);
+        queryWrapper.and(_wrapper -> _wrapper.like("CUSTOMER_NAME", customerQueryDto.getCustomerName())
+                .or().like("CUSTOMER_ACCOUNT", customerQueryDto.getCustomerName()));
+        queryWrapper.orderBy(true, false, "ADD_TIME");
+        int total = customerMapper.selectCount(queryWrapper);
+        Page<Customer> pages = customerMapper.selectPage(new Page<>(page, limit), queryWrapper);
+        List<Customer> list = pages.getRecords();
+        int num = total%limit;
+        if(num == 0){
+            totalPage = total/limit;
+        }else{
+            totalPage = total/limit + 1;
+        }
+
+        customerResult.setCurrentPage(page);
+        customerResult.setTotalPage(totalPage);
+        customerResult.setCustomerList(list);
+
+        Result<CustomerResult> resultResult = new Result<>();
+        resultResult.setObject(customerResult);
+        return resultResult;
     }
 
     /**

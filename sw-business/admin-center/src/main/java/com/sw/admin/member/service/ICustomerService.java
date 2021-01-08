@@ -1,10 +1,13 @@
 package com.sw.admin.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sw.common.dto.CustomerQueryDto;
+import com.sw.common.dto.CustomerResult;
 import com.sw.common.entity.customer.Customer;
 import com.sw.common.util.Result;
 import net.sf.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ICustomerService extends IService<Customer> {
@@ -43,4 +46,18 @@ public interface ICustomerService extends IService<Customer> {
      * @return
      */
     Result<Customer> updateCustomerAccount(Map<String, Object> params);
+
+    /**
+     * 获取用户列表
+     * @param customerQueryDto
+     * @return
+     */
+    Result<List<Customer>> getCustomerList(CustomerQueryDto customerQueryDto);
+
+    /**
+     * 分页获取用户列表
+     * @param customerQueryDto
+     * @return
+     */
+    Result<CustomerResult> getCustomerPage(CustomerQueryDto customerQueryDto);
 }
