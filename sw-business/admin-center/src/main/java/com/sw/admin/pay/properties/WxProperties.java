@@ -16,48 +16,47 @@ import org.springframework.context.annotation.PropertySource;
 */
 @Data
 @Configuration
-@PropertySource("classpath:application.yml")
 @ConfigurationProperties(prefix = "auth.wechat")
 public class WxProperties {
 
-    @Value("${sessionHost}")
+    @Value("${sessionHost:}")
     private String sessionHost;
 
-    @Value("${appId}")
+    @Value("${appId:}")
     private String appId;
 
-    @Value("${appSecret}")
+    @Value("${appSecret:}")
     private String appSecret;
 
-    @Value("${grantType}")
+    @Value("${grantType:}")
     private String grantType;
 
-    @Value("${systemWebUrl}")
+    @Value("${systemWebUrl:}")
     private String systemWebUrl;
 
-    @Value("${username}")
+    @Value("${username:}")
     private String username;
 
-    @Value("${password}")
+    @Value("${password:}")
     private String password;
 
-    @Value("${mchId}")
+    @Value("${mchId:}")
     private String mchId;
 
-    @Value("${key}")
+    @Value("${key:}")
     private String key;
 
-    @Value("${orderUrl}")
+    @Value("${orderUrl:}")
     private String orderUrl;
 
 
-    @Value("${refundUrl}")
+    @Value("${refundUrl:}")
     private String refundUrl;
 
-    @Value("${signType}")
+    @Value("${signType:}")
     private String signType;
 
-    @Value("${tradeType}")
+    @Value("${tradeType:}")
     private String tradeType;
 
 }

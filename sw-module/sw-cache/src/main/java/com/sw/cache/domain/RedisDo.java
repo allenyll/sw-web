@@ -17,16 +17,16 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 @Configuration
 public class RedisDo {
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.redis.host:}")
     private String host;
 
-    @Value("${spring.redis.port}")
+    @Value("${spring.redis.port:}")
     private int port;
 
-    @Value("${spring.redis.password}")
+    @Value("${spring.redis.password:}")
     private String password;
 
-    @Value("${spring.redis.timeout}")
+    @Value("${spring.redis.timeout:}")
     private int timeout;
 
     public Jedis jedis;
@@ -41,7 +41,7 @@ public class RedisDo {
         JedisPoolConfig config = SpringContextHolder.getBean("redisConfigs");
 
         JedisPool pool;
-        pool = new JedisPool(config, host, port);
+        pool = new JedisPool(config, host, port, timeout, password);
 
         boolean borrowOrOprSuccess = true;
         try {

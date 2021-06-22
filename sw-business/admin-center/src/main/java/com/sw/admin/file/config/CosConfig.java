@@ -14,18 +14,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class CosConfig {
 
-    @Value("${cos.bucketName}")
+    @Value("${cos.bucketName:}")
     private String bucketName;
 
-    @Value("${cos.region}")
+    @Value("${cos.region:}")
     private String region;
 
-    @Value("${cos.appId}")
+    @Value("${cos.appId:}")
     private String appId;
 
-    @Value("${cos.SecretId}")
+    @Value("${cos.SecretId:}")
     private String SecretId;
 
-    @Value("${cos.SecretKey}")
+    @Value("${cos.SecretKey:}")
     private String SecretKey;
 }

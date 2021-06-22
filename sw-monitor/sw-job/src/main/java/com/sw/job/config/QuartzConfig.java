@@ -23,13 +23,13 @@ import java.util.Properties;
 @Configuration
 public class QuartzConfig {
 
-    @Value("${sw.datasource.ip}")
+    @Value("${spring.datasource.ip:}")
     private String ip;
 
-    @Value("${sw.datasource.username}")
+    @Value("${spring.datasource.username:}")
     private String username;
 
-    @Value("${sw.datasource.password}")
+    @Value("${spring.datasource.password:}")
     private String password;
 
     private String driverClassName = "com.mysql.cj.jdbc.Driver";

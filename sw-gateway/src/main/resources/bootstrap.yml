@@ -3,10 +3,6 @@ http:
 
 server:
   port: 443
-  ssl:
-    key-store: classpath:www.allenyll.com.jks
-    key-store-password:
-    keyStoreType: JKS
 
 sw:
   nacos:
@@ -21,5 +17,10 @@ spring:
         server-addr: ${sw.nacos.server-addr}
       config:
         server-addr: ${sw.nacos.server-addr}
+        file-extension: yml
+        extension-configs[2]:
+          data-id: sw-ssl.yml
+          group: PROD
+          refresh: true
 
 

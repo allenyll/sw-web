@@ -14,6 +14,15 @@ spring:
         server-addr: ${sw.nacos.server-addr}
       config:
         server-addr: ${sw.nacos.server-addr}
+      file-extension: yml
+      extension-configs[0]:
+        data-id: sw-cos.yml
+        group: PROD
+        refresh: true
+      extension-configs[1]:
+        data-id: sw-wx.yml
+        group: PROD
+        refresh: true
 
 
 
