@@ -1,25 +1,25 @@
-http:
-  port: 10001
-
-server:
-  port: 443
-
-sw:
-  nacos:
-    server-addr: ${sw.nacos.ip}:8848
-
-spring:
-  application:
-    name: sw-gateway
-  cloud:
-    nacos:
-      discovery:
-        server-addr: ${sw.nacos.server-addr}
-      config:
-        server-addr: ${sw.nacos.server-addr}
-#        extension-configs[4]:
-#          data-id: sw-ssl.yml
-#          group: PROD
-#          refresh: true
-
-
+#http:
+#  port: 10001
+#
+#server:
+#  port: 443
+#
+#sw:
+#  nacos:
+#    server-addr: localhost:8848
+#
+#spring:
+#  application:
+#    name: sw-gateway
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: ${sw.nacos.server-addr}
+#      config:
+#        server-addr: ${sw.nacos.server-addr}
+##        extension-configs[4]:
+##          data-id: sw-ssl.yml
+##          group: PROD
+##          refresh: true
+#
+#
