@@ -3,6 +3,7 @@ package com.sw.admin.pay.properties;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
@@ -15,38 +16,38 @@ import org.springframework.context.annotation.PropertySource;
 * @version V1.0
 */
 @Data
+@RefreshScope
 @Configuration
-@ConfigurationProperties(prefix = "auth.wechat")
 public class WxProperties {
 
-    @Value("${sessionHost:}")
+    @Value("${auth.wechat.sessionHost:}")
     private String sessionHost;
 
-    @Value("${appId:}")
+    @Value("${auth.wechat.appId:}")
     private String appId;
 
-    @Value("${appSecret:}")
+    @Value("${auth.wechat.appSecret:}")
     private String appSecret;
 
-    @Value("${grantType:}")
+    @Value("${auth.wechat.grantType:}")
     private String grantType;
 
-    @Value("${systemWebUrl:}")
+    @Value("${auth.wechat.systemWebUrl:}")
     private String systemWebUrl;
 
-    @Value("${username:}")
+    @Value("${auth.wechat.username:}")
     private String username;
 
-    @Value("${password:}")
+    @Value("${auth.wechat.password:}")
     private String password;
 
-    @Value("${mchId:}")
+    @Value("${auth.wechat.mchId:}")
     private String mchId;
 
-    @Value("${key:}")
+    @Value("${auth.wechat.key:}")
     private String key;
 
-    @Value("${orderUrl:}")
+    @Value("${auth.wechat.orderUrl:}")
     private String orderUrl;
 
 
