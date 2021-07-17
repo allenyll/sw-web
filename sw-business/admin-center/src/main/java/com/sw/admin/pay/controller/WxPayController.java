@@ -1,7 +1,6 @@
 package com.sw.admin.pay.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.sw.admin.order.service.impl.OrderDetailServiceImpl;
 import com.sw.admin.order.service.impl.OrderServiceImpl;
 import com.sw.admin.pay.utils.HttpUtils;
@@ -35,7 +34,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Description:  微信支付接口
@@ -278,70 +276,70 @@ public class WxPayController {
         LOGGER.info("微信 支付接口生成签名 方法结束");
     }
 
-    public DataResponse createOrder(@CurrentUser(isFull = true) User user, HttpServletRequest request, HttpServletResponse response) {
-        WxPayUnifiedOrderRequest wxPayUnifiedOrderRequest = new WxPayUnifiedOrderRequest();
-        //接受参数(openid)
-        String openid = request.getParameter("openid");
-        String mode = request.getParameter("mode");
-        String currentOpenId = cacheUtil.get(CacheKeys.WX_CURRENT_OPENID + "_" + mode + "_" + openid, String.class);
-        if (!openid.equals(currentOpenId)) {
-            return DataResponse.fail(user.getUserName() + "当前用户与登录用户不匹配");
-        }
-
-        //接受参数(金额)
-        String amount = request.getParameter("amount");
-        //用户ID
-        Long customerId = Long.parseLong(request.getParameter("customerId"));
-        //支付来源
-        String payName = request.getParameter("payName");
-        //支付备注
-        String remark = request.getParameter("remark");
-        Long orderId = Long.parseLong(request.getParameter("orderId"));
-        //接口调用总金额单位为分换算一下(测试金额改成1,单位为分则是0.01,根据自己业务场景判断是转换成float类型还是int类型)
-        BigDecimal bigAmount = new BigDecimal("0.02").multiply(new BigDecimal("100"));
-        int amountFen = bigAmount.intValue();
-        //设置随机字符串
-        String nonceStr = StringUtil.getRandomString(11);
-        //设置商户订单号
-        String outTradeNo =  StringUtil.getRandomString(11);
-
-
-        wxPayUnifiedOrderRequest.setNotifyUrl(NOTIFY_URL);
-        wxPayUnifiedOrderRequest.setTradeType("JSAPI");
-        wxPayUnifiedOrderRequest.setBody("先写测试商品");
-        //wxPayUnifiedOrderRequest.setDetail();
-        wxPayUnifiedOrderRequest.setOutTradeNo(outTradeNo);
-        // wxPayUnifiedOrderRequest.setFeeType();
-        wxPayUnifiedOrderRequest.setTotalFee(amountFen);
-        wxPayUnifiedOrderRequest.setSpbillCreateIp(IPUtil.getIpAddr(request, response));
-//        wxPayUnifiedOrderRequest.setTimeStart();
-//        wxPayUnifiedOrderRequest.setTimeExpire();
-//        wxPayUnifiedOrderRequest.setGoodsTag();
-//        wxPayUnifiedOrderRequest.setProductId();
-//        wxPayUnifiedOrderRequest.setLimitPay();
-        wxPayUnifiedOrderRequest.setOpenid(openid);
-//        wxPayUnifiedOrderRequest.setSubOpenid();
-//        wxPayUnifiedOrderRequest.setReceipt();
-//        wxPayUnifiedOrderRequest.setSceneInfo();
-//        wxPayUnifiedOrderRequest.setFingerprint();
-//        wxPayUnifiedOrderRequest.setProfitSharing();
-//        wxPayUnifiedOrderRequest.setWorkWxSign();
-        wxPayUnifiedOrderRequest.setAppid(wxProperties.getAppId());
-        wxPayUnifiedOrderRequest.setMchId(wxProperties.getMchId());
-        wxPayUnifiedOrderRequest.setNonceStr(nonceStr);
-//        wxPayUnifiedOrderRequest.setSubAppId();
-//        wxPayUnifiedOrderRequest.setSubMchId();
-//        wxPayUnifiedOrderRequest.setSign();
-        wxPayUnifiedOrderRequest.setSignType("MD5");
-
-
-//        try {
-//            WxPayUnifiedOrderResult wxPayUnifiedOrderResult = wxPayService.unifiedOrder(wxPayUnifiedOrderRequest);
-//        } catch (WxPayException e) {
-//            e.printStackTrace();
+//    public DataResponse createOrder(@CurrentUser(isFull = true) User user, HttpServletRequest request, HttpServletResponse response) {
+//        WxPayUnifiedOrderRequest wxPayUnifiedOrderRequest = new WxPayUnifiedOrderRequest();
+//        //接受参数(openid)
+//        String openid = request.getParameter("openid");
+//        String mode = request.getParameter("mode");
+//        String currentOpenId = cacheUtil.get(CacheKeys.WX_CURRENT_OPENID + "_" + mode + "_" + openid, String.class);
+//        if (!openid.equals(currentOpenId)) {
+//            return DataResponse.fail(user.getUserName() + "当前用户与登录用户不匹配");
 //        }
-        return DataResponse.success();
-    }
+//
+//        //接受参数(金额)
+//        String amount = request.getParameter("amount");
+//        //用户ID
+//        Long customerId = Long.parseLong(request.getParameter("customerId"));
+//        //支付来源
+//        String payName = request.getParameter("payName");
+//        //支付备注
+//        String remark = request.getParameter("remark");
+//        Long orderId = Long.parseLong(request.getParameter("orderId"));
+//        //接口调用总金额单位为分换算一下(测试金额改成1,单位为分则是0.01,根据自己业务场景判断是转换成float类型还是int类型)
+//        BigDecimal bigAmount = new BigDecimal("0.02").multiply(new BigDecimal("100"));
+//        int amountFen = bigAmount.intValue();
+//        //设置随机字符串
+//        String nonceStr = StringUtil.getRandomString(11);
+//        //设置商户订单号
+//        String outTradeNo =  StringUtil.getRandomString(11);
+//
+//
+//        wxPayUnifiedOrderRequest.setNotifyUrl(NOTIFY_URL);
+//        wxPayUnifiedOrderRequest.setTradeType("JSAPI");
+//        wxPayUnifiedOrderRequest.setBody("先写测试商品");
+//        //wxPayUnifiedOrderRequest.setDetail();
+//        wxPayUnifiedOrderRequest.setOutTradeNo(outTradeNo);
+//        // wxPayUnifiedOrderRequest.setFeeType();
+//        wxPayUnifiedOrderRequest.setTotalFee(amountFen);
+//        wxPayUnifiedOrderRequest.setSpbillCreateIp(IPUtil.getIpAddr(request, response));
+////        wxPayUnifiedOrderRequest.setTimeStart();
+////        wxPayUnifiedOrderRequest.setTimeExpire();
+////        wxPayUnifiedOrderRequest.setGoodsTag();
+////        wxPayUnifiedOrderRequest.setProductId();
+////        wxPayUnifiedOrderRequest.setLimitPay();
+//        wxPayUnifiedOrderRequest.setOpenid(openid);
+////        wxPayUnifiedOrderRequest.setSubOpenid();
+////        wxPayUnifiedOrderRequest.setReceipt();
+////        wxPayUnifiedOrderRequest.setSceneInfo();
+////        wxPayUnifiedOrderRequest.setFingerprint();
+////        wxPayUnifiedOrderRequest.setProfitSharing();
+////        wxPayUnifiedOrderRequest.setWorkWxSign();
+//        wxPayUnifiedOrderRequest.setAppid(wxProperties.getAppId());
+//        wxPayUnifiedOrderRequest.setMchId(wxProperties.getMchId());
+//        wxPayUnifiedOrderRequest.setNonceStr(nonceStr);
+////        wxPayUnifiedOrderRequest.setSubAppId();
+////        wxPayUnifiedOrderRequest.setSubMchId();
+////        wxPayUnifiedOrderRequest.setSign();
+//        wxPayUnifiedOrderRequest.setSignType("MD5");
+//
+//
+////        try {
+////            WxPayUnifiedOrderResult wxPayUnifiedOrderResult = wxPayService.unifiedOrder(wxPayUnifiedOrderRequest);
+////        } catch (WxPayException e) {
+////            e.printStackTrace();
+////        }
+//        return DataResponse.success();
+//    }
 
     @ResponseBody
     @RequestMapping(value = "sign", method = RequestMethod.POST)
