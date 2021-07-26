@@ -537,8 +537,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public void updateOrder(Map<String, Object> params, Transaction transaction) {
-        Long orderId = MapUtil.getLong(params, "orderId");
+    public void updateOrder(Long orderId, Transaction transaction) {
         Order order = orderMapper.selectById(orderId);
         // TODO 订单不存在， 支付渠道改造
         if(order == null){
@@ -550,7 +549,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setPayChannel(transaction.getPayChannel());
         order.setPayTime(transaction.getTransactionTime());
         order.setOrderStatus(OrderStatusDict.PAY.getCode());
-        order.setTradeNo(transaction.getTransactionNo());
         orderMapper.updateById(order);
         // 库存扣减
         QueryWrapper<OrderDetail> orderDetailQueryWrapper = new QueryWrapper<>();

@@ -50,6 +50,8 @@ public class WxProperties {
     @Value("${auth.wechat.orderUrl:}")
     private String orderUrl;
 
+    @Value("${auth.wechat.orderQuery:}")
+    private String orderQuery;
 
     @Value("${refundUrl:}")
     private String refundUrl;

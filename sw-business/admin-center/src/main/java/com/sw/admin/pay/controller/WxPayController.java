@@ -7,6 +7,7 @@ import com.sw.admin.pay.utils.HttpUtils;
 import com.sw.cache.util.CacheUtil;
 import com.sw.client.annotion.CurrentUser;
 import com.sw.common.constants.CacheKeys;
+import com.sw.common.constants.WxConstants;
 import com.sw.common.constants.dict.OrderStatusDict;
 import com.sw.common.constants.dict.OrderTradeDict;
 import com.sw.common.constants.dict.PayTypeDict;
@@ -17,15 +18,14 @@ import com.sw.common.entity.system.User;
 import com.sw.common.util.*;
 import com.sw.admin.pay.properties.WxProperties;
 import com.sw.admin.pay.service.impl.TransactionServiceImpl;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -181,7 +181,7 @@ public class WxPayController {
 
             LOGGER.info("微信统一下单返回状态：{},返回消息：{}", returnCode, returnMsg);
             
-            if (returnCode.equalsIgnoreCase("FAIL")) {
+            if (WxConstants.FAIL.equalsIgnoreCase(returnCode)) {
                 result.fail("支付失败: " + returnMsg);
                 return result;
             }
@@ -208,6 +208,9 @@ public class WxPayController {
             transaction.setUpdateUser(customerId);
             //插入Dao
             transactionService.save(transaction);
+            
+            order.setTradeNo(transaction.getTransactionNo());
+            orderService.updateById(order);
 
             LOGGER.info("微信 统一下单 接口调用成功 并且新增支付信息成功");
             data.put("transactionId", transaction.getId());
@@ -225,6 +228,116 @@ public class WxPayController {
             LOGGER.info("微信 统一下单 异常："+e.getMessage());
             e.printStackTrace();
         }
+        return result;
+    }
+
+    /**
+     * 微信查询订单状态
+     */
+    @ApiOperation(value = "查询订单状态")
+    @PostMapping("query")
+    @ResponseBody
+    public Result orderQuery(@CurrentUser(isFull = true) CurrentUser currentUser, Long orderId, Long transactionId) {
+       Result result = new Result();
+       if (orderId == null || transactionId == null) {
+           result.fail("订单不存在");
+           return result;
+       }
+       
+       Order order = orderService.getById(orderId);
+        //设置随机字符串
+        String nonceStr = StringUtil.getRandomString(11);
+
+        //创建hashmap(用户获得签名)
+        SortedMap<String, String> paraMap = new TreeMap<String, String>();
+        //设置(小程序ID)(这块一定要是大写)
+        paraMap.put("appid", wxProperties.getAppId());
+        // 商家账号。
+        paraMap.put("mch_id", wxProperties.getMchId());
+        //设置(随机串)
+        paraMap.put("nonce_str", nonceStr);
+        // 商户订单编号
+        paraMap.put("out_trade_no", order.getTradeNo());
+
+
+        //调用逻辑传入参数按照字段名的 ASCII 码从小到大排序（字典序）
+        String stringA = StringUtil.formatUrlMap(paraMap, false, false);
+        //第二步，在stringA最后拼接上key得到stringSignTemp字符串，并对stringSignTemp进行MD5运算，再将得到的字符串所有字符转换为大写，得到sign值signValue。(签名)
+        String sign = MD5Util.md5Password(stringA+"&key="+wxProperties.getKey()).toUpperCase();
+        paraMap.put("sign", sign);
+        //将参数 编写XML格式
+        String xmlData = XmlUtil.GetMapToXML(paraMap);
+
+        //发送请求(POST)(获得数据包ID)(这有个注意的地方 如果不转码成ISO8859-1则会告诉你body不是UTF8编码 就算你改成UTF8编码也一样不好使 所以修改成ISO8859-1)
+        Map<String,String> resultUn = null;
+        try {
+            resultUn = XmlUtil.doXMLParse(HttpUtils.getRemotePortData(wxProperties.getOrderQuery(), new String(xmlData.getBytes(), "ISO8859-1")));
+        } catch (Exception e) {
+            LOGGER.error("查询订单失败：" + e.getMessage());
+            result.fail("查询订单失败");
+            return result;
+        }
+
+        if (resultUn == null) {
+            result.fail("查询订单失败");
+            return result;
+        }
+
+        // 响应报文
+        String returnCode = MapUtil.getString(resultUn, "return_code");
+        String returnMsg = MapUtil.getString(resultUn, "return_msg");
+
+        LOGGER.info("微信查询订单返回状态：{},返回消息：{}", returnCode, returnMsg);
+
+        if (WxConstants.FAIL.equalsIgnoreCase(returnCode)) {
+            result.fail("支付失败: " + returnMsg);
+            return result;
+        }
+        
+        String errorCode = MapUtil.getString(resultUn, "err_code");
+        String errorCodeDes = MapUtil.getString(resultUn, "err_code_des");
+
+        if (WxConstants.FAIL.equalsIgnoreCase(errorCode)) {
+            result.fail("支付失败: " + errorCodeDes);
+            return result;
+        }
+        
+        String tradeState = MapUtil.getString(resultUn, "trade_state");
+        
+        // 支付成功
+        if (WxConstants.SUCCESS.equals(tradeState)) {
+            // 更新订单状态，更新支付交易状态
+            QueryWrapper<Transaction> entityWrapper = new QueryWrapper<>();
+            entityWrapper.eq("IS_DELETE", 0);
+            entityWrapper.eq("ID", transactionId);
+            Transaction transaction = transactionService.getOne(entityWrapper);
+            if(transaction != null){
+                transaction.setStatus(OrderTradeDict.COMPLETE.getCode());
+                transactionService.updateById(transaction);
+                // 更新订单状态
+                orderService.updateOrder(orderId, transaction);
+            }
+            return result;
+        } else if (WxConstants.USERPAYING.equals(tradeState)) {
+            // 重试查询三次，查询都在支付中，返回失败
+            Integer num = cacheUtil.get(CacheKeys.WX_CACHE_ZONE + CacheKeys.ORDER_PAY + orderId, Integer.class);
+            if (num == null) {
+                cacheUtil.set(CacheKeys.WX_CACHE_ZONE + CacheKeys.ORDER_PAY + orderId, 1);
+                this.orderQuery(currentUser, orderId, transactionId);
+            } else if (num <= 3) {
+                cacheUtil.remove(CacheKeys.WX_CACHE_ZONE + CacheKeys.ORDER_PAY + orderId);
+                cacheUtil.set(CacheKeys.WX_CACHE_ZONE + CacheKeys.ORDER_PAY + orderId, ++num);
+                this.orderQuery(currentUser, orderId, transactionId);
+            } else {
+                result.fail("查询订单失败, error: " + tradeState);
+                return result; 
+            }
+        } else {
+            result.fail("查询订单失败, error: " + tradeState);
+            return result;
+        }
+
+        result.fail("未知错误原因，联系客服");
         return result;
     }
 
@@ -408,7 +521,7 @@ public class WxPayController {
             //解析成Map
             Map<String,String> map =  XmlUtil.doXMLParse(notityXml);
             //判断 支付是否成功
-            if("SUCCESS".equals(map.get("result_code"))){
+            if(WxConstants.SUCCESS.equals(map.get("result_code"))){
                 LOGGER.info("微信回调返回是否支付成功：是");
                 //获得 返回的商户订单号
                 String outTradeNo = map.get("out_trade_no");
@@ -452,6 +565,7 @@ public class WxPayController {
     @ResponseBody
     public DataResponse updateObj(@RequestBody Map<String, Object> params){
         String transactionId = MapUtil.getMapValue(params, "transactionId");
+        Long orderId = MapUtil.getLong(params, "orderId");
         String type = MapUtil.getString(params, "type");
         QueryWrapper<Transaction> entityWrapper = new QueryWrapper<>();
         entityWrapper.eq("IS_DELETE", 0);
@@ -462,7 +576,7 @@ public class WxPayController {
             transactionService.updateById(transaction);
             // 更新订单状态
             if("order".equals(type)){
-                orderService.updateOrder(params, transaction);
+                orderService.updateOrder(orderId, transaction);
             }
         }
         return DataResponse.success();

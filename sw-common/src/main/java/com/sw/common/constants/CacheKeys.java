@@ -11,6 +11,21 @@ public class CacheKeys {
     public CacheKeys(){}
 
     /**
+     * 商城缓存
+     */
+    public static final String WX_CACHE_ZONE = "SW_WX";
+
+    /**
+     * 系统缓存
+     */
+    public static final String SYS_CACHE_ZONE = "SYSTEM_WEB";
+
+    /**
+     * 订单支付结果查询
+     */
+    public static final String ORDER_PAY = "ORDER_PAY";
+
+    /**
      * 微信jwt验证缓存key
      */
     public static final String WX_JWT_MARK = "wx_jwt_key";

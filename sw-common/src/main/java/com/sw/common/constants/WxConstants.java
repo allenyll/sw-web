@@ -25,6 +25,9 @@ public class WxConstants {
     public static final String SUCCESS = "SUCCESS";
 
     public static final String FAIL = "FAIL";
+    
+    // 微信支付--支付中
+    public static final String USERPAYING = "USERPAYING";
 
     public static final String REFUND_NOTIFY_URL = "https://www.allenyll.com/api-web/pay/payRefundCallback";
 }
